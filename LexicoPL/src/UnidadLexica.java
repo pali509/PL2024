@@ -1,9 +1,6 @@
 
 public abstract class UnidadLexica {
-	public enum ClaseLexica {
-	    IDEN, ENT, REAL, PAP, PCIERRE, IGUAL, COMA,
-	    MAS, MENOS, POR, DIV, EVALUA, DONDE, EOF
-	}
+
 	private ClaseLexica clase;
     private int fila;
     private int columna;
