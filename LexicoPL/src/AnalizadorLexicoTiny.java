@@ -23,13 +23,11 @@ public class AnalizadorLexicoTiny {
    
    private static enum Estado {
     //ESTADOS FINALES
-    INICIO, REC_REAL, REC_INT, REC_BOOL, REC_TRUE, REC_FALSE, REC_AND, REC_NOT, REC_OR, REC_VAR, REC_MAS, REC_MENOS, REC_POS, REC_CERO, REC_LREAL, REC_EXP, 
-    REC_EXP_CERO, REC_MUL, REC_DIV, REC_MAYOR, REC_MENOR, REC_MAYOR_IGUAL, REC_MENOR_IGUAL, REC_IGUAL, REC_DESIGUAL, REC_ASIG, REC_ESPACIO, REC_PAR_APERTURA,
-    REC_PAR_CIERRE, REC_ARROBA, REC_AMPERSAND2, REC_PUNTO_COMA, REC_LLAVE_APERTURA, REC_LLAVE_CIERRE, REC_EOF, REC_COM, REC_C, REC_SALTO_LINEA, REC_TABULADOR,
-    REC_RETORNO_CARRO, REC_RETROCESO,
+    REC_VAR, REC_MAS, REC_MENOS, REC_POS, REC_CERO, REC_LREAL, REC_LREAL_CERO, REC_EXP, REC_EXP_CERO, REC_MUL, REC_DIV, REC_MAYOR, REC_MENOR, REC_MAYOR_IGUAL, 
+    REC_MENOR_IGUAL, REC_IGUAL, REC_DESIGUAL, REC_ASIG, REC_PAR_APERTURA, REC_PAR_CIERRE, REC_ARROBA, REC_AMPERSAND2, REC_PUNTO_COMA, REC_LLAVE_APERTURA, 
+    REC_LLAVE_CIERRE, REC_EOF,
     //ESTADOS NO FINALES:
-    REC_R, REC_RE, REC_REA, REC_I, REC_IN, REC_B, REC_BO, REC_BOO, REC_T, REC_TR, REC_TRU, REC_F, REC_FA, REC_FAL, REC_FALS, REC_A, REC_AN, REC_N, REC_NO,
-    REC_O, REC_PUNTO, REC_E, CASI_LREAL, REC_E_MAS_MENOS, REC_IGNO, REC_AMPERSAND, REC_ALMOHADILLA, REC_EXCLAMACION
+    INICIO, REC_PUNTO, REC_E, CASI_LREAL, REC_E_MAS_MENOS, REC_AMPERSAND, REC_ALMOHADILLA, REC_EXCLAMACION, REC_COM
    }
 
    private Estado estado;
@@ -49,16 +47,7 @@ public class AnalizadorLexicoTiny {
     lex.delete(0,lex.length());
     while(true) {
         switch(estado) { //Orden para que este limpito: empezamos con case INICIO y luego vamos abriendo los estados en el orden en el que aparecen en inicio, luego abrimos los del siguiente etc...
-          case INICIO: 
-              //Palabras reservadas
-              if (hayi()) transita(Estado.REC_I);
-              else if (hayr()) transita(Estado.REC_R);
-              else if (hayb()) transita(Estado.REC_B);
-              else if (hayt()) transita(Estado.REC_T);
-              else if (hayf()) transita(Estado.REC_F);
-              else if (haya()) transita(Estado.REC_A);
-              else if (hayn()) transita(Estado.REC_N);
-              else if (hayo()) transita(Estado.REC_O);
+          case INICIO:
               //Números
               else if (hayCero()) transita(Estado.REC_CERO);
               else if (hayDigitoPos()) transita(Estado.REC_POS);
@@ -83,65 +72,8 @@ public class AnalizadorLexicoTiny {
               else if (hayLlCierre()) transita(Estado.REC_LLAVE_CIERRE);
               //Cadenas Ignorables
               else if (hayAlmohadilla()) transitaIgnorando(Estado.REC_ALMOHADILLA);
-              else if (hayBarra()) transitaIgnorando(Estado.REC_IGNO);
-              else if (hayEspacio()) transitaIgnorando(Estado.REC_ESPACIO);
+              else if (hayIgnorable()) transitaIgnorando(Estado.INICIO); // ' ' \n \t \r \b
               else if (hayEOF()) transita(Estado.REC_EOF);
-              else error();
-              break;
-          case REC_I:
-              //Sigo leyendo int
-              if (hayn()) transita(Estado.REC_IN);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_R:
-              //Sigo leyendo real
-              if (haye()) transita(Estado.REC_RE);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_B:
-              //Sigo leyendo bool
-              if (hayo()) transita(Estado.REC_BO);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_T:
-              //Sigo leyendo true
-              if (hayt()) transita(Estado.REC_TR);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_F:
-              //Sigo leyendo false
-              if (haya()) transita(Estado.REC_FA);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_A:
-              //Sigo leyendo and
-              if (hayn()) transita(Estado.REC_AN);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_N:
-              //Sigo leyendo not
-              if (hayo()) transita(Estado.REC_NO);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
-              else error();
-              break;
-          case REC_OR:
-              //Sigo leyendo or
-              if (hayr()) transita(Estado.REC_OR);
-              //Leo una variable
-              else if(hayLetra() || hayDigito()) transita(Estado.REC_VAR);
               else error();
               break;
           case REC_CERO:
@@ -204,10 +136,9 @@ public class AnalizadorLexicoTiny {
             case REC_LLAVE_APERTURA:
             case REC_LLAVE_CIERRE:
             case REC_ALMOHADILLA:
-            case REC_IGNO:
-            case REC_ESPACIO:
             case REC_EOF: 
-              return unidadEof();            
+              return unidadEof();  
+            //FALTAN MUCHOS AQUI          
             case REC_IGUAL: return unidadIgual();
             case REC_COM: 
                if (hayNL()) transitaIgnorando(Estado.INICIO);
@@ -262,10 +193,10 @@ public class AnalizadorLexicoTiny {
    private boolean hayDiv() {return sigCar == '/';}
    private boolean hayPAp() {return sigCar == '(';}
    private boolean hayPCierre() {return sigCar == ')';}
-   private boolean hayAsig() {return sigCar == '=';}
+   private boolean hayIgual() {return sigCar == '=';}
    private boolean hayPunto() {return sigCar == '.';}
    private boolean hayAlmohadilla() {return sigCar == '#';}
-   private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n';}
+   private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n';} //ESTOS DOS SE UNIFICAN EN UNA SOLA FUNCION
    private boolean hayNL() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
    private boolean hayEOF() {return sigCar == -1;}
    //Nuevos que acabo de poner
@@ -276,13 +207,9 @@ public class AnalizadorLexicoTiny {
    private boolean hayLlCierre() {return sigCar == '}';}
    private boolean hayMayor() {return sigCar == '>';}
    private boolean hayMenor() {return sigCar == '<';}
-   private boolean hayMayorIgual() {return sigCar == '>=';} //??
-   private boolean hayMenorIgual() {return sigCar == '<=';} //??
-   private boolean hayIgual() {return sigCar == '==';} //??
-   private boolean hayDesigual() {return sigCar == '!=';} //??
 
-
-   //Aquí hacer una función por clase léxica
+   //Aquí hacer una función por clase léxica 
+   //SOLO PARA LOS ESTADOS FINALES, LOS NO FINALES HACEN ERROR() SI NO HAY ENTRADA VALIDA
     
    private UnidadLexica unidadEnt() {
      return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.ENT,lex.toString());     
