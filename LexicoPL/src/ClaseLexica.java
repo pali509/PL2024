@@ -25,7 +25,7 @@ public enum ClaseLexica { //Comprobar si faltan cosas, que creo que si
     MENORIG("<="), 
     IGUAL("=="), 
     DESIGUAL("!="), 
-    ASIG("=="), 
+    ASIG("="), 
     EOF("EOF");
 private String image;
 public String getImage() {
