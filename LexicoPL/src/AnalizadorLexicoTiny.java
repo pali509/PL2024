@@ -128,12 +128,26 @@ public class AnalizadorLexicoTiny {
    private boolean hayDiv() {return sigCar == '/';}
    private boolean hayPAp() {return sigCar == '(';}
    private boolean hayPCierre() {return sigCar == ')';}
-   private boolean hayIgual() {return sigCar == '=';}
+   private boolean hayAsig() {return sigCar == '=';}
    private boolean hayPunto() {return sigCar == '.';}
    private boolean hayAlmohadilla() {return sigCar == '#';}
    private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n';}
    private boolean hayNL() {return sigCar == '\r' || sigCar == '\b' || sigCar == '\n';}
    private boolean hayEOF() {return sigCar == -1;}
+   //Nuevos que acabo de poner
+   private boolean hayArroba() {return sigCar == '@';}
+   private boolean hayPuntoComa() {return sigCar == ';';}
+   private boolean hayAmpersand1() {return sigCar == '&';} //??
+   private boolean hayAmpersand2() {return sigCar == '&';}//??
+   private boolean hayLlAp() {return sigCar == '{';}
+   private boolean hayLlCierre() {return sigCar == '}';}
+   private boolean hayMayor() {return sigCar == '>';}
+   private boolean hayMenor() {return sigCar == '<';}
+   private boolean hayMayorIgual() {return sigCar == '>=';} //??
+   private boolean hayMenorIgual() {return sigCar == '<=';} //??
+   private boolean hayIgual() {return sigCar == '==';} //??
+   private boolean hayDesigual() {return sigCar == '!=';} //??
+
 
    //Aquí hacer una función por clase léxica
     
@@ -167,6 +181,62 @@ public class AnalizadorLexicoTiny {
    private UnidadLexica unidadEof() {
      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.EOF);     
    }    
+    //Las que acabo de hacer
+    private UnidadLexica unidadVar() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.VAR);     
+    }      
+    private UnidadLexica unidadBool() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);     
+    }   
+    private UnidadLexica unidadTrue() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE);     
+    }      
+    private UnidadLexica unidadFalse() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE);     
+    }    
+    private UnidadLexica unidadAnd() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND);     
+    }      
+    private UnidadLexica unidadNot() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT);     
+    }    
+    private UnidadLexica unidadOr() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR);     
+    }      
+    private UnidadLexica unidadArroba() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ARROBA);     
+    }    
+    private UnidadLexica unidadAmpersand() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AMPERSAND);     
+    }      
+    private UnidadLexica unidadPuntoyComa() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.PUNTOYCOMA);     
+    }    
+    private UnidadLexica unidadLlaveA() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.LLAVEA);     
+    }      
+    private UnidadLexica unidadLlaveC() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.LLAVEC);     
+    }    
+    private UnidadLexica unidadMayor() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MAYOR);     
+    }      
+    private UnidadLexica unidadMenor() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MENOR);     
+    }    
+    private UnidadLexica unidadMayorIg() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MAYORIG);     
+    }      
+    private UnidadLexica unidadMenorIg() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MENORIG);     
+    }    
+    private UnidadLexica unidadDesigual() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.DESIGUAL);     
+    }      
+    private UnidadLexica unidadAsig() {
+      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ASIG);     
+    }      
+
    private void error() { //CREO QUE ESTO NO SE MODIFICA
      int curCar = sigCar;
      try{
