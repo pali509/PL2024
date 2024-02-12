@@ -157,7 +157,7 @@
              case REC_EOF: 
                return unidadEof();  
              case REC_IGUAL: return unidadIgual();
-             case REC_COM: 
+             case REC_COM: //hay que hacer uno para solo salto de linea 
                 if (haySep()) transitaIgnorando(Estado.INICIO);
                 else if (hayEOF()) transita(Estado.REC_EOF);
                 else transitaIgnorando(Estado.REC_COM);
@@ -292,7 +292,8 @@
     }    
      //Las que acabo de hacer
      private UnidadLexica unidadVar() {
-       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.VAR);     
+       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.VAR);    
+       //HACER IFS PARA TODOS los que faltan 
      }      
      private UnidadLexica unidadBool() {
        return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);     

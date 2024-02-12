@@ -1,5 +1,5 @@
 public enum ClaseLexica { //Comprobar si faltan cosas, que creo que si
-    VAR, //Esto hay que ponerlo con comillas como lo de abajo? creo que no pero dudo
+    VAR, //poner como lo de abajo pero < >
     ENT, 
     REAL, 
     BOOL, 
@@ -8,6 +8,7 @@ public enum ClaseLexica { //Comprobar si faltan cosas, que creo que si
     AND, 
     NOT, 
     OR, 
+    //Faltan LENT y LREAL lo tiene el de jflex
     PAP("("), 
     PCIERRE(")"), 
     ARROBA("@"), 
