@@ -81,7 +81,7 @@
                if (hayPunto()) transita(Estado.REC_PUNTO);
                //Paso a leer exponenciales
                else if (hayE()) transita(Estado.REC_E);
-               else return unidadEnt(); //no entendia muy bien lo de unidadCero(), en plan habria que meterlo como claseLexica nueva y yo creo que 0 es entero y ea no?
+               else return unidadEnt();
                break;
            case REC_POS:
                //Paso a leer decimales
@@ -198,18 +198,18 @@
     }
 
 
-    private void transita(Estado sig) throws IOException { //CREO QUE ESTO NO SE MODIFICA
+    private void transita(Estado sig) throws IOException { 
       lex.append((char)sigCar);
       sigCar();         
       estado = sig;
     }
-    private void transitaIgnorando(Estado sig) throws IOException { //CREO QUE ESTO NO SE MODIFICA
+    private void transitaIgnorando(Estado sig) throws IOException {
       sigCar();         
       filaInicio = filaActual;
       columnaInicio = columnaActual;
       estado = sig;
     }
-    private void sigCar() throws IOException { //CREO QUE NO HAY QUE MODIFICAR ESTO, O IGUAL HAY QUE METER AL RESTO DE IGNORABLES IGUAL QUE EL NL
+    private void sigCar() throws IOException {
       sigCar = input.read();
       if (sigCar == NL.charAt(0)) saltaFinDeLinea();
       if (sigCar == '\n') {
@@ -246,7 +246,7 @@
     private boolean hayAlmohadilla() {return sigCar == '#';}
     private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n'||sigCar == '\r' || sigCar == '\b';}
     private boolean hayEOF() {return sigCar == -1;}
-    //Nuevos que acabo de poner
+    
     private boolean hayArroba() {return sigCar == '@';}
     private boolean hayPuntoComa() {return sigCar == ';';}
     private boolean hayAmpersand() {return sigCar == '&';}
@@ -346,7 +346,7 @@
        return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ASIG);     
      }      
  
-    private void error() { //CREO QUE ESTO NO SE MODIFICA
+    private void error() { 
       int curCar = sigCar;
       try{
         sigCar();
@@ -355,7 +355,7 @@
       throw new ECaracterInesperado("("+filaActual+','+columnaActual+"):Caracter inexperado:"+(char)curCar); 
     }
  
-    public static void main(String arg[]) throws IOException { //CREO QUE ESTO NO SE MODIFICA
+    public static void main(String arg[]) throws IOException {
       Reader input = new InputStreamReader(new FileInputStream("input.txt"));
       AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
       UnidadLexica unidad;
