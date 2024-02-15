@@ -1,25 +1,31 @@
-public enum ClaseLexica { //Comprobar si faltan cosas, que creo que si
-    VAR, //poner como lo de abajo pero < >
-    ENT, 
-    REAL, 
-    BOOL, 
-    TRUE, 
-    FALSE, 
-    AND, 
-    NOT, 
-    OR, 
-    //Faltan LENT y LREAL lo tiene el de jflex
+public enum ClaseLexica {
+	// Literales y variables
+    VAR,
+    LENT, 
+    LREAL,
+    // Palabras reservadas
+    TRUE("<true>"), 
+    FALSE("<false>"), 
+    AND("<and>"), 
+    NOT("<not>"), 
+    OR("<or>"),  
+    INT("<int>"), 
+    REAL("<real>"),
+    BOOL("<bool>"), 
+    // Caracteres
     PAP("("), 
-    PCIERRE(")"), 
+    PCIERRE(")"),  
     ARROBA("@"), 
     AMPERSAND("&&"), 
     PUNTOYCOMA(";"), 
     LLAVEA("{"), 
     LLAVEC("}"),
+    // Operadores
     MAS("+"),
     MENOS("-"), 
     POR("*"), 
     DIV("/"), 
+    // Símbolos de comparación
     MAYOR(">"), 
     MENOR("<"), 
     MAYORIG(">="), 
@@ -27,6 +33,7 @@ public enum ClaseLexica { //Comprobar si faltan cosas, que creo que si
     IGUAL("=="), 
     DESIGUAL("!="), 
     ASIG("="), 
+    // End of File
     EOF("EOF");
 private String image;
 public String getImage() {
@@ -38,31 +45,4 @@ public String getImage() {
     private ClaseLexica(String image) {
     this.image = image;
     }
-
-/*CODIGO EJEMPLO
- * IDEN, 
- ENT, 
- REAL, 
- PAP("("), 
- PCIERRE(")"), 
- IGUAL("="), 
- COMA(","), 
- MAS("+"), 
- MENOS("-"), 
- POR("*"), 
- DIV("/"), 
- EVALUA("<evalua>"), 
- DONDE("<donde>"), 
- EOF("EOF");
-private String image;
-public String getImage() {
-     return image;
- }
- private ClaseLexica() {
-     image = toString();
- }
- private ClaseLexica(String image) {
-    this.image = image;  
- }
- */
 }
