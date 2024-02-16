@@ -5,9 +5,9 @@ public abstract class UnidadLexica {
     private int fila;
     private int columna;
     public UnidadLexica(int fila, int columna, ClaseLexica clase) {
-    this.fila = fila;
-    this.columna = columna;
-    this.clase = clase;
+        this.fila = fila;
+        this.columna = columna;
+        this.clase = clase;
     }
     public ClaseLexica clase () {return clase;}
     public abstract String lexema();
