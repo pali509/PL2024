@@ -56,7 +56,7 @@ or = (o|O)(r|R)
 identificador = {letra}({letra}|{digito})*
 literalEntero = [\+\-]?{parteEntera}
 literalReal = {literalEntero} (\. {parteDecimal})? {parteExponencial}?
-literalCadena =  ” [^”]?”
+literalCadena =  \” [^\”]?\”
 
 
 opSuma = \+
