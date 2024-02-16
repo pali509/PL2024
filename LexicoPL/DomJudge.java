@@ -13,7 +13,7 @@ import src.UnidadLexica;
 public class DomJudge {
 	private static void imprime(UnidadLexica unidad) {
 		switch(unidad.clase()) {
-		   case VAR: case ENT: case REAL: System.out.println(unidad.lexema()); break;
+		   case VAR: case LENT: case LREAL: System.out.println(unidad.lexema()); break;
                    default: System.out.println(unidad.clase().getImage());
 		}
 	}	
