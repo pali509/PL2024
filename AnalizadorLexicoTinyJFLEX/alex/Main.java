@@ -1,6 +1,5 @@
 package alex;
 
-import alex.ALexOperations.ECaracterInesperado;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,14 +15,10 @@ public class Main {
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad = null;
      do {
-       try {  
-         unidad = al.yylex();
-         System.out.println(unidad);  
-       }
-       catch(ECaracterInesperado e) {
-               System.out.println(e.getMessage());
-               System.exit(1);
-       }
+ 
+        unidad = al.yylex();
+        System.out.println(unidad);  
+       
      }
      while (unidad.clase() != ClaseLexica.EOF);
     }        

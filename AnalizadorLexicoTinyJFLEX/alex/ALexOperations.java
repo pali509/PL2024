@@ -12,7 +12,7 @@ public class ALexOperations {
    this.alex = alex;   
   }
   public UnidadLexica unidadId() {
-     return new UnidadLexicaMultivaluada(alex.fila(), alex.columna(),ClaseLexica.IDENTIFICADOR,
+     return new UnidadLexicaMultivaluada(alex.fila(), alex.columna(), ClaseLexica.IDENTIFICADOR,
                                          alex.lexema()); 
   } 
   public UnidadLexica unidadEnt() {
@@ -163,7 +163,7 @@ public class ALexOperations {
      return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.EOF); 
   }
   public void error()  {
-      throw new ECaracterInesperado("***"+alex.fila()+","+alex.columna()+": Caracter inexperado: "+alex.lexema());
+	  System.out.println("ERROR");
   }
 
 }
