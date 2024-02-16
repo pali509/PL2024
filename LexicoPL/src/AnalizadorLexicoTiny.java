@@ -83,14 +83,14 @@
 	               	// Paso a leer exponenciales
 	               else if (hayE()) transita(Estado.REC_E);
 	               	// Paso a leer enteros
-	               else return unidadEnt();
+	               else return unidadLitEntero();
 	               break;
 	           case REC_POS:
 	               	// Paso a leer decimales
 	               if (hayPunto()) transita(Estado.REC_PUNTO);
 	               	// Paso a leer exponenciales
 	               else if (hayE()) transita(Estado.REC_E);
-	               else return unidadEnt();
+	               else return unidadLitEntero();
 	               break;
 	           case REC_VAR:
 	               	// Sigo leyendo variable
@@ -180,19 +180,19 @@
 	               else if(hayE()) transita(Estado.REC_E);
 	               	// Paso a leer real
 	               else if(hayDigitoPos()) transita(Estado.REC_LREAL);
-	               else return unidadReal();
+	               else return unidadLitReal();
 	             case REC_LREAL_CERO: 
 	            	// Paso a leer real (no final)
 	               if(hayCero()) transita(Estado.CASI_LREAL);
 	               	// Paso a leer E
 	               else if(hayE()) transita(Estado.REC_E);
-	               else return unidadReal();
+	               else return unidadLitReal();
 	             case REC_EXP:
 	            	 // Paso a leer exponencial
 	               if(hayDigitoPos()) transita(Estado.REC_EXP);
-	               else return unidadReal();
+	               else return unidadLitReal();
 	             case REC_EXP_CERO: 
-	               return unidadReal(); 
+	               return unidadLitReal(); 
 	             case REC_E: 
 	            	 // Paso a leer exponente cero
 	               if(hayCero()) transita(Estado.REC_EXP_CERO);
@@ -272,7 +272,7 @@
 	    private boolean hayAlmohadilla() {return sigCar == '#';}
 	    private boolean haySep() {return sigCar == ' ' || sigCar == '\t' || sigCar=='\n'||sigCar == '\r' || sigCar == '\b';}
 	    private boolean hayEOF() {return sigCar == -1;}
-	    private boolean haySalto() {return sigCar == '\n';
+	    private boolean haySalto() {return sigCar == '\n';}
 	    private boolean hayArroba() {return sigCar == '@';}
 	    private boolean hayPuntoComa() {return sigCar == ';';}
 	    private boolean hayAmpersand() {return sigCar == '&';}
@@ -285,12 +285,12 @@
 	 
 	    
 	    // UNIDADES LEXICAS
-	    // SOLO PARA LOS ESTADOS FINALES, LOS NO FINALES HACEN ERROR() SI NO HAY ENTRADA VÁLIDA
-	    private UnidadLexica unidadEnt() {
-	      return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.ENT,lex.toString());     
+	    // SOLO PARA LOS ESTADOS FINALES, LOS NO FINALES HACEN ERROR() SI NO HAY ENTRADA VÃ�LIDA
+	    private UnidadLexica unidadLitEntero() {
+	      return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.LENT,lex.toString());     
 	    }    
-	    private UnidadLexica unidadReal() {
-	      return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.REAL,lex.toString());     
+	    private UnidadLexica unidadLitReal() {
+	      return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.LREAL,lex.toString());     
 	    }    
 	    private UnidadLexica unidadMas() {
 	      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.MAS);     
@@ -370,11 +370,11 @@
 	     private UnidadLexica unidadAsig() {
 	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ASIG);     
 	     } 
-	     private UnidadLexica unidadLitReal() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.LREAL);     
+	     private UnidadLexica unidadReal() {
+	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL);     
 	     } 
-	     private UnidadLexica unidadLitEntero() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.LENT);     
+	     private UnidadLexica unidadEnt() {
+	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT);     
 	     } 
 	     
 	 
