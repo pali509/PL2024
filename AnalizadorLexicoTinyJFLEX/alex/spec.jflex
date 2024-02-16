@@ -23,7 +23,7 @@ package alex;
   ops = new ALexOperations(this);
 %init}
 
-letra  = [a-z][A-Z][_]
+letra  = ([a-z]|[A-Z]|_)
 digitoPositivo = [1-9]
 digito = ({digitoPositivo}|0)
 parteEntera = ({digitoPositivo}{digito}*|0)
@@ -88,7 +88,7 @@ separador = [ \t\r\b\n]
 comentario = ##[^\n]* 
 %%
 
-{identificador}           {return ops.unidadId();}
+
 {literalEntero}            {return ops.unidadEnt();}
 {literalReal}              {return ops.unidadLitReal();}
 {literalCadena}              {return ops.unidadCadena();}
@@ -139,4 +139,5 @@ comentario = ##[^\n]*
 {and}              {return ops.unidadAnd();}
 {not}              {return ops.unidadNot();}
 {or}              {return ops.unidadOr();}
+{identificador}           {return ops.unidadId();}
 [^]                       {ops.error();}  
