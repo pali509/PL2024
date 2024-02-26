@@ -20,6 +20,8 @@ public enum ClaseLexica {
  PARA("("),
  PARC(")"),
  PUNTOYCOMA(";"),
+ COMA(","),
+ CIRCUNFLEJO("^"),
  PUNTO("."),
  CORCHETEA("["),
  CORCHETEC("]"),

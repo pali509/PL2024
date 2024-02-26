@@ -27,7 +27,7 @@ letra  = ([a-z]|[A-Z]|_)
 digitoPositivo = [1-9]
 digito = ({digitoPositivo}|0)
 parteEntera = ({digitoPositivo}{digito}*|0)
-parteDecimal = ({digito}*{digitoPositivo}|0)
+parteDecimal = \. ({digito}*{digitoPositivo} | 0)
 parteExponencial = [\e \E ] [\+ \- ]? ({digitoPositivo} {digito}* | 0)
 
 int = (i|I)(n|N)(t|T)
@@ -55,8 +55,8 @@ or = (o|O)(r|R)
 
 identificador = {letra}({letra}|{digito})*
 literalEntero = [\+\-]?{parteEntera}
-literalReal = {literalEntero} (\. {parteDecimal})? {parteExponencial}?
-literalCadena =  \” [^\”]?\”
+literalReal = {literalEntero} ({parteDecimal}|{parteExponencial}|({parteDecimal}{parteExponencial}))
+literalCadena =  \"([^\"])*\" 
 
 
 opSuma = \+
@@ -78,10 +78,12 @@ corcheteC = \]
 llaveA = \{
 llaveC = \}
 puntoYComa = \;
+coma = \,
 punto = \.
 arroba = \@
 ampersand = \&
 ampersand2 = \&&
+circunflejo = \^
 
 
 separador = [ \t\r\b\n]
@@ -111,6 +113,8 @@ comentario = ##[^\n]*
 {llaveA}              {return ops.unidadLlaveA();}
 {llaveC}              {return ops.unidadLlaveC();}
 {puntoYComa}              {return ops.unidadPuntoYComa();}
+{coma}              {return ops.unidadComa();}
+{circunflejo}              {return ops.unidadCircunflejo();}
 {punto}              {return ops.unidadPunto();}
 {arroba}              {return ops.unidadArroba();}
 {ampersand}              {return ops.unidadAmpersand();}

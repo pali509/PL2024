@@ -75,6 +75,12 @@ public class ALexOperations {
   public UnidadLexica unidadPuntoYComa() {
 	  return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.PUNTOYCOMA); 
   } 
+  public UnidadLexica unidadCircunflejo() {
+	  return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.CIRCUNFLEJO); 
+  }
+  public UnidadLexica unidadComa() {
+	  return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.COMA); 
+  }
   public UnidadLexica unidadPunto() {
 	  return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.PUNTO); 
   }   
