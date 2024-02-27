@@ -90,6 +90,7 @@
 	               if (hayPunto()) transita(Estado.REC_PUNTO);
 	               	// Paso a leer exponenciales
 	               else if (hayE()) transita(Estado.REC_E);
+				   else if(hayDigito()) transita(Estado.REC_POS);
 	               else return unidadLitEntero();
 	               break;
 	           case REC_VAR:
@@ -151,6 +152,10 @@
 	               break;
 	             case REC_AMPERSAND2: 
 	               return unidadAmpersand();
+				case REC_PUNTO:
+					if(hayDigitoPos()) transita(Estado.REC_LREAL);
+					else if(hayCero()) transita(Estado.REC_LREAL_CERO);
+					else error();
 	             case REC_PUNTO_COMA:
 	               return unidadPuntoyComa();
 	             case REC_LLAVE_APERTURA:
@@ -159,7 +164,7 @@
 	               return unidadLlaveC();
 	             case REC_ALMOHADILLA: 
 	            	 // Paso a leer comentario
-	               if(hayAlmohadilla()) transita(Estado.REC_COM);
+	               if(hayAlmohadilla()) transitaIgnorando(Estado.REC_COM);
 	               else error();
 	               break;
 	             case REC_EOF: 
@@ -189,7 +194,7 @@
 	               else return unidadLitReal();
 	             case REC_EXP:
 	            	 // Paso a leer exponencial
-	               if(hayDigitoPos()) transita(Estado.REC_EXP);
+	               if(hayDigito()) transita(Estado.REC_EXP);
 	               else return unidadLitReal();
 	             case REC_EXP_CERO: 
 	               return unidadLitReal(); 
@@ -256,7 +261,7 @@
 	 
 	    // TRANSICIONES
 	    private boolean hayLetra() {return sigCar >= 'a' && sigCar <= 'z' ||
-	                                       sigCar >= 'A' && sigCar <= 'z' ||
+	                                       sigCar >= 'A' && sigCar <= 'Z' ||
 	                                       sigCar == '_';}
 	    private boolean hayDigitoPos() {return sigCar >= '1' && sigCar <= '9';}
 	    private boolean hayCero() {return sigCar == '0';}
