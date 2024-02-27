@@ -385,7 +385,7 @@ import java.io.InputStreamReader;
 	    }
 	 
 	    public static void main(String arg[]) throws IOException {
-	      Reader input = new InputStreamReader(new FileInputStream("input.txt"));
+	      Reader input = new InputStreamReader(new FileInputStream(arg[0]));
 	      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input, new GestionErroresEval());
 	      UnidadLexica unidad;
 	      do {

@@ -25,7 +25,7 @@ public enum ClaseLexica {
     MENOS("-"), 
     POR("*"), 
     DIV("/"), 
-    // Símbolos de comparación
+    // Simbolos de comparacion
     MAYOR(">"), 
     MENOR("<"), 
     MAYORIG(">="), 
