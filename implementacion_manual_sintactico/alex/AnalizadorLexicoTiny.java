@@ -332,26 +332,20 @@ import java.io.InputStreamReader;
 	      return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.EOF);     
 	    }    
 	     private UnidadLexica unidadVar() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.VAR); 
+			switch(lex.toString().toLowerCase()) {
+				case "and": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND);
+				case "or": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR);
+				case "true": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE);
+				case "false": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE);
+				case "not": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT);
+				case "int": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT);
+				case "real": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL);
+				case "bool": return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);
+				default:    
+					return new UnidadLexicaMultivaluada(filaInicio,columnaInicio,ClaseLexica.VAR,lex.toString());    
+				}
 	     }      
-	     private UnidadLexica unidadBool() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.BOOL);     
-	     }   
-	     private UnidadLexica unidadTrue() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.TRUE);     
-	     }      
-	     private UnidadLexica unidadFalse() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.FALSE);     
-	     }    
-	     private UnidadLexica unidadAnd() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.AND);     
-	     }      
-	     private UnidadLexica unidadNot() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.NOT);     
-	     }    
-	     private UnidadLexica unidadOr() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.OR);     
-	     }      
+	    
 	     private UnidadLexica unidadArroba() {
 	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ARROBA);     
 	     }    
@@ -385,13 +379,6 @@ import java.io.InputStreamReader;
 	     private UnidadLexica unidadAsig() {
 	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.ASIG);     
 	     } 
-	     private UnidadLexica unidadReal() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.REAL);     
-	     } 
-	     private UnidadLexica unidadEnt() {
-	       return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.INT);     
-	     } 
-	     
 	 
 	    private void error() { //Lo unico nuevo que parece que hay que cambiar
 			errores.errorLexico(filaActual,columnaActual,(char)sigCar); 
