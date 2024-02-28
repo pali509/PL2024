@@ -58,18 +58,44 @@ public class AnalizadorSintacticoEval {
         //Lo de eps no se como ponerlo jejejeje
     }
    
-   private void declaraciones() { //je ne comprend pas
+   private void declaraciones() { 
        switch(anticipo.clase()) {
-           case DONDE: //Esta es la plantilla
-                 empareja(ClaseLexica.DONDE);
-                 lista_declaraciones();
-                 break;
-           default:        
-                esperados(ClaseLexica.DONDE);
-                break;
+           /*
+            declaraciones → declaracion_var ; declaraciones
+            declaraciones  →  declaracion_var 
+            */
        } 
    }
-   private void tipo(){ //Hecho en teoria
+
+   //declaracion_var → tipo identificador
+   private void declaracion_var() {
+        tipo();
+        //empareja(Identificador) -> No se como poner identificador aqui jeje
+    }
+   
+    private void instrucciones() { 
+        switch(anticipo.clase()) {
+            /*
+             Instrucciones → Instruccion Instrucciones’
+             Instrucciones’ → ; Instruccion Instrucciones’
+             Instrucciones’ → ε
+             */
+        } 
+    }
+
+    private void instruccion() {  //Hechoo
+        switch(anticipo.clase()) {
+            case ARROBA: 
+                empareja(ClaseLexica.ARROBA);
+                E0(); 
+                break;
+            default:
+                esperados(ClaseLexica.ARROBA);
+                error();
+        } 
+    }
+ 
+    private void tipo(){ //Hecho en teoria
     switch(anticipo.clase()) {
         case INT: empareja(ClaseLexica.INT); break;
         case REAL: empareja(ClaseLexica.REAL); break; 
@@ -134,12 +160,12 @@ public class AnalizadorSintacticoEval {
                 error();
         }  
     }
+
     /*
     Falta:
     -declaraciones 
     -instrucciones
     -declaracion_var 
-    -instruccion
     -E0
     -E1
     -E2
@@ -148,7 +174,6 @@ public class AnalizadorSintacticoEval {
     -E5
     */
 
-    
     //A PARTIR DE AQUI ES PLANTILLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private void expresion() {
         empareja(ClaseLexica.EVALUA);
