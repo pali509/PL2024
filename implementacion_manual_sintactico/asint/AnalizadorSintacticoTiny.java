@@ -3,7 +3,7 @@ package asint;
 import alex.UnidadLexica;
 import alex.AnalizadorLexicoTiny;
 import alex.ClaseLexica;
-import errors.GestionErroresEval;
+import errors.GestionErroresTiny;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.EnumSet;
@@ -11,22 +11,22 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class AnalizadorSintacticoEval {
+public class AnalizadorSintacticoTiny {
    private UnidadLexica anticipo;       // token adelantado
    private AnalizadorLexicoTiny alex;   // analizador léxico 
-   private GestionErroresEval errores;  // gestor de errores
+   private GestionErroresTiny errores;  // gestor de errores
    private Set<ClaseLexica> esperados;  // clases léxicas esperadas
    
-   public AnalizadorSintacticoEval(Reader input) throws IOException {
+   public AnalizadorSintacticoTiny(Reader input) throws IOException {
         // se crea el gestor de errores
-      errores = new GestionErroresEval();
+      errores = new GestionErroresTiny();
         // se crea el analizador léxico
       alex = new AnalizadorLexicoTiny(input,errores);
       esperados = EnumSet.noneOf(ClaseLexica.class);
         // Se lee el primer token adelantado
       sigToken();                      
    }
-   public void analiza() { //No le veo la gracia a esta funcion la verdad pero estaba en la plantilla
+   public void analiza() { // Es la unica funcion publica, es lo que llama Main para analizar toda la sintaxis.
       programa();
    }
    private void programa() {
@@ -48,14 +48,26 @@ public class AnalizadorSintacticoEval {
         } 
     }
 
-    private void declaraciones_opt() {
-        declaraciones();
-        empareja(ClaseLexica.AMPERSAND);
-        //Lo de eps no se como ponerlo jejejeje
+    private void declaraciones_opt() { //Segun las diapositivas así se hacen las reglas anulables
+        switch(anticipo.clase()){
+            case INT: case REAL: case BOOL:
+                declaraciones();
+                empareja(ClaseLexica.AMPERSAND);
+                break;
+            default:
+                esperados(ClaseLexica.INT, ClaseLexica.REAL, ClaseLexica.BOOL);
+                break;
+        }
     }
     private void instrucciones_opt() {
-        instrucciones();
-        //Lo de eps no se como ponerlo jejejeje
+        switch(anticipo.clase()){
+            case ARROBA:
+                instrucciones();
+                break;
+            default:
+                esperados(ClaseLexica.ARROBA);
+                break;
+        }
     }
    
    private void declaraciones() { 
