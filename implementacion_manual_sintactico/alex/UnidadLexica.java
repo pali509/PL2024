@@ -1,8 +1,7 @@
-
 package alex;
 public abstract class UnidadLexica {
 
-	private ClaseLexica clase;
+    private ClaseLexica clase;
     private int fila;
     private int columna;
     public UnidadLexica(int fila, int columna, ClaseLexica clase) {
