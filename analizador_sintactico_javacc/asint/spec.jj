@@ -11,7 +11,7 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN:{<#digitoPositivo:["1"-"9"]>}
   TOKEN:{<#digito:<digitoPositivo>|"0">} 
   TOKEN:{<#parteEntera:<digitoPositivo> (<digito>)* |"0">} 
-  TOKEN:{<#parteDecimal: "." ((<digito>)* <digitoPositivo>)| "0">}
+  TOKEN:{<#parteDecimal: (<digito>)* <digitoPositivo>| "0">}
   TOKEN:{<#parteExponencial: ["e","E"] (["+", "-"])? (<digitoPositivo> (<digito>)* | "0") >}
   
   TOKEN: {<int_: ("i"|"I")("n"|"N")("t"|"T") >}
@@ -38,7 +38,7 @@ PARSER_END(AnalizadorSintacticoTiny)
   TOKEN: {<or: ("o"|"O")("r"|"R")>}
   TOKEN:{<identificador:<letra>(<letra>|<digito>)*>}
   TOKEN:{<literalEntero:(["+","-"])?<parteEntera>>}
-  TOKEN:{<literalReal: (["+","-"])?<parteEntera>(<parteDecimal> | <parteExponencial> | <parteDecimal><parteExponencial>)>}
+  TOKEN:{<literalReal: (["+","-"])?<parteEntera>("."<parteDecimal> | <parteExponencial> | "."<parteDecimal><parteExponencial>)>}
   TOKEN:{<literalCadena: "\""(~["\""])*"\"">}
   
   SKIP:{<["\t"," ","\r","\b","\n"]>}
@@ -93,6 +93,6 @@ PARSER_END(AnalizadorSintacticoTiny)
   void op3(): { } { <and> E3() | <or> E4() }
   void op4(): { } {"*" | "/" | "%" }
   void op5(): { } {"-" | <not> }
-  void op6(): { } {"[" <literalEntero> "]" | "." campo() |"^" } 
+  void op6(): { } {"[" <literalEntero> "]" | "." campo() | "^"} 
   
   
