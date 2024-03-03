@@ -69,16 +69,7 @@ public class AnalizadorSintacticoTiny {
                 break;
         }
     }
-    /*
-       private void declaraciones() {
-           switch(anticipo.clase()) {
-               /*
-                declaraciones → declaracion_var ; declaraciones
-                declaraciones  →  declaracion_var
 
-           }
-       }
-    */
     private void declaraciones() {
         declaracion_var();
         restodec();
@@ -314,96 +305,6 @@ public class AnalizadorSintacticoTiny {
         }
     }
 
-
-    //A PARTIR DE AQUI ES PLANTILLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    /*
-    private void expresion() {
-        empareja(ClaseLexica.EVALUA);
-        E0();
-    }
-   private void lista_declaraciones() {
-       declaracion();
-       rlista_decs();
-   }
-
-   private void rlista_decs() {
-       switch(anticipo.clase()) {
-           case COMA:
-               empareja(ClaseLexica.COMA);
-               declaracion();
-               rlista_decs();
-               break;
-           default:
-              esperados(ClaseLexica.COMA);
-              break;
-       }
-   }
-
-   private void E0() {
-       E1();
-       RE0();
-   }
-
-   private void RE0() {
-       switch(anticipo.clase()) {
-           case MAS: case MENOS:
-               OP0();
-               E1();
-               RE0();
-               break;
-           default:
-              esperados(ClaseLexica.MAS,ClaseLexica.MENOS);
-              break;
-       }
-    }
-
-
-   private void E1() {
-       E2();
-       RE1();
-   }
-
-   private void RE1() {
-       switch(anticipo.clase()) {
-           case POR: case DIV:
-               OP1();
-               E2();
-               RE1();
-               break;
-           default:
-              esperados(ClaseLexica.POR,ClaseLexica.DIV);
-              break;
-       }
-    }
-
-   private void E2() {
-      switch(anticipo.clase()) {
-          case ENT: empareja(ClaseLexica.ENT); break;
-          case REAL: empareja(ClaseLexica.REAL); break;
-          case IDEN: empareja(ClaseLexica.IDEN); break;
-          case PAP:
-               empareja(ClaseLexica.PAP);
-               E0();
-               empareja(ClaseLexica.PCIERRE);
-               break;
-          default:
-              esperados(ClaseLexica.ENT,ClaseLexica.REAL,ClaseLexica.IDEN,ClaseLexica.PAP);
-              error();
-      }
-   }
-
-   private void OP0() {
-     switch(anticipo.clase()) {
-         case MAS: empareja(ClaseLexica.MAS); break;
-         case MENOS: empareja(ClaseLexica.MENOS); break;
-         default:
-              esperados(ClaseLexica.MAS,ClaseLexica.MENOS);
-              error();
-     }
-   }
-   */
-
-    //Estas funciones son asi por cojones, vienen de la plantilla
     private void esperados(ClaseLexica ... esperadas) {
         for(ClaseLexica c: esperadas) {
             esperados.add(c);

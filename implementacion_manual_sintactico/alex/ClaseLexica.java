@@ -36,7 +36,7 @@ public enum ClaseLexica {
     DESIGUAL("!="), 
     ASIG("="), 
     // End of File
-    EOF("EOF");
+    EOF("<EOF>");
 private String image;
 public String getImage() {
         return image;
