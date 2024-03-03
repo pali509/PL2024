@@ -31,14 +31,6 @@ private int jjStopAtPos(int pos, int kind)
    jjmatchedPos = pos;
    return pos + 1;
 }
-private int jjStartNfaWithStates_0(int pos, int kind, int state)
-{
-   jjmatchedKind = kind;
-   jjmatchedPos = pos;
-   try { curChar = input_stream.readChar(); }
-   catch(java.io.IOException e) { return pos + 1; }
-   return jjMoveNfa_0(state, pos + 1);
-}
 private int jjMoveStringLiteralDfa0_0()
 {
    switch(curChar)
@@ -121,17 +113,23 @@ private int jjMoveStringLiteralDfa1_0(long active0)
    }
    return jjStartNfa_0(0, active0);
 }
+private int jjStartNfaWithStates_0(int pos, int kind, int state)
+{
+   jjmatchedKind = kind;
+   jjmatchedPos = pos;
+   try { curChar = input_stream.readChar(); }
+   catch(java.io.IOException e) { return pos + 1; }
+   return jjMoveNfa_0(state, pos + 1);
+}
 static final long[] jjbitVec0 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
 private int jjMoveNfa_0(int startState, int curPos)
 {
-   //int[] nextStates; // not used
    int startsAt = 0;
    jjnewStateCnt = 113;
    int i = 1;
    jjstateSet[0] = startState;
-   //int j; // not used
    int kind = 0x7fffffff;
    for (;;)
    {
@@ -780,7 +778,7 @@ null, null, null, null, null, null, null, null, "\173", "\175", "\46\46", "\73",
 
 /** Lexer state names. */
 public static final String[] lexStateNames = {
-   "DEFAULT", 
+   "DEFAULT",
 };
 static final long[] jjtoToken = {
    0xffffff9ffffff81L, 
@@ -840,18 +838,18 @@ public void SwitchTo(int lexState)
 protected Token jjFillToken()
 {
    final Token t;
-   final String tokenImage;
+   final String curTokenImage;
    final int beginLine;
    final int endLine;
    final int beginColumn;
    final int endColumn;
    String im = jjstrLiteralImages[jjmatchedKind];
-   tokenImage = (im == null) ? input_stream.GetImage() : im;
+   curTokenImage = (im == null) ? input_stream.GetImage() : im;
    beginLine = input_stream.getBeginLine();
    beginColumn = input_stream.getBeginColumn();
    endLine = input_stream.getEndLine();
    endColumn = input_stream.getEndColumn();
-   t = Token.newToken(jjmatchedKind, tokenImage);
+   t = Token.newToken(jjmatchedKind, curTokenImage);
 
    t.beginLine = beginLine;
    t.endLine = endLine;
@@ -871,20 +869,18 @@ int jjmatchedKind;
 /** Get the next Token. */
 public Token getNextToken() 
 {
-  //int kind;
-  Token specialToken = null;
   Token matchedToken;
   int curPos = 0;
 
   EOFLoop :
   for (;;)
-  {   
-   try   
-   {     
+  {
+   try
+   {
       curChar = input_stream.BeginToken();
-   }     
+   }
    catch(java.io.IOException e)
-   {        
+   {
       jjmatchedKind = 0;
       matchedToken = jjFillToken();
       return matchedToken;
