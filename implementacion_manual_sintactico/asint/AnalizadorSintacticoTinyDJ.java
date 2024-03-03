@@ -10,7 +10,7 @@ public class AnalizadorSintacticoTinyDJ extends AnalizadorSintacticoTiny {
        }
      protected final void traza_emparejamiento(UnidadLexica unidad) {
          switch(unidad.clase()) {
-		   case IDEN: case ENT: case REAL: System.out.println(unidad.lexema()); break;
+		   case VAR: case LENT: case LREAL: System.out.println(unidad.lexema()); break;
                    default: System.out.println(unidad.clase().getImage());
 	 }
      } 

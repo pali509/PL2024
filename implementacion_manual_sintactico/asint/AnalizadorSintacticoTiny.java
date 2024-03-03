@@ -81,12 +81,22 @@ public class AnalizadorSintacticoTiny {
     */
     private void declaraciones() {
         declaracion_var();
-        empareja(ClaseLexica.PUNTOYCOMA);
-        if (anticipo.clase() != ClaseLexica.LLAVEC) {
+        restodec();
+        if (anticipo.clase() != ClaseLexica.AMPERSAND) {
             declaraciones();
         }
     }
-
+    private void restodec() {
+        switch(anticipo.clase()){
+            case PUNTOYCOMA:
+                empareja(ClaseLexica.PUNTOYCOMA);
+                declaraciones();
+                break;
+            default:
+                esperados(ClaseLexica.PUNTOYCOMA);
+                break;
+        }
+    }
 
     //declaracion_var → tipo identificador
     private void declaracion_var() {
@@ -95,22 +105,22 @@ public class AnalizadorSintacticoTiny {
     }
 
 
-    /*
-       private void instrucciones() {
-           switch(anticipo.clase()) {
-
-                Instrucciones → Instruccion Instrucciones’
-                Instrucciones’ → ; Instruccion Instrucciones’
-                Instrucciones’ → ε
-
-           }
-       }
-   */
 
     private void instrucciones() {
         instruccion();
-        if (anticipo.clase() != ClaseLexica.LLAVEC) {
-            instrucciones();
+        restoInst();
+    }
+
+    private void restoInst() {
+        switch(anticipo.clase()){
+            case PUNTOYCOMA:
+                empareja(ClaseLexica.PUNTOYCOMA);
+                instruccion();
+                restoInst();
+                break;
+            default:
+                esperados(ClaseLexica.PUNTOYCOMA);
+                break;
         }
     }
     private void instruccion() {  //Hechoo
@@ -149,17 +159,6 @@ public class AnalizadorSintacticoTiny {
         }
     }
 
-    private void OP2() {
-        switch (anticipo.clase()) {
-            case MAS:
-                empareja(anticipo.clase());
-                break;
-            default:
-                esperados(ClaseLexica.MAS);
-                error();
-        }
-    }
-
     private void OP3() { //Hecho en teoriaa
         switch(anticipo.clase()) {
             case AND:
@@ -172,7 +171,7 @@ public class AnalizadorSintacticoTiny {
                 break;
             default:
                 esperados(ClaseLexica.AND, ClaseLexica.OR);
-                error();
+                break;
         }
     }
     private void OP4() { //Hecho en teoria
@@ -204,48 +203,94 @@ public class AnalizadorSintacticoTiny {
 
     private void E0() {
         E1();
-        if (anticipo.clase() == ClaseLexica.ASIG) {
-            empareja(ClaseLexica.ASIG);
-            E0();
+        RE0();
+    }
+    private void RE0() {
+        switch(anticipo.clase()){
+            case ASIG:
+                empareja(ClaseLexica.ASIG);
+                E0();
+                break;
+            default:
+                esperados(ClaseLexica.ASIG);
+                break;
         }
     }
-
     private void E1() {
         E2();
-        if (anticipo.clase() == ClaseLexica.MAYOR || anticipo.clase() == ClaseLexica.MENOR ||
-                anticipo.clase() == ClaseLexica.MAYORIG || anticipo.clase() == ClaseLexica.MENORIG ||
-                anticipo.clase() == ClaseLexica.IGUAL || anticipo.clase() == ClaseLexica.DESIGUAL) {
-            OP1();
-            E2();
+        RE1();
+
+    }
+    private void RE1() {
+        ClaseLexica cl = anticipo.clase();
+        switch(cl){
+            case MAYOR: case MENOR: case MAYORIG: case MENORIG: case IGUAL: case DESIGUAL:
+                empareja(cl);
+                E2();
+                RE1();
+                break;
+            default:
+                esperados(ClaseLexica.MAYOR,ClaseLexica.MENOR, ClaseLexica.MAYORIG,
+                        ClaseLexica.MENORIG, ClaseLexica.IGUAL, ClaseLexica.DESIGUAL);
+                break;
         }
     }
 
     private void E2() {
         E3();
-        if (anticipo.clase() == ClaseLexica.MAS || anticipo.clase() == ClaseLexica.MENOS) {
-            OP2();
-            E3();
+        RE2();
+        RE22();
+    }
+    private void RE2() {
+        switch(anticipo.clase()){
+            case MENOS:
+                empareja(ClaseLexica.MENOS);
+                E3();
+                break;
+            default:
+                esperados(ClaseLexica.MENOS);
+                break;
         }
     }
-
+    private void RE22() {
+        switch(anticipo.clase()){
+            case MAS:
+                empareja(ClaseLexica.MAS);
+                E3();
+                RE22();
+                break;
+            default:
+                esperados(ClaseLexica.MAS);
+                break;
+        }
+    }
     private void E3() {
         E4();
-        if (anticipo.clase() == ClaseLexica.AND || anticipo.clase() == ClaseLexica.OR) {
-            OP3();
-            E3();
-        }
+        RE3();
+    }
+    private void RE3() {
+        OP3();
     }
 
     private void E4() {
         E5();
-        if (anticipo.clase() == ClaseLexica.POR || anticipo.clase() == ClaseLexica.DIV) {
-            OP4();
-            E5();
+        RE4();
+    }
+    private void RE4() {
+        switch(anticipo.clase()){
+            case POR: case DIV:
+                OP4();
+                E5();
+                RE4();
+                break;
+            default:
+                esperados(ClaseLexica.POR, ClaseLexica.DIV);
+                break;
         }
     }
-
     private void E5() {
-        switch (anticipo.clase()) {
+        ClaseLexica cl = anticipo.clase();
+        switch (cl) {
             case MENOS:
             case NOT:
                 OP5();
@@ -253,9 +298,9 @@ public class AnalizadorSintacticoTiny {
                 break;
             case LENT:
             case LREAL:
-            case BOOL:
+            case TRUE: case FALSE:
             case VAR:
-                empareja(anticipo.clase());
+                empareja(cl);
                 break;
             case PAP:
                 empareja(ClaseLexica.PAP);
@@ -264,7 +309,7 @@ public class AnalizadorSintacticoTiny {
                 break;
             default:
                 esperados(ClaseLexica.MENOS, ClaseLexica.NOT, ClaseLexica.LENT,
-                        ClaseLexica.LREAL, ClaseLexica.BOOL, ClaseLexica.VAR, ClaseLexica.PAP);
+                        ClaseLexica.LREAL, ClaseLexica.TRUE,ClaseLexica.FALSE, ClaseLexica.VAR, ClaseLexica.PAP);
                 error();
         }
     }

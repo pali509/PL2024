@@ -11,7 +11,7 @@ import alex.UnidadLexicaUnivaluada;
 
 import java.io.InputStreamReader;
 import java.io.IOException;
-import errors.GestionErroresEval;
+import errors.GestionErroresTiny;
 
 public class AnalizadorLexicoTiny {
 
@@ -29,7 +29,7 @@ public class AnalizadorLexicoTiny {
 	private int filaActual;
 	private int columnaActual;
 	private static String NL = System.getProperty("line.separator");
-	private GestionErroresEval errores;
+	private GestionErroresTiny errores;
 
 	private static enum Estado {
 		//ESTADOS FINALES
@@ -42,7 +42,7 @@ public class AnalizadorLexicoTiny {
 
 	private Estado estado;
 
-	public AnalizadorLexicoTiny(Reader input, GestionErroresEval errores) throws IOException {
+	public AnalizadorLexicoTiny(Reader input, GestionErroresTiny errores) throws IOException {
 		this.input = input;
 		lex = new StringBuffer();
 		this.errores = errores;
@@ -394,7 +394,7 @@ public class AnalizadorLexicoTiny {
 
 	public static void main(String arg[]) throws IOException {
 		Reader input = new InputStreamReader(new FileInputStream(arg[0]));
-		AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input, new GestionErroresEval());
+		AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input, new GestionErroresTiny());
 		UnidadLexica unidad;
 		do {
 			unidad = al.sigToken();
