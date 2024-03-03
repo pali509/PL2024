@@ -3,6 +3,12 @@ package alex;
 
 import java.io.FileInputStream;
 import java.io.Reader;
+
+import alex.ClaseLexica;
+import alex.UnidadLexica;
+import alex.UnidadLexicaMultivaluada;
+import alex.UnidadLexicaUnivaluada;
+
 import java.io.InputStreamReader;
 import java.io.IOException;
 import errors.GestionErroresEval;
@@ -383,12 +389,7 @@ public class AnalizadorLexicoTiny {
 	}
 
 	private void error() {
-		int curCar = sigCar;
-		try{
-			sigCar();
-		}
-		catch(IOException e) {}
-		throw new ECaracterInesperado("("+filaActual+','+columnaActual+"):Caracter inexperado:"+(char)curCar);
+		errores.errorLexico(filaActual,columnaActual,(char)sigCar); 
 	}
 
 	public static void main(String arg[]) throws IOException {

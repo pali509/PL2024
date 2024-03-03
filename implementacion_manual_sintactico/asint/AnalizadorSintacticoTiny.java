@@ -269,18 +269,6 @@ public class AnalizadorSintacticoTiny {
         }
     }
 
-    /*
-    Falta:
-    -declaraciones
-    -instrucciones
-    -declaracion_var
-    -E0
-    -E1
-    -E2
-    -E3
-    -E4
-    -E5
-    */
 
     //A PARTIR DE AQUI ES PLANTILLA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /*
