@@ -1,22 +1,22 @@
 package asint;
 
 import java_cup.runtime.*;
-import alex.AnalizadorLexicoEval;
+import alex.AnalizadorLexicoTiny;
 import alex.UnidadLexica;
-import errors.GestionErroresEval;
+import errors.GestionErroresTiny;
 
 scan with {: 
   return getScanner().next_token(); 
 :};
 parser code {: 
-   private GestionErroresEval errores;
+   private GestionErroresTiny errores;
    public void syntax_error(Symbol unidadLexica) {
      errores.errorSintactico((UnidadLexica)unidadLexica);
    }
 :};
 init with {: 
-   errores = new GestionErroresEval();
-   AnalizadorLexicoEval alex = (AnalizadorLexicoEval)getScanner();
+   errores = new GestionErroresTiny();
+   AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
    alex.fijaGestionErrores(errores);
 :};
 
@@ -122,8 +122,8 @@ op4 ::= DIV ;
 op4 ::= MOD ;
 op5 ::= RESTA ;
 op5 ::= NOT ;
-op6 ::= CORCHETEA LITENTERO CORCHETEC ;
-op6 ::= PUNTO campo;
+op6 ::= CORCHETEA E0 CORCHETEC ;
+op6 ::= PUNTO IDENTIFICADOR ;
 op6 ::= CIRCUNFLEJO ;
 
 

@@ -10,7 +10,7 @@ public class Main {
    public static void main(String[] args) throws Exception {
      Reader input = new InputStreamReader(new FileInputStream(args[0]));
 	 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
-	 AnalizadorSintacticoEval asint = new AnalizadorSintacticoEval(alex);
+	 AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTiny(alex);
 	 asint.setScanner(alex);
 	 asint.parse();
  }
