@@ -900,12 +900,12 @@ public class AnalizadorSintacticoTiny implements AnalizadorSintacticoTinyConstan
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case 43:
         jj_consume_token(43);
-        jj_consume_token(literalEntero);
+        E0();
         jj_consume_token(44);
         break;
       case 59:
         jj_consume_token(59);
-        campo();
+        jj_consume_token(identificador);
         break;
       case 45:
         jj_consume_token(45);

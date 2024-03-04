@@ -93,6 +93,6 @@ PARSER_END(AnalizadorSintacticoTiny)
   void op3(): { } { <and> E3() | <or> E4() }
   void op4(): { } {"*" | "/" | "%" }
   void op5(): { } {"-" | <not> }
-  void op6(): { } {"[" <literalEntero> "]" | "." campo() | "^"} 
+  void op6(): { } {"[" E0() "]" | "." <identificador> | "^"} 
   
   
