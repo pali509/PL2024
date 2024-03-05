@@ -11,8 +11,8 @@ scan with {:
 parser code {: 
    private GestionErroresTiny errores;
    public void syntax_error(Symbol unidadLexica) {
-     errores.errorSintactico((UnidadLexica)unidadLexica);
-   }
+        errores.errorSintactico((UnidadLexica)unidadLexica);
+      }
 :};
 init with {: 
    errores = new GestionErroresTiny();
@@ -21,11 +21,11 @@ init with {:
 :};
 
 
-terminal     IDENTIFICADOR, LITENTERO,  LITREAL,  LITCADENA, SUMA, RESTA, MUL, DIV, MOD, MAYOR,
+terminal     IDENTIFICADOR, LITENTERO,  LITEREAL,  LITCADENA, SUMA, RESTA, MUL, DIV, MOD, MAYOR,
 			 MENOR, MAYORIGUAL, MENORIGUAL, IGUAL, DESIGUAL, ASIG, PARA, PARC, PUNTOYCOMA, COMA,
 			 CIRCUNFLEJO, PUNTO, CORCHETEA, CORCHETEC, LLAVEA, LLAVEC, ARROBA, AMPERSAND, AMPERSAND2,
 			 INT, REAL, BOOL, STRING, NULL, PROC, IF, ELSE, WHILE, STRUCT, NEW, DELETE, READ, WRITE,
-			 NL, TYPE, CALL, TRUE, FALSE, AND, NOT, OR, EOF;
+			 NL, TYPE, CALL, TRUE, FALSE, AND, NOT, OR;
 
 
 non terminal  programa, bloque, declaraciones_opt, instrucciones_opt, declaraciones, instrucciones,
@@ -35,7 +35,7 @@ non terminal  programa, bloque, declaraciones_opt, instrucciones_opt, declaracio
 			  op4, op5, op6;
               
 
-programa      ::= bloque EOF ;
+programa      ::= bloque ;
 bloque		  ::= LLAVEA declaraciones_opt instrucciones_opt LLAVEC ;
 declaraciones_opt ::= declaraciones AMPERSAND2 ;
 declaraciones_opt ::= ;

@@ -5,6 +5,8 @@
 package alex;
 
 
+import errors.GestionErroresTiny;
+
 @SuppressWarnings("fallthrough")
 public class AnalizadorLexicoTiny {
 
@@ -1051,4 +1053,7 @@ public class AnalizadorLexicoTiny {
   }
 
 
+  public void fijaGestionErrores(GestionErroresTiny errores) {
+    //ns no entiendo que hace esto pero lo pedia
+  }
 }
