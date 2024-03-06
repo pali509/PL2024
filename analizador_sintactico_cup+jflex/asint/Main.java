@@ -3,7 +3,7 @@ package asint;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import alex.AnalizadorLexicoEval;
+
 import alex.AnalizadorLexicoTiny;
 
 public class Main {
