@@ -1,0 +1,9 @@
+## Programa con error en construccion de expresion
+{
+ @ false + 123;
+ @ hola < (9 + 1) < 100 < hh99;
+ @ x and y and z or k;
+ @ 8 / 9 / 1 / a / abc / 12345678;
+ @ not not not 999.666;
+ @ + 48 - - 20;
+} 

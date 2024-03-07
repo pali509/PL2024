@@ -1,0 +1,7 @@
+## Programa con errores en la sección de instrucciones
+{
+ @ x = y = z;
+ @;
+ @ x + y;
+ @ x * y / z * 6e56
+} 

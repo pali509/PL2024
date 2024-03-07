@@ -1,0 +1,7 @@
+##Programa con errores en la sección de declaraciones
+{
+ Int oAA8p;
+ eAl y;
+ Bool z;
+ &&
+}
