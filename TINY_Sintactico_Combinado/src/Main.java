@@ -1,13 +1,26 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.ParseException;
 
 public class Main {
     public static void main(String[] args) throws Exception{
+        String file;
+        String option;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Teclea el nombre del archivo a analizar");
+        file = reader.readLine();
+        System.out.println("Teclea 'desc' para analisis descendente o 'asc' para analisis ascendente");
+        option = reader.readLine();
         try{
-        /*
-        1.Pedir archivo
-        2.Pedir opcion
-        3. llamar con la opcion elegida a la clase Main de el que toque con e larchivo seleccionado
-         */
+            if (option.equals("desc")){
+
+            }
+            else if (option.equals("asc")){
+
+            }
+            else{
+                System.out.println("Opción no válida");
+            }
         }
         catch(ParseException e) {
             System.out.println("ERROR_SINTACTICO");
