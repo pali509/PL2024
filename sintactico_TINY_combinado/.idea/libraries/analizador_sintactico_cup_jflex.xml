@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="analizador_sintactico_cup+jflex">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/analizador_sintactico_cup+jflex/cup.jar!/" />
+      <root url="jar://$PROJECT_DIR$/analizador_sintactico_cup+jflex/jflex.jar!/" />
+      <root url="jar://$PROJECT_DIR$/analizador_sintactico_cup+jflex/analizadorsintacticocupjflex.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
