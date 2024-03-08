@@ -31,7 +31,7 @@ terminal     IDENTIFICADOR, LITENTERO,  LITEREAL,  LITCADENA, SUMA, RESTA, MUL, 
 non terminal  programa, bloque, declaraciones_opt, instrucciones_opt, declaraciones, instrucciones,
 			  declaracion, declaracion_var, declaracion_tipo, declaracion_proc, tipo, parametros_formales_opt,
 			  parametros_formales, parametro_formal, and_opt,tipo1, tipo2, campos, campo, instruccion, 
-			  if_select, E0, parametros_reales_opt, parametros_reales, RE0, E1, E2, E3, E4, E5, E6, op1,
+			  if_select, E0, parametros_reales_opt, parametros_reales, E1, E2, E3, E4, E5, E6, op1,
 			  op4, op5, op6;
               
 
