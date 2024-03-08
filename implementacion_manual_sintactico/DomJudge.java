@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 public class DomJudge{
    public static void main(String[] args) throws Exception {
      try{  
-      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(new InputStreamReader(System.in));
+      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(new InputStreamReader(System.in), false);
       asint.analiza();
      }
      catch(ErrorSintactico e) {

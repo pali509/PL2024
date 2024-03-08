@@ -1,0 +1,5 @@
+## Programa con errores lexicos
+{
+ @ x ="= y = z;
+ @ x == false < z <= k >= true > 10 != 5;
+} 
