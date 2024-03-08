@@ -11,8 +11,9 @@ public class ProgramaDePrueba{
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     String file = reader.readLine();
      try{  
-      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(new FileReader(file));
+      AnalizadorSintacticoTiny asint = new AnalizadorSintacticoTinyDJ(new FileReader(file), true);
       asint.analiza();
+      System.out.println("OK");
      }
      catch(ErrorSintactico e) {
         System.out.println("ERROR_SINTACTICO"); 
