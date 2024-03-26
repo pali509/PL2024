@@ -171,7 +171,7 @@ public class ALexOperations {
      return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.EOF, "<EOF>");
   }
   public void error()  {
-	  System.out.println("ERROR");
+	  System.out.println("ERROR_LEXICO");
   }
 
 }
