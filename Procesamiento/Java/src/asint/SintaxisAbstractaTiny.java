@@ -241,6 +241,7 @@ public class SintaxisAbstractaTiny {
 
     public static abstract class Tipo {
         public Tipo() {}
+
         public abstract void procesa(Procesamiento p);
 
     }
@@ -250,7 +251,7 @@ public class SintaxisAbstractaTiny {
         public Int() {
             super();
         }
-        public Boolean t_ok() {return true;}
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -263,7 +264,7 @@ public class SintaxisAbstractaTiny {
         public Real() {
             super();
         }
-        public Boolean t_ok() {return true;}
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -276,7 +277,7 @@ public class SintaxisAbstractaTiny {
         public Bool() {
             super();
         }
-        public Boolean t_ok() {return true;}
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -291,7 +292,7 @@ public class SintaxisAbstractaTiny {
             super();
             this.id = id;
         }
-        public Boolean t_ok() {return true;}
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -309,7 +310,6 @@ public class SintaxisAbstractaTiny {
             this.t = t;
             this.id = id;
         }
-        public Boolean t_ok() {return true;}
 
         public String iden() {return id;}
 
@@ -330,7 +330,7 @@ public class SintaxisAbstractaTiny {
             this.t = t;
 
         }
-        public Boolean t_ok() {return true;}
+
         public Tipo tipo() {return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -348,7 +348,6 @@ public class SintaxisAbstractaTiny {
             this.lc = lc;
 
         }
-        public Boolean t_ok() {return true;}
         public LCamp lcamp() {return lc;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
