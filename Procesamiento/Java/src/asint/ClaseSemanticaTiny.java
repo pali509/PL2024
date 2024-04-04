@@ -1,8 +1,8 @@
 package asint;
 
 
-public class ClaseSemanticaEval extends SintaxisAbstractaEval {
-    public ClaseSemanticaEval() {
+public class ClaseSemanticaTiny extends SintaxisAbstractaTiny {
+    public ClaseSemanticaTiny() {
         super();
     }
     public Exp mkop2(String op, Exp opnd1, Exp opnd2) {

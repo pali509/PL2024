@@ -1,6 +1,6 @@
 package asint;
 
-import asint.SintaxisAbstractaEval.*;
+import asint.SintaxisAbstractaTiny.*;
 
 public interface Procesamiento {
     void procesa(Dec dec);
@@ -14,8 +14,8 @@ public interface Procesamiento {
     void procesa(Div exp);
     void procesa(Lit_ent exp);
     void procesa(Lit_real exp);
-    void procesa(Iden exp);
-    void procesa(Prog prog);
+    void procesa(Lit_string exp);
+
 
     //Nuevas:
     void procesa(Mod exp);
@@ -29,4 +29,75 @@ public interface Procesamiento {
     void procesa(Neg exp);
     void procesa(Not exp);
 
+    void procesa(Int t);
+
+    void procesa(Real t);
+
+    void procesa(Bool t);
+    void procesa(Iden t);
+    void procesa(Array t);
+    void procesa(Prog prog);
+    void procesa(Puntero t);
+
+    void procesa(Struct t);
+
+    void procesa(Pform pform);
+    void procesa(LPforms pforms);
+    void procesa(Si_pforms pforms);
+    void procesa(No_pforms pforms);
+    void procesa(Muchos_pforms pforms);
+    void procesa(Un_pform pform);
+
+    void procesa(Dec_var dec);
+    void procesa(Dec_tipo dec);
+    void procesa(Dec_proc dec);
+
+    void procesa(Bloque bloque);
+
+    void procesa(Camp campo);
+
+    void procesa(Muchos_camp camps);
+    void procesa(Un_camp camp);
+
+    void procesa(Ins_asig ins);
+
+    void procesa(Ins_read ins);
+
+    void procesa(Ins_write ins);
+
+    void procesa(Ins_new ins);
+
+    void procesa(Ins_delete ins);
+
+    void procesa(Ins_nl ins);
+
+    void procesa(Ins_if ins);
+
+    void procesa(Ins_if_else ins);
+
+    void procesa(Ins_while ins);
+
+    void procesa(Ins_call ins);
+    void procesa(Ins_bloque ins);
+
+    void procesa(Una_ins ins);
+
+    void procesa(Muchas_ins ins);
+
+    void procesa(Si_preal lpreal);
+
+    void procesa(No_preal lpreal);
+
+    void procesa(Muchos_preal lpreal);
+
+    void procesa(Un_PReal exp);
+
+    void procesa(Exp_Iden exp);
+
+    void procesa(Lit_cadena exp);
+
+    void procesa(Lit_BoolTrue exp);
+    void procesa(Lit_BoolFalse exp);
+
+    void procesa(Exp_null exp);
 }
