@@ -78,148 +78,176 @@ public class Evaluador extends SintaxisAbstractaTiny {
         imprime(uno.pform());
     }
 
-    private void imprime(pfo)
+    private void imprime(Pform pform){
+        imprime(//tipo);
+        System.out.println(//string);
+    }
 
-imprime(pform(T, string)):
-	imprime(T)
-	print string
+    private void imprime(Array array){
+        imprime(array.tipo());
+        System.out.println("[" + array.iden() + "]");
+    }
 
-imprime(array(T, string)):
-	imprime(T)
-	print “[” + string + “]”
+    private void imprime(Puntero puntero){
+        imprime(puntero.tipo());
+        System.out.println("^");
+    }
+    
+    private void imprime(Iden iden){
+        System.out.println(iden.iden());
+    }
 
+    private void imprime(Struct struct){
+        System.out.println("<struct>");
+        System.out.println("{");
+        imprime(struct.lcamp());
+        System.out.println("}");
+    }
 
-imprime(puntero(T)):
-	imprime(T)
-	print ”^”
+    private void imprime(Lit_ent ent){
+        System.out.println("<int>");
+    }
 
-imprime(iden(string)):
-	print string
+    private void imprime(Lit_real real){
+        System.out.println("<real>");
+    }
 
-imprime(struct(LCamp)):
-	print <struct>
-	print “ {“
-	imprime(LCamp)
-	print “}”
+    private void imprime(Lit_Bool bool){
+        System.out.println("<bool>");
+    }
 
+    private void imprime(Lit_string string){
+        System.out.println("<string>");
+    }
 
-imprime(lit_ent(string)):
-	print <int>
+    private void imprime(Muchos_camp muchos){
+        imprime(muchos.lcs());
+        System.out.println(",");
+        imprime(muchos.campo());
+    }
 
-imprime(lit_real(string)):
-	print <real>
+    private void imprime(Un_camp uno){
+        imprime(uno.campo());
+    }
 
-imprime(lit_bool(string)):
-	print<bool>
+    private void imprime(Camp camp){
+        imprime(camp.tipo());
+        System.out.println(camp.iden());
+    }
 
-imprime(lit_string(string)):
-	print<string>
+    private void imprime(Muchas_ins muchas){
+        imprime(muchas.li());
+        System.out.println(";");
+        imprime(muchas.ins());
+    }
 
-imprime(muchos_camp(LCamp,  Camp)):
-	imprime(LCamp)
-	print “,”
-	imprime(Camp)
+    private void imprime(Una_ins una){
+        imprime(una.ins());
+    }
 
-imprime(un_camp(Camp)):
-	imprime(Camp)
+    private void imprime(Ins_asig asig){
+        System.out.println("@");
+        imprime(asig.e())
+    }
 
-imprime(camp(T, string)):
-	imprime(T)
-	print string
+    private void imprime(Ins_if iif){
+        System.out.println("<if>");
+        imprime(iif.e());
+        imprime(iif.bloque());
+    }
 
-imprime(muchas_ins(LIns, Ins)):
-	imprime(LIns)
-	print “;”
-	imprime(Ins)
+    private void imprime(Ins_if_else ifelse){
+        System.out.println("<if>");
+        imprime(ifelse.e());
+        imprime(ifelse.bloque1());
+        System.out.println("<else>");
+        imprime(ifelse.bloque2());
+    }
 
-imprime(una_ins(Ins)):
-	imprime(Ins)
+    private void imprime(Ins_while iwhile){
+        System.out.println("<while>");
+        imprime(iwhile.e());
+        imprime(iwhile.bloque());
+    }
 
-imprime(ins_asig(Exp)):
-	print “@”
-	imprime(Exp)
+    private void imprime(Ins_read read){
+        System.out.println("<read>");
+        imprime(read.e());
+    }
 
-imprime(ins_if(Exp, Bloq)):
-	print “<if>”
-	imprime(Exp)
-	imprime(Bloq)
+    private void imprime(Ins_write write){
+        System.out.println("<write>");
+        imprime(write.e());
+    }
 
-imprime(ins_if_else(Exp, Bloq, Bloq)):
-	print “<if>”
-	imprime(Exp)
-	imprime(Bloq)
-	print “<else>”
-	imprime(Bloq)
+    private void imprime(Ins_nl nl){
+        System.out.println("<nl>");
+    }
 
-imprime(ins_while(Exp, Bloq)):
-	print “<while>”
-	imprime(Exp)
-	imprime(Bloq)
+    private void imprime(Ins_new inew){
+        System.out.println("<new>");
+        imprime(inew.e());
+    }
 
-imprime(ins_read(Exp)):
-	print “<read>”
-	imprime(Exp)
+    private void imprime(Ins_delete delete){
+        System.out.println("<delete>");
+        imprime(delete.e());
+    }
 
-imprime(ins_write(Exp)):
-	print “<write>”
-	imprime(Exp)
+    private void imprime(Ins_call call){
+        System.out.println("<call>");
+        System.out.println(call.string());
+        System.out.println("(");
+        imprime(call.pr());
+        System.out.println(")");
+    }
 
-imprime(ins_nl()):
-	print “<nl>”
+    private void imprime(Ins_bloque bloque){
+        imprime(bloque.bloque());
+    }
 
-imprime(ins_new(Exp)):
-	print “<new>”
-	imprime(Exp)
+    private void imprime(Si_preal preal){
+        imprime(preal.lpr());
+    }
 
-imprime(ins_delete(Exp)):
-	print “<delete>”
-	imprime(Exp)
+    private void imprime(No_preal no){
+        //Vacia
+    }
 
-imprime(ins_call(string, PRealOpt)):
-	print “<call>”
-	print string
-	print “(“
-	imprime(PRealOpt)
-	print “)”
+    private void imprime(Muchos_preal muchos){
+        imprime(muchos.lpr());
+        System.out.println(",");
+        imprime(muchos.e());
+    }
 
-imprime(ins_bloque(Bloq)):
-	imprime(Bloq)
+    private void imprime(Un_PReal uno){
+        imprime(uno.e());
+    }
 
-imprime(si_preal(LPReal)):
-	imprime(LPreal)
+    private void imprime(Asig asig){
+        imprimeOpnd(asig.opnd0(), 1);
+        System.out.println("=");
+        imprimeOpnd(asig.opnd1(), 0);
+    }
 
-imprime(no_preal()):
-	skip
+    private void imprime(Mayor mayor){
+        imprimeOpnd(mayor.opnd0(), 1);
+        System.out.println(">");
+        imprimeOpnd(mayor.opnd1(), 2);
+    }
 
-imprime(muchos_preal(LPReal, Exp)):
-	imprime(LPReal)
-	print “,”
-	imprime(Exp)
+    private void imprime(Menor menor){
+        imprimeOpnd(menor.opnd0(), 1);
+        System.out.println("<");
+        imprimeOpnd(menor.opnd1(), 2);
+    }
 
-imprime(un_preal(Exp)):
-	imprime(Exp)
-
-imprime(asig(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “=”
-	imprimeOpnd(Exp1, 0)
-
-imprime(mayor(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “>”
-	imprimeOpnd(Exp1, 2)
-
-
-imprime(menor(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “<”
-	imprimeOpnd(Exp1, 2)
-
-imprime(mayorIgual(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “>=”
-	imprimeOpnd(Exp1, 2)
-
+    private void imprime(MayorIg m){
+        imprimeOpnd(m.opnd0(), 1);
+        System.out.println(">=");
+        imprimeOpnd(m.opnd1(), 2);
+    }
+    
 imprime(menorIgual(Exp0, Exp1)):
 	imprimeOpnd(Exp0, 1)
 	print “<=”
