@@ -278,84 +278,92 @@ public class Evaluador extends SintaxisAbstractaTiny {
         imprimeOpnd(resta.opnd1(), 3);
     }
 
-    private void imprime(AND and){
-        imprimeOpnd(and., 0);
+    private void imprime(And and){
+        imprimeOpnd(and.opnd0(), 4);
+        System.out.println("<and>");
+        imprimeOpnd(and.opnd1(), 3);
     }
 
-imprime(and(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 4)
-	print “<and>” 
-	imprimeOpnd(Exp1, 3)
+    private void imprime(Or or){
+        imprimeOpnd(or.opnd0(), 4);
+        System.out.println("<or>");
+        imprimeOpnd(or.opnd1(), 4);
+    }
 
-imprime(or(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 4)
-	print “<or>” 
-	imprimeOpnd(Exp1, 4)
+    private void imprime(Mul mul){
+        imprimeOpnd(mul.opnd0(), 4);
+        System.out.println("*");
+        imprimeOpnd(mul.opnd1(), 5);
+    }
 
-imprime(mul(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 4)
-	print “*” 
-	imprimeOpnd(Exp1, 5)
+    private void imprime(Div div){
+        imprimeOpnd(div.opnd0(), 4);
+        System.out.println("/");
+        imprimeOpnd(div.opnd1(), 5);
+    }
 
-imprime(div(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 4)
-	print “/” 
-	imprimeOpnd(Exp1, 5)
+    private void imprime(Mod mod){
+        imprimeOpnd(mod.opnd0(), 4);
+        System.out.println("%");
+        imprimeOpnd(mod.opnd1(), 5);
+    }
 
-imprime(mod(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 4)
-	print “%” 
-	imprimeOpnd(Exp1, 5)
+    private void imprime(Neg neg){
+        System.out.println("-");
+        imprimeOpnd(neg.opnd(), 5);
+    }
 
-imprime(neg(Exp)):
-	print “-” 
-	imprimeOpnd(Exp, 5)
-	
+    private void imprime(Not not){
+        System.out.println("<not>");
+        imprimeOpnd(not.opnd(), 5);
+    }
 
-imprime(not(Exp)):
-	print “<not>” 
-	imprimeOpnd(Exp, 5)
+    private void imprime(ACCESOARRAY){
+        imprimeOpnd(Exp0, 6)
+        print “ [ ” 
+        imprime(Exp1)
+        print “ ] ”
+    }
 
-imprime(acceso_array(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 6)
-	print “ [ ” 
-	imprime(Exp1)
-	print “ ] ”
+    private void imprime(ACCESOCAMPO){
+        imprimeOpnd(Exp, 6)
+        print “. ” 
+        imprime(iden(id))
+    }
 
-imprime(acceso_campo(Exp, id)):
-	imprimeOpnd(Exp, 6)
-	print “. ” 
-	imprime(iden(id))
+    private void imprime(ACCESOPUNTERO){
+        imprimeOpnd(Exp, 6)
+	    print “^ ”
+    }
 
-imprime(acceso_puntero(Exp)):
-	imprimeOpnd(Exp, 6)
-	print “^ ” 
+    private void imprime(Exp_lit_ent e){
+        System.out.println("N");
+    }
 
-imprime(exp_litEntero(N)):
-	print N
+    private void imprime(Exp_lit_real e){
+        System.out.println("R");
+    }
 
-imprime(exp_litReal(R)):
-	print R
+    private void imprime(Exp_lit_cadena e){
+        System.out.println(e.iden());
+    }
 
-imprime(exp_litCadena(Id)):
-	print Id
+    private void imprime(Exp_Iden e){
+        System.out.println(e.iden());
+    }
 
-imprime(exp_Identificador(Id)):
-	print Id
+    private void imprime(Exp_lit_BoolTrue e){
+        System.out.println("<true>");
+    }
 
-imprime(exp_litBoolTrue()):
-	print “<true>”
+    private void imprime(Exp_lit_BoolFalse e){
+        System.out.println("<false>");
+    }
 
-imprime(exp_litBoolFalse()):
-	print “<false>”
+    private void imprime(Exp_null e){
+        System.out.println("<null>");
+    }
 
-imprime(exp_null()):
-	print “<null>”
-
-    
-    private boolean claseDe(Object o, Class c) {
-        return o.getClass() == c;
-    }    
 }
 
 /*public class ECteNoDefinida extends RuntimeException {
