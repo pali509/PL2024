@@ -23,6 +23,31 @@ public class Evaluador extends SintaxisAbstractaEval {
         consEnv(n.decs());
         return eval(n.exp());        
     }
+    private void imprime(){} 
+    
+    private boolean claseDe(Object o, Class c) {
+        return o.getClass() == c;
+    }    
+}
+
+/*public class ECteNoDefinida extends RuntimeException {
+        public ECteNoDefinida(String msg) {
+            super(msg);
+        }
+    }
+    public class ECteDuplicada extends RuntimeException {
+        public ECteDuplicada(String msg) {
+            super(msg);
+        }
+    }
+    private Map<String,Float> env;
+    public Evaluador() {
+        this.env = new HashMap<>();
+    }
+    public float evalua(Prog n) {
+        consEnv(n.decs());
+        return eval(n.exp());        
+    }
     private void consEnv(Decs decs) {
         if(claseDe(decs,Si_decs.class)) {
            consEnv(decs.ldecs());        
@@ -76,5 +101,4 @@ public class Evaluador extends SintaxisAbstractaEval {
     
     private boolean claseDe(Object o, Class c) {
         return o.getClass() == c;
-    }    
-}
+    }     */
