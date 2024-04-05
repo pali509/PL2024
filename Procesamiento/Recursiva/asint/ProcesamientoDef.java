@@ -13,8 +13,22 @@ public class ProcesamientoDef implements Procesamiento {
     public void procesa(Resta exp) {}
     public void procesa(Mul exp) {}
     public void procesa(Div exp) {}
+
+    public void procesa(Exp_lit_ent exp) {
+
+    }
+
+    public void procesa(Exp_lit_real exp) {
+
+    }
+
+
     public void procesa(Lit_ent exp) {}
     public void procesa(Lit_real exp) {}
+
+    public void procesa(Lit_bool t) {
+
+    }
 
     public void procesa(Lit_string exp) {
 
@@ -40,7 +54,7 @@ public class ProcesamientoDef implements Procesamiento {
 
     }
 
-    public void procesa(LPforms pforms) {
+    public void procesa(PFormOpt pforms) {
 
     }
 
@@ -160,17 +174,18 @@ public class ProcesamientoDef implements Procesamiento {
 
     }
 
-    public void procesa(Lit_cadena exp) {
+    public void procesa(Exp_lit_cadena exp) {
 
     }
 
-    public void procesa(Lit_BoolTrue exp) {
+    public void procesa(Exp_lit_BoolTrue exp) {
 
     }
 
-    public void procesa(Lit_BoolFalse exp) {
+    public void procesa(Exp_lit_BoolFalse exp) {
 
     }
+
 
     public void procesa(Exp_null exp) {
 
@@ -194,15 +209,5 @@ public class ProcesamientoDef implements Procesamiento {
 
     public void procesa(SintaxisAbstractaTiny.Not exp) { }
 
-    public void procesa(Int t) {
 
-    }
-
-    public void procesa(Real t) {
-
-    }
-
-    public void procesa(Bool t) {
-
-    }
 }

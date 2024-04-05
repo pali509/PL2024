@@ -239,16 +239,16 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static abstract class Tipo {
+    public static abstract class Tipo extends Nodo{
         public Tipo() {}
 
         public abstract void procesa(Procesamiento p);
 
     }
 
-    public static class Int extends Tipo {
+    public static class Lit_ent extends Tipo {
 
-        public Int() {
+        public Lit_ent() {
             super();
         }
 
@@ -259,9 +259,9 @@ public class SintaxisAbstractaTiny {
             return "Int";
         }
     }
-    public static class Real extends Tipo {
+    public static class Lit_real extends Tipo {
 
-        public Real() {
+        public Lit_real() {
             super();
         }
 
@@ -272,9 +272,9 @@ public class SintaxisAbstractaTiny {
             return "Real";
         }
     }
-    public static class Bool extends Tipo {
+    public static class Lit_bool extends Tipo {
 
-        public Bool() {
+        public Lit_bool() {
             super();
         }
 
@@ -285,7 +285,19 @@ public class SintaxisAbstractaTiny {
             return "Bool";
         }
     }
+    public static class Lit_string extends Tipo {
 
+        public Lit_string() {
+            super();
+        }
+
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public String toString() {
+            return "String";
+        }
+    }
     public static class Iden extends Tipo {
         private String id;
         public Iden(String id) {
@@ -358,8 +370,8 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static class Lit_ent extends Exp {
-        public Lit_ent() {
+    public static class Exp_lit_ent extends Exp {
+        public Exp_lit_ent() {
             super();
         }
 
@@ -368,12 +380,12 @@ public class SintaxisAbstractaTiny {
         }
         public int prioridad() {return 7;}
         public String toString() {
-            return "lit_ent";
+            return "Exp_lit_ent";
         } 
     }
 
-    public static class Lit_real extends Exp {
-        public Lit_real() {
+    public static class Exp_lit_real extends Exp {
+        public Exp_lit_real() {
             super();
         }
         public void procesa(Procesamiento p) {
@@ -382,11 +394,11 @@ public class SintaxisAbstractaTiny {
 
         public int prioridad() {return 7;}
         public String toString() {
-            return "lit_real";
+            return "Exp_lit_real";
         } 
     }
-    public static class Lit_BoolTrue extends Exp {
-        public Lit_BoolTrue() {
+    public static class Exp_lit_BoolTrue extends Exp {
+        public Exp_lit_BoolTrue() {
             super();
         }
         public void procesa(Procesamiento p) {
@@ -395,7 +407,7 @@ public class SintaxisAbstractaTiny {
 
         public int prioridad() {return 7;}
         public String toString() {
-            return "lit_bool_true";
+            return "Exp_lit_Bool_true";
         }
     }
     public static class Exp_null extends Exp {
@@ -411,8 +423,8 @@ public class SintaxisAbstractaTiny {
             return "exp_null";
         }
     }
-    public static class Lit_BoolFalse extends Exp {
-        public Lit_BoolFalse() {
+    public static class Exp_lit_BoolFalse extends Exp {
+        public Exp_lit_BoolFalse() {
             super();
         }
         public void procesa(Procesamiento p) {
@@ -421,28 +433,13 @@ public class SintaxisAbstractaTiny {
 
         public int prioridad() {return 7;}
         public String toString() {
-            return "lit_bool_false";
+            return "Exp_lit_Bool_false";
         }
     }
 
-    public static class Lit_string extends Exp {
-
-        public Lit_string() {
-            super();
-        }
-
-        public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-        public int prioridad() {return 7;}
-
-        public String toString() {
-            return "Literal_string";
-        }
-    }
-    public static class Lit_cadena extends Exp {
+    public static class Exp_lit_cadena extends Exp {
         private String num;
-        public Lit_cadena(String num) {
+        public Exp_lit_cadena(String num) {
             super();
             this.num = num;
         }
@@ -452,7 +449,7 @@ public class SintaxisAbstractaTiny {
         public String num(){return num;}
         public int prioridad() {return 7;}
         public String toString() {
-            return "lit_cadena("+num+")";
+            return "Exp_lit_cadena("+num+")";
         }
     }
     public static class Exp_Iden extends Exp {
@@ -483,26 +480,26 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static abstract class LPforms extends Pform{
-        public LPforms() {}
+    public static abstract class PFormOpt extends Nodo{
+        public PFormOpt() {}
         public abstract void procesa(Procesamiento p);
     }
-    public static class Si_pforms extends LPforms {
-        private LPforms pforms;
-        public Si_pforms(LPforms pforms) {
+    public static class Si_pforms extends PFormOpt {
+        private PFormOpt pforms;
+        public Si_pforms(PFormOpt pforms) {
             super();
             this.pforms = pforms;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public LPforms pforms() {return pforms;}
+        public PFormOpt pforms() {return pforms;}
         public String toString() {
             return "si_pforms("+pforms.toString()+")";
         }
 
     }
-    public static class No_pforms extends LPforms {
+    public static class No_pforms extends PFormOpt {
         public No_pforms() {
             super();
         }
@@ -514,7 +511,7 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static class Un_pform extends LPforms {
+    public static class Un_pform extends PFormOpt {
         private Pform pform;
         public Un_pform(Pform pform) {
             super();
@@ -529,16 +526,16 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static class Muchos_pforms extends LPforms {
-        private LPforms pforms;
+    public static class Muchos_pforms extends PFormOpt {
+        private PFormOpt pforms;
         private Pform pform;
-        public Muchos_pforms(LPforms pforms, Pform pform) {
+        public Muchos_pforms(PFormOpt pforms, Pform pform) {
             super();
             this.pform = pform;
             this.pforms = pforms;
         }
         public Pform pform() {return pform;}
-        public LPforms pforms() {return pforms;}
+        public PFormOpt pforms() {return pforms;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -1111,18 +1108,18 @@ public class SintaxisAbstractaTiny {
         return new Not(opnd);
     }
 
-    public Exp lit_boolTrue() {
-        return new Lit_BoolTrue();
+    public Exp Exp_lit_BoolTrue() {
+        return new Exp_lit_BoolTrue();
     }
-    public Exp lit_boolFalse() {
-        return new Lit_BoolFalse();
+    public Exp Exp_lit_BoolFalse() {
+        return new Exp_lit_BoolFalse();
     }
 
     public Exp exp_null() {
         return new Exp_null();
     }
 
-    public Exp lit_string() {
+    public Tipo lit_string() {
         return new Lit_string();
     }
 
@@ -1130,8 +1127,21 @@ public class SintaxisAbstractaTiny {
         return new Exp_Iden(id);
     }
 
+    public Exp exp_lit_cadena(String id) {
+        return new Exp_lit_cadena(id);
+    }
+
     public Tipo iden(String id) {
         return new Iden(id);
+    }
+    public Tipo lit_ent() {
+        return new Lit_ent();
+    }
+    public Tipo lit_real() {
+        return new Lit_real();
+    }
+    public Tipo lit_bool() {
+        return new Lit_bool();
     }
     public Tipo array(Tipo t, String st) {
         return new Array(st, t);
@@ -1153,16 +1163,16 @@ public class SintaxisAbstractaTiny {
     public LCamp muchos_camp(LCamp lc, Camp c) {
         return new Muchos_camp(lc,c);
     }
-    public LPforms si_pforms(LPforms lpf){
+    public PFormOpt si_pforms(PFormOpt lpf){
         return new Si_pforms(lpf);
     }
-    public LPforms no_pforms(){
+    public PFormOpt no_pforms(){
         return new No_pforms();
     }
-    public LPforms un_pform(Pform pf){
+    public PFormOpt un_pform(Pform pf){
         return new Un_pform(pf);
     }
-    public LPforms muchos_pforms(LPforms lpf, Pform pf){
+    public PFormOpt muchos_pforms(PFormOpt lpf, Pform pf){
         return new Muchos_pforms(lpf, pf);
     }
 
@@ -1219,11 +1229,11 @@ public class SintaxisAbstractaTiny {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp lit_ent() {
-        return new Lit_ent();
+    public Exp Exp_lit_ent() {
+        return new Exp_lit_ent();
     }
-    public Exp lit_real() {
-        return new Lit_real();
+    public Exp Exp_lit_real() {
+        return new Exp_lit_real();
     }
     public Exp Exp_Iden(String num) {
         return new Exp_Iden(num);

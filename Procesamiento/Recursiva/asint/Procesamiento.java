@@ -12,9 +12,8 @@ public interface Procesamiento {
     void procesa(Resta exp);
     void procesa(Mul exp);
     void procesa(Div exp);
-    void procesa(Lit_ent exp);
-    void procesa(Lit_real exp);
-    void procesa(Lit_string exp);
+    void procesa(Exp_lit_ent exp);
+    void procesa(Exp_lit_real exp);
 
 
     //Nuevas:
@@ -29,11 +28,12 @@ public interface Procesamiento {
     void procesa(Neg exp);
     void procesa(Not exp);
 
-    void procesa(Int t);
+    void procesa(Lit_ent t);
 
-    void procesa(Real t);
+    void procesa(Lit_real t);
 
-    void procesa(Bool t);
+    void procesa(Lit_bool t);
+    void procesa(Lit_string t);
     void procesa(Iden t);
     void procesa(Array t);
     void procesa(Prog prog);
@@ -42,7 +42,7 @@ public interface Procesamiento {
     void procesa(Struct t);
 
     void procesa(Pform pform);
-    void procesa(LPforms pforms);
+    void procesa(PFormOpt pforms);
     void procesa(Si_pforms pforms);
     void procesa(No_pforms pforms);
     void procesa(Muchos_pforms pforms);
@@ -94,10 +94,10 @@ public interface Procesamiento {
 
     void procesa(Exp_Iden exp);
 
-    void procesa(Lit_cadena exp);
+    void procesa(Exp_lit_cadena exp);
 
-    void procesa(Lit_BoolTrue exp);
-    void procesa(Lit_BoolFalse exp);
+    void procesa(Exp_lit_BoolTrue exp);
+    void procesa(Exp_lit_BoolFalse exp);
 
     void procesa(Exp_null exp);
 }
