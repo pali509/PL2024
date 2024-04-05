@@ -247,31 +247,40 @@ public class Evaluador extends SintaxisAbstractaTiny {
         System.out.println(">=");
         imprimeOpnd(m.opnd1(), 2);
     }
-    
-imprime(menorIgual(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “<=”
-	imprimeOpnd(Exp1, 2)
 
-imprime(igual(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “==”
-	imprimeOpnd(Exp1, 2)
+    private void imprime(MenorIg m){
+        imprimeOpnd(m.opnd0(), 1);
+        System.out.println("<=");
+        imprimeOpnd(m.opnd1(), 2);
+    }
 
-imprime(desigual(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 1)
-	print “!=”
-	imprimeOpnd(Exp1, 2)
+    private void imprime(Igual igual){
+        imprimeOpnd(igual.opnd0(), 1);
+        System.out.println("==");
+        imprimeOpnd(igual.opnd1(), 2);
+    }
 
-imprime(suma(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 2)
-	print “+” 
-	imprimeOpnd(Exp1, 3)
+    private void imprime(Desigual desi){
+        imprimeOpnd(desi.opnd0(), 1);
+        System.out.println("!=");
+        imprimeOpnd(desi.opnd1(), 2);
+    }
 
-imprime(resta(Exp0, Exp1)):
-	imprimeOpnd(Exp0, 3)
-	print “-” 
-	imprimeOpnd(Exp1, 3)
+    private void imprime(Suma suma){
+        imprimeOpnd(suma.opnd0(), 2);
+        System.out.println("+");
+        imprimeOpnd(suma.opnd1(), 3);
+    }
+
+    private void imprime(Resta resta){
+        imprimeOpnd(resta.opnd0(), 3);
+        System.out.println("-");
+        imprimeOpnd(resta.opnd1(), 3);
+    }
+
+    private void imprime(AND and){
+        imprimeOpnd(and., 0);
+    }
 
 imprime(and(Exp0, Exp1)):
 	imprimeOpnd(Exp0, 4)
