@@ -474,7 +474,7 @@ public class SintaxisAbstractaTiny {
     }
 
     public static abstract class Pform extends Nodo {
-
+//AQUI FALTA UN PARAMETRO TIPO CREO 
         public Pform() {}
         public abstract void procesa(Procesamiento p);
 

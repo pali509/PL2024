@@ -1,4 +1,4 @@
-package evaluador;
+package impresion;
 
 import asint.SintaxisAbstractaEval.Prog;
 import c_ast_ascendente.AnalizadorLexicoEval;
