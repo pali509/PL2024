@@ -657,7 +657,7 @@ public class SintaxisAbstractaTiny {
         }
         public Pform pform() {return pform;}
         public String toString() {
-            return "una_dec("+pform.toString()+")";
+            return "un_pform("+pform.toString()+")";
         }
     }
 
@@ -675,7 +675,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public String toString() {
-            return "muchas_decs("+pforms.toString()+","+pform.toString()+")";
+            return "muchos_pforms("+pforms.toString()+","+pform.toString()+")";
         }
     }
 
@@ -1088,6 +1088,35 @@ public class SintaxisAbstractaTiny {
     public static abstract class LIns {
         public LIns() {}
         public abstract void procesa(Procesamiento p);
+    }
+
+    public static class Si_Ins extends LIns{
+        private LIns ins;
+        public Si_Ins(LIns ins){
+            super();
+            this.ins = ins;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public LIns ins() {return ins;}
+        
+        public String toString() {
+            return "si_ins("+ins+")";
+        } 
+
+    }
+
+    public static class No_Ins extends LIns{
+        public No_Ins() {
+            super();
+        }   
+        public String toString() {
+            return "no_ins()";
+        } 
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
     }
 
     public static class Una_ins extends LIns{

@@ -2,7 +2,8 @@ package impresion;
 
 import asint.SintaxisAbstractaTiny;
 
-public class Evaluador extends SintaxisAbstractaTiny {
+
+public class Impresion extends SintaxisAbstractaTiny {
 
     private void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
@@ -16,7 +17,11 @@ public class Evaluador extends SintaxisAbstractaTiny {
     }
     private void imprime(Bloque bloque){
         System.out.println("{");
-        imprime(bloque.lds());
+        if(claseDe(bloque.lds(), Si_decs.class)){
+            imprime((Si_decs)bloque.lds());
+        }
+        else imprime((No_decs)bloque.lds());
+        if(claseDe(bloque.lis(), getClass()))
         imprime(bloque.lis());
         System.out.println("}");
     }
@@ -79,8 +84,8 @@ public class Evaluador extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Pform pform){
-        imprime(//tipo);
-        System.out.println(//string);
+        imprime(pform.t());
+        System.out.println(pform.st());
     }
 
     private void imprime(Array array){
@@ -112,7 +117,7 @@ public class Evaluador extends SintaxisAbstractaTiny {
         System.out.println("<real>");
     }
 
-    private void imprime(Lit_Bool bool){
+    private void imprime(Lit_bool bool){
         System.out.println("<bool>");
     }
 
@@ -135,6 +140,14 @@ public class Evaluador extends SintaxisAbstractaTiny {
         System.out.println(camp.iden());
     }
 
+    private void imprime(Si_Ins s){
+        imprime(s.ins());
+    }
+
+    private void imprime(No_Ins n){
+        //Vacío
+    }
+
     private void imprime(Muchas_ins muchas){
         imprime(muchas.li());
         System.out.println(";");
@@ -147,7 +160,7 @@ public class Evaluador extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_asig asig){
         System.out.println("@");
-        imprime(asig.e())
+        imprime(asig.e());
     }
 
     private void imprime(Ins_if iif){
@@ -318,22 +331,22 @@ public class Evaluador extends SintaxisAbstractaTiny {
         imprimeOpnd(not.opnd(), 5);
     }
 
-    private void imprime(ACCESOARRAY){
-        imprimeOpnd(Exp0, 6)
-        print “ [ ” 
-        imprime(Exp1)
-        print “ ] ”
+    private void imprime(AccesoArray a){
+        imprimeOpnd(a.exp1(), 6);
+        System.out.println("[");
+        imprime(a.exp2());
+        System.out.println("]");
     }
 
-    private void imprime(ACCESOCAMPO){
-        imprimeOpnd(Exp, 6)
-        print “. ” 
-        imprime(iden(id))
+    private void imprime(AccesoCampo a){
+        imprimeOpnd(a.exp(), 6);
+        System.out.println(". ");
+        imprime(a.iden());
     }
 
-    private void imprime(ACCESOPUNTERO){
-        imprimeOpnd(Exp, 6)
-	    print “^ ”
+    private void imprime(AccesoPuntero a){
+        imprimeOpnd(a.exp(), 6);
+        System.out.println("^ ");
     }
 
     private void imprime(Exp_lit_ent e){
@@ -364,77 +377,7 @@ public class Evaluador extends SintaxisAbstractaTiny {
         System.out.println("<null>");
     }
 
-}
-
-/*public class ECteNoDefinida extends RuntimeException {
-        public ECteNoDefinida(String msg) {
-            super(msg);
-        }
-    }
-    public class ECteDuplicada extends RuntimeException {
-        public ECteDuplicada(String msg) {
-            super(msg);
-        }
-    }
-    private Map<String,Float> env;
-    public Evaluador() {
-        this.env = new HashMap<>();
-    }
-    public float evalua(Prog n) {
-        consEnv(n.decs());
-        return eval(n.exp());        
-    }
-    private void consEnv(Decs decs) {
-        if(claseDe(decs,Si_decs.class)) {
-           consEnv(decs.ldecs());        
-        }
-    }
-    private void consEnv(LDecs decs) {
-        if(claseDe(decs,Muchas_decs.class)) {
-            consEnv(decs.ldecs());
-        }
-        consEnv(decs.dec());
-    }
-    private void consEnv(Dec dec) {
-        if(env.containsKey(dec.iden())) {
-            throw new ECteDuplicada("Cte duplicada: "+dec.iden()+
-                                     " fila:"+dec.leeFila()+" col:"+dec.leeCol()); 
-        }
-        else {
-            env.put(dec.iden(),eval(dec.exp()));
-        }
-    }
-    private float eval(Exp exp) {
-        if(claseDe(exp,Lit_ent.class) || claseDe(exp,Lit_real.class)) {
-            return Float.valueOf(exp.valor()).floatValue();
-        }
-        else if(claseDe(exp,Iden.class)) {
-            if(! env.containsKey(exp.iden())) {
-                throw new ECteNoDefinida("Cte indefinida: "+exp.iden()+
-                                        " fila:"+exp.leeFila()+" col:"+exp.leeCol()); 
-            }
-            else {
-                return env.get(exp.iden());
-            }
-        }
-        else {
-            float v1 = eval(exp.opnd0());
-            float v2 = eval(exp.opnd1());
-            if(claseDe(exp,Suma.class)) {
-                return v1+v2;
-            }
-            else if(claseDe(exp,Resta.class)) {
-                return v1-v2;
-            }
-            else if(claseDe(exp,Mul.class)) {
-                return v1*v2;
-            }
-            else {
-                return v1/v2;
-            }
-        }
-    } 
-    
     private boolean claseDe(Object o, Class c) {
         return o.getClass() == c;
-    }     */
+    } 
+}
