@@ -50,6 +50,14 @@ public class ProcesamientoDef implements Procesamiento {
 
     }
 
+    public void procesa(PFref pform) {
+
+    }
+
+    public void procesa(PFnoref pform) {
+
+    }
+
     public void procesa(Pform pform) {
 
     }
@@ -188,6 +196,26 @@ public class ProcesamientoDef implements Procesamiento {
 
 
     public void procesa(Exp_null exp) {
+
+    }
+
+    public void procesa(AccesoArray exp) {
+
+    }
+
+    public void procesa(AccesoPuntero exp) {
+
+    }
+
+    public void procesa(AccesoCampo exp) {
+
+    }
+
+    public void procesa(And exp) {
+
+    }
+
+    public void procesa(Or exp) {
 
     }
 

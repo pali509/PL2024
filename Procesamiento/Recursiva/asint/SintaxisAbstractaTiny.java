@@ -470,13 +470,148 @@ public class SintaxisAbstractaTiny {
         }
     }
 
+    public static class AccesoArray extends Exp {
+        private Exp exp1;
+        private Exp exp2;
+        public AccesoArray(Exp exp1, Exp exp2) {
+            super();
+            this.exp1 = exp1;
+            this.exp2 = exp2;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public Exp exp1(){return exp1;}
+        public Exp exp2(){return exp2;}
+        public int prioridad() {return 6;}
+        public String toString() {
+            return "AccesoArray("+exp1+", "+exp2+")";
+        }
+    }
+    public static class AccesoCampo extends Exp {
+        private String num;
+        private Exp exp;
+        public AccesoCampo(String num, Exp exp) {
+            super();
+            this.exp = exp;
+            this.num = num;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public String num(){return num;}
+        public Exp exp(){return exp;}
+        public int prioridad() {return 6;}
+        public String toString() {
+            return "AccesoCampo("+num+", "+exp+")";
+        }
+    }
+
+    public static class AccesoPuntero extends Exp {
+        private Exp exp;
+        public AccesoPuntero(Exp exp) {
+            super();
+            this.exp = exp;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public Exp exp(){return exp;}
+        public int prioridad() {return 6;}
+        public String toString() {
+            return "AccesoPuntero("+exp+")";
+        }
+    }
+
+    public static class And extends Exp {
+        private Exp exp1;
+        private Exp exp2;
+        public And(Exp exp1, Exp exp2) {
+            super();
+            this.exp1 = exp1;
+            this.exp2 = exp2;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public Exp exp1(){return exp1;}
+        public Exp exp2(){return exp2;}
+        public int prioridad() {return 3;}
+        public String toString() {
+            return "And("+exp1+", "+exp2+")";
+        }
+    }
+
+    public static class Or extends Exp {
+        private Exp exp1;
+        private Exp exp2;
+        public Or(Exp exp1, Exp exp2) {
+            super();
+            this.exp1 = exp1;
+            this.exp2 = exp2;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public Exp exp1(){return exp1;}
+        public Exp exp2(){return exp2;}
+        public int prioridad() {return 3;}
+        public String toString() {
+            return "Or("+exp1+", "+exp2+")";
+        }
+    }
+
     public static abstract class Pform extends Nodo {
-//AQUI FALTA UN PARAMETRO TIPO CREO 
-        public Pform() {}
+        private Tipo t;
+        private String st;
+        public Pform(Tipo t, String st) {
+            this.t = t;
+            this.st = st;
+        }
+
+        public String st(){return st;}
+        public Tipo t(){return t;}
         public abstract void procesa(Procesamiento p);
 
         public String toString() {
-            return "Parametro Formal(["+leeFila()+","+leeCol()+"])";
+            return "Parametro Formal(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
+        }
+    }
+    public static class PFref extends Pform {
+        private Tipo t;
+        private String st;
+        public PFref(Tipo t, String st) {
+            super(t,st);
+            this.t = t;
+            this.st = st;
+        }
+        public String st(){return st;}
+        public Tipo t(){return t;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
+        public String toString() {
+            return "Parametro Formal con ref(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
+        }
+    }
+
+    public static class PFnoref extends Pform {
+        private Tipo t;
+        private String st;
+        public PFnoref(Tipo t, String st) {
+            super(t,st);
+            this.t = t;
+            this.st = st;
+        }
+        public String st(){return st;}
+        public Tipo t(){return t;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
+        public String toString() {
+            return "Parametro Formal sin ref(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
         }
     }
 
@@ -1131,6 +1266,23 @@ public class SintaxisAbstractaTiny {
         return new Exp_lit_cadena(id);
     }
 
+    public AccesoArray accesoArray(Exp exp1, Exp exp2) {
+        return new AccesoArray(exp1,exp2);
+    }
+    public AccesoCampo accesoCampo(String st, Exp exp) {
+        return new AccesoCampo(st, exp);
+    }
+    public AccesoPuntero accesoPuntero(Exp exp) {
+        return new AccesoPuntero(exp);
+    }
+
+    public And and(Exp exp1, Exp exp2) {
+        return new And(exp1,exp2);
+    }
+    public Or or(Exp exp1, Exp exp2) {
+        return new Or(exp1,exp2);
+    }
+
     public Tipo iden(String id) {
         return new Iden(id);
     }
@@ -1162,6 +1314,12 @@ public class SintaxisAbstractaTiny {
     }
     public LCamp muchos_camp(LCamp lc, Camp c) {
         return new Muchos_camp(lc,c);
+    }
+    public PFref pfref(Tipo t, String st) {
+        return new PFref(t, st);
+    }
+    public PFnoref pfnoref(Tipo t, String st) {
+        return new PFnoref(t, st);
     }
     public PFormOpt si_pforms(PFormOpt lpf){
         return new Si_pforms(lpf);
@@ -1254,9 +1412,3 @@ public class SintaxisAbstractaTiny {
 
 
 }
-
-/*Faltan:
-
--pform -> HACER CON AND Y NO AND?????
-
- */

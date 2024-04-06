@@ -26,7 +26,23 @@ public interface Procesamiento {
     void procesa(Igual exp);
     void procesa(Desigual exp);
     void procesa(Neg exp);
-    void procesa(Not exp);
+
+    void procesa(Un_PReal exp);
+
+    void procesa(Exp_Iden exp);
+
+    void procesa(Exp_lit_cadena exp);
+
+    void procesa(Exp_lit_BoolTrue exp);
+
+    void procesa(Exp_lit_BoolFalse exp);
+
+    void procesa(Exp_null exp);
+    void procesa(AccesoArray exp);
+    void procesa(AccesoPuntero exp);
+    void procesa(AccesoCampo exp);
+    void procesa(And exp);
+    void procesa(Or exp);
 
     void procesa(Lit_ent t);
 
@@ -41,7 +57,8 @@ public interface Procesamiento {
 
     void procesa(Struct t);
 
-    void procesa(Pform pform);
+    void procesa(PFref pform);
+    void procesa(PFnoref pform);
     void procesa(PFormOpt pforms);
     void procesa(Si_pforms pforms);
     void procesa(No_pforms pforms);
@@ -90,14 +107,6 @@ public interface Procesamiento {
 
     void procesa(Muchos_preal lpreal);
 
-    void procesa(Un_PReal exp);
 
-    void procesa(Exp_Iden exp);
-
-    void procesa(Exp_lit_cadena exp);
-
-    void procesa(Exp_lit_BoolTrue exp);
-    void procesa(Exp_lit_BoolFalse exp);
-
-    void procesa(Exp_null exp);
+    void procesa(Not exp);
 }
