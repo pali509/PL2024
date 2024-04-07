@@ -43,12 +43,12 @@ public class SintaxisAbstractaTiny {
     }
    
     
-    private static abstract class ExpBin2 extends Exp {
+    private static abstract class ExpBin extends Exp {
         protected Exp opnd0;
         protected Exp opnd1;
         public Exp opnd0() {return opnd0;}
         public Exp opnd1() {return opnd1;}
-        public ExpBin2(Exp opnd0, Exp opnd1) {
+        public ExpBin (Exp opnd0, Exp opnd1) {
             super();
             this.opnd0 = opnd0;
             this.opnd1 = opnd1;
@@ -56,16 +56,16 @@ public class SintaxisAbstractaTiny {
     }
 
     //Me la he inventado para tener una que solo tuviera 1 opnd
-    private static abstract class ExpBin1 extends Exp {
+    private static abstract class ExpUn extends Exp {
         protected Exp opnd;
         public Exp opnd() {return opnd;}
-        public ExpBin1(Exp opnd) {
+        public ExpUn(Exp opnd) {
             super();
             this.opnd = opnd;
         }
     }
             
-    public static class Suma extends ExpBin2 {
+    public static class Suma extends ExpBin {
         public Suma(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -77,7 +77,7 @@ public class SintaxisAbstractaTiny {
             return "suma("+opnd0+","+opnd1+")";
         }
     }
-    public static class Resta extends ExpBin2 {
+    public static class Resta extends ExpBin {
         public Resta(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -89,7 +89,7 @@ public class SintaxisAbstractaTiny {
             return "resta("+opnd0+","+opnd1+")";
         } 
     }
-    public static class Mul extends ExpBin2 {
+    public static class Mul extends ExpBin {
         public Mul(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -101,7 +101,7 @@ public class SintaxisAbstractaTiny {
             return "mul("+opnd0+","+opnd1+")";
         } 
     }
-    public static class Div extends ExpBin2 {
+    public static class Div extends ExpBin {
         public Div(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -116,7 +116,7 @@ public class SintaxisAbstractaTiny {
 
     //NUEVOS!!
 
-    public static class Mod extends ExpBin2 {
+    public static class Mod extends ExpBin {
         public Mod(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -125,10 +125,10 @@ public class SintaxisAbstractaTiny {
         }
         public int prioridad() {return 4;}
         public String toString() {
-            return "asig("+opnd0+","+opnd1+")";
+            return "mod("+opnd0+","+opnd1+")";
         }
     }
-    public static class Asig extends ExpBin2 {
+    public static class Asig extends ExpBin {
         public Asig(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -140,7 +140,7 @@ public class SintaxisAbstractaTiny {
             return "asig("+opnd0+","+opnd1+")";
         }
     }
-    public static class Mayor extends ExpBin2 {
+    public static class Mayor extends ExpBin {
         public Mayor(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -152,7 +152,7 @@ public class SintaxisAbstractaTiny {
             return "mayor("+opnd0+","+opnd1+")";
         }
     }
-    public static class Menor extends ExpBin2 {
+    public static class Menor extends ExpBin {
         public Menor(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -164,7 +164,7 @@ public class SintaxisAbstractaTiny {
             return "menor("+opnd0+","+opnd1+")";
         }
     }
-    public static class MayorIg extends ExpBin2 {
+    public static class MayorIg extends ExpBin {
         public MayorIg(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -177,7 +177,7 @@ public class SintaxisAbstractaTiny {
             return "mayorIgual("+opnd0+","+opnd1+")";
         }
     }
-    public static class MenorIg extends ExpBin2 {
+    public static class MenorIg extends ExpBin {
         public MenorIg(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -190,7 +190,7 @@ public class SintaxisAbstractaTiny {
             return "menorIgual("+opnd0+","+opnd1+")";
         }
     }
-    public static class Igual extends ExpBin2 {
+    public static class Igual extends ExpBin {
         public Igual(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -202,7 +202,7 @@ public class SintaxisAbstractaTiny {
             return "igual("+opnd0+","+opnd1+")";
         }
     }
-    public static class Desigual extends ExpBin2 {
+    public static class Desigual extends ExpBin {
         public Desigual(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
@@ -214,7 +214,7 @@ public class SintaxisAbstractaTiny {
             return "desigual("+opnd0+","+opnd1+")";
         }
     }
-    public static class Neg extends ExpBin1 {
+    public static class Neg extends ExpUn {
         public Neg(Exp opnd) {
             super(opnd);
         }
@@ -226,7 +226,7 @@ public class SintaxisAbstractaTiny {
             return "negacion("+opnd+")";
         }
     }
-    public static class Not extends ExpBin1 {
+    public static class Not extends ExpUn {
         public Not(Exp opnd) {
             super(opnd);
         }

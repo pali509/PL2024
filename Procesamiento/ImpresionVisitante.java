@@ -1,19 +1,8 @@
-package impresion;
+
 
 import asint.ProcesamientoDef;
-import asint.SintaxisAbstractaEval.Exp;
-import asint.SintaxisAbstractaEval.Dec;
-import asint.SintaxisAbstractaEval.Muchas_decs;
-import asint.SintaxisAbstractaEval.Una_dec;
-import asint.SintaxisAbstractaEval.Si_decs;
-import asint.SintaxisAbstractaEval.Suma;
-import asint.SintaxisAbstractaEval.Resta;
-import asint.SintaxisAbstractaEval.Mul;
-import asint.SintaxisAbstractaEval.Div;
-import asint.SintaxisAbstractaEval.Lit_ent;
-import asint.SintaxisAbstractaEval.Lit_real;
-import asint.SintaxisAbstractaEval.Iden;
-import asint.SintaxisAbstractaEval.Prog;
+
+import asint.SintaxisAbstractaTiny;
 
 public class ImpresionVisitante extends SintaxisAbstractaTiny {
     private void imprimeOpnd(Exp opnd, int np) {

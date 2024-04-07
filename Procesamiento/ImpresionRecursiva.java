@@ -1,4 +1,3 @@
-package impresion;
 
 import asint.SintaxisAbstractaTiny;
 

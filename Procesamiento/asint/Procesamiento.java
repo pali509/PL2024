@@ -109,4 +109,8 @@ public interface Procesamiento {
 
 
     void procesa(Not exp);
+
+    void procesa(Si_Ins ins);
+
+    void procesa(No_Ins ins);
 }
