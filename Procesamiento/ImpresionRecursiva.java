@@ -3,7 +3,7 @@ package impresion;
 import asint.SintaxisAbstractaTiny;
 
 
-public class Impresion extends SintaxisAbstractaTiny {
+public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
@@ -21,13 +21,18 @@ public class Impresion extends SintaxisAbstractaTiny {
             imprime((Si_decs)bloque.lds());
         }
         else imprime((No_decs)bloque.lds());
-        if(claseDe(bloque.lis(), getClass()))
-        imprime(bloque.lis());
+        if(claseDe(bloque.lis(), Si_Ins.class)){
+            imprime((Si_Ins)bloque.lis());
+        }
+        else imprime((No_Ins)bloque.lis());
         System.out.println("}");
     }
 
     private void imprime(Si_decs sidecs){
-        imprime(sidecs.decs());
+        if(claseDe(sidecs.decs(), Muchas_decs.class)){
+            imprime((Muchas_decs)sidecs.decs());
+        }
+        else imprime((Una_dec)sidecs.decs());
         System.out.println("&&");
     }
 
@@ -36,23 +41,84 @@ public class Impresion extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Muchas_decs muchas){
-        imprime(muchas.ldecs());
+        if (claseDe(muchas.ldecs(), Muchas_decs.class)){
+            imprime((Muchas_decs)muchas.ldecs());
+        }
+        else imprime((Una_dec)muchas.ldecs());
         System.out.println(";");
-        imprime(muchas.dec());
+        if(claseDe(muchas.dec(), Dec_var.class)){
+            imprime((Dec_var)muchas.dec());
+        }
+        else if(claseDe(muchas.dec(), Dec_tipo.class)){
+            imprime((Dec_tipo)muchas.dec());
+        }
+        else imprime((Dec_proc)muchas.dec());
     }
 
     private void imprime(Una_dec una){
-        imprime(una.dec());
+        if(claseDe(una.dec(), Dec_var.class)){
+            imprime((Dec_var)una.dec());
+        }
+        else if(claseDe(una.dec(), Dec_tipo.class)){
+            imprime((Dec_tipo)una.dec());
+        }
+        else imprime((Dec_proc)una.dec());
     }
 
     private void imprime(Dec_var var){
-        imprime(var.tipo());
+        if(claseDe(var.tipo(), Array.class)){
+            imprime((Array)var.tipo());
+        }
+        if(claseDe(var.tipo(), Puntero.class)){
+            imprime((Puntero)var.tipo());
+        }
+        if(claseDe(var.tipo(), Iden.class)){
+            imprime((Iden)var.tipo());
+        }
+        if(claseDe(var.tipo(), Struct.class)){
+            imprime((Struct)var.tipo());
+        }
+        if(claseDe(var.tipo(), Lit_ent.class)){
+            imprime((Lit_ent)var.tipo());
+        }
+        if(claseDe(var.tipo(), Lit_real.class)){
+            imprime((Lit_real)var.tipo());
+        }
+        if(claseDe(var.tipo(), Lit_bool.class)){
+            imprime((Lit_bool)var.tipo());
+        }
+        if(claseDe(var.tipo(), Lit_string.class)){
+            imprime((Lit_string)var.tipo());
+        }
         System.out.println(var.iden());
     }
 
     private void imprime(Dec_tipo tipo){
         System.out.println("<type>");
-        imprime(tipo.tipo());
+        if(claseDe(tipo.tipo(), Array.class)){
+            imprime((Array)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Puntero.class)){
+            imprime((Puntero)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Iden.class)){
+            imprime((Iden)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Struct.class)){
+            imprime((Struct)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Lit_ent.class)){
+            imprime((Lit_ent)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Lit_real.class)){
+            imprime((Lit_real)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Lit_bool.class)){
+            imprime((Lit_bool)tipo.tipo());
+        }
+        if(claseDe(tipo.tipo(), Lit_string.class)){
+            imprime((Lit_string)tipo.tipo());
+        }
         System.out.println(tipo.iden());
     }
 
@@ -60,13 +126,19 @@ public class Impresion extends SintaxisAbstractaTiny {
         System.out.println("<proc>");
         System.out.println(proc.iden());
         System.out.println("(");
-        imprime(proc.pf());
+        if(claseDe(proc.pf(), Si_pforms.class)){
+            imprime((Si_pforms)proc.pf());
+        }
+        else imprime((No_pforms)proc.pf());
         System.out.println(")");
         imprime(proc.bq());
     }
 
     private void imprime(Si_pforms sipform){
-        imprime(sipform.pforms());
+        if(claseDe(sipform.pforms(), Muchos_pforms.class)){
+            imprime((Muchos_pforms)sipform.pforms());
+        }
+        else imprime((Un_pform)sipform.pforms());
     }
 
     private void imprime(No_pforms nopform){
@@ -74,7 +146,10 @@ public class Impresion extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Muchos_pforms muchos){
-        imprime(muchos.pforms());
+        if(claseDe(muchos.pforms(), Muchos_pforms.class)){
+            imprime((Muchos_pforms)muchos.pforms());
+        }
+        else imprime((Un_pform)muchos.pforms());
         System.out.println(",");
         imprime(muchos.pform());
     }

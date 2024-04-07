@@ -723,10 +723,10 @@ public class SintaxisAbstractaTiny {
     }
     public static class Dec_proc extends Dec {
         private String id;
-        private Pform pf;
+        private PFormOpt pf;
         private Bloque bq;
 
-        public Dec_proc(String id, Pform pf, Bloque bq) {
+        public Dec_proc(String id, PFormOpt pf, Bloque bq) {
             this.id = id;
             this.pf = pf;
             this.bq = bq;
@@ -735,7 +735,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public String iden() {return id;}
-        public Pform pf() {return pf;}
+        public PFormOpt pf() {return pf;}
         public Bloque bq() {return bq;}
         public String toString() {
             return "dec_proc("+id+"["+leeFila()+","+leeCol()+"],"+pf.toString()+ ", "+pf.toString()+ ")";

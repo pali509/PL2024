@@ -15,7 +15,7 @@ import asint.SintaxisAbstractaEval.Lit_real;
 import asint.SintaxisAbstractaEval.Iden;
 import asint.SintaxisAbstractaEval.Prog;
 
-public class Impresion extends SintaxisAbstractaTiny {
+public class ImpresionVisitante extends SintaxisAbstractaTiny {
     private void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
         opnd.imprime(this);
