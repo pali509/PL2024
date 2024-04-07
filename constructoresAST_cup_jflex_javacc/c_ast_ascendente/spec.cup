@@ -1,0 +1,303 @@
+package c_ast_ascendente;
+
+import java_cup.runtime.*;
+import asint.ClaseSemanticaEval;
+import asint.SintaxisAbstractaEval.Exp;
+import asint.SintaxisAbstractaEval.Decs;
+import asint.SintaxisAbstractaEval.LDecs;
+import asint.SintaxisAbstractaEval.Dec;
+import asint.SintaxisAbstractaEval.Prog;
+import c_ast_ascendente.UnidadLexica.StringLocalizado;
+
+
+scan with {: 
+  return getScanner().next_token(); 
+:};
+parser code {: 
+   private GestionErroresEval errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+:};
+init with {: 
+   errores = new GestionErroresEval();
+   AnalizadorLexicoEval alex = (AnalizadorLexicoEval)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+action code {:
+  ClaseSemanticaEval sem = new ClaseSemanticaEval();
+:}
+
+
+terminal     IDENTIFICADOR, LITENTERO,  LITEREAL,  LITCADENA, SUMA, RESTA, MUL, DIV, MOD, MAYOR,
+			 MENOR, MAYORIGUAL, MENORIGUAL, IGUAL, DESIGUAL, ASIG, PARA, PARC, PUNTOYCOMA, COMA,
+			 CIRCUNFLEJO, PUNTO, CORCHETEA, CORCHETEC, LLAVEA, LLAVEC, ARROBA, AMPERSAND, AMPERSAND2,
+			 INT, REAL, BOOL, STRING, NULL, PROC, IF, ELSE, WHILE, STRUCT, NEW, DELETE, READ, WRITE,
+			 NL, TYPE, CALL, TRUE, FALSE, AND, NOT, OR;
+
+non terminal  programa, bloque, declaraciones_opt, instrucciones_opt, declaraciones, instrucciones,
+			  declaracion, declaracion_var, declaracion_tipo, declaracion_proc, tipo, parametros_formales_opt,
+			  parametros_formales, parametro_formal, and_opt,tipo1, tipo2, campos, campo, instruccion, 
+			  if_select, E0, parametros_reales_opt, parametros_reales, E1, E2, E3, E4, E5, E6, op1,
+			  op4, op5, op6;
+
+programa ::= bloque bloq 
+	{: RESULT = sem.prog(bloq);:};
+
+bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
+   {: RESULT = sem.bloque(exp,decs); :};
+   
+declaraciones_opt ::= declaraciones: decs AMPERSAND2 
+	{: RESULT = sem.si_decs(decs); :};
+	
+declaraciones_opt ::= 
+	{: RESULT = sem.no_decs(); :};
+
+instrucciones_opt ::= instrucciones: ins
+	{: RESULT = sem.si_ins(ins); :};
+	
+instrucciones_opt ::= 
+	{: RESULT = sem.no_ins(); :};   
+
+declaraciones ::= declaraciones: decs PUNTOYCOMA declaracion: dec
+ 	{: RESULT = sem.muchas_decs(decs, dec); :};
+
+declaraciones ::= declaracion: dec 
+	{: RESULT = sem.una_dec(dec); :};
+
+declaracion ::= tipo: t IDENTIFICADOR: id
+	{: RESULT = (Dec)sem.dec_var(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+ 
+declaracion ::= TYPE tipo: t IDENTIFICADOR: id 
+	{: RESULT = (Dec)sem.dec_tipo(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+	
+declaracion ::= PROC IDENTIFICADOR: id  PARA parametros_formales_opt: parFopt PARC bloque: bloq
+	{: RESULT = (Dec)sem.dec_proc(id.str(), parFopt, bloq).ponFila(id.fila()).ponCol(id.col()); :}; 
+
+parametros_formales_opt ::= parametros_formales: parFs
+	{: RESULT = sem.si_pform(parFs); :};
+	
+parametros_formales_opt ::= 
+	{: RESULT = sem.no_pform(); :};
+
+parametros_formales ::= parametros_formales:parFs COMA parametro_formal: parF 
+	{: RESULT = sem.muchas_pforms(parFs, parF); :};
+	
+parametros_formales ::= parametro_formal: parF
+	{: RESULT = sem.una_pform(parF); :};
+	
+parametro_formal ::= tipo: t and_opt: a IDENTIFICADOR: id
+	{: RESULT = sem.pform(t, a, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+
+and_opt ::= AMPERSAND 
+	{: RESULT = sem.pform_ref(); :};
+
+and_opt ::= 
+	{: RESULT = sem.pform_no_ref(); :};
+
+tipo ::= tipo: t CORCHETEA LITENTERO: num CORCHETEC  
+	{: RESULT = (Tipo)sem.array(t, num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+	
+tipo ::= tipo1: t 
+	{: RESULT = t; :};
+	
+tipo1 ::=  CIRCUNFLEJO tipo1: t
+	{: RESULT = sem.puntero(t); :};
+
+tipo1 ::= tipo2: t
+	{: RESULT = t; :};
+	
+tipo2 ::= IDENTIFICADOR: id 
+	{: RESULT = (Tipo)sem.dec_iden(id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+
+tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC 
+	{: RESULT = sem.struct(camps); :}; 
+
+tipo2 ::= INT
+	{: RESULT = sem.lit_ent(); :}; 
+;
+tipo2 ::= REAL 
+	{: RESULT = sem.lit_real(); :}; 
+
+tipo2 ::= BOOL
+	{: RESULT = sem.lit_bool(); :}; 
+
+tipo2 ::= STRING 
+	{: RESULT = sem.lit_string(); :}; 
+
+campos ::= campos: camps COMA campo: camp
+	{: RESULT = sem.muchos_camp(camps, camp); :};
+
+campos ::= campo: camp
+	{: RESULT = sem.un_camp(camp); :};
+
+campo ::= tipo: t IDENTIFICADOR: id 
+	{: RESULT = sem.camp(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+ 
+instrucciones ::= instrucciones: ins PUNTOYCOMA instruccion: in 
+	{: RESULT = sem.muchas_ins(ins,in); :};
+
+instrucciones ::= instruccion: in
+	{: RESULT = sem.una_ins(in); :};
+
+instruccion ::= ARROBA E0: exp
+	{: RESULT = sem.ins_asig(exp); :};
+
+
+instruccion ::= IF E0: exp bloque: bloq 
+	{: RESULT = sem.ins_if(exp, bloq); :};
+
+
+instruccion ::= IF E0: exp bloque: bloq  ELSE bloque: bloq1
+	{: RESULT = sem.ins_if_else(exp, bloq, bloq1); :};
+
+instruccion ::= WHILE E0: exp bloque: bloq
+	{: RESULT = sem.ins_while(exp, bloq); :};
+
+instruccion ::= READ E0:exp
+	{: RESULT = sem.ins_read(exp); :};
+
+instruccion ::= WRITE E0:exp
+	{: RESULT = sem.ins_write(exp); :};
+
+instruccion ::= NL
+	{: RESULT = sem.ins_nl(); :};
+
+instruccion ::= NEW E0: exp
+	{: RESULT = sem.ins_new(exp); :};
+
+instruccion ::= DELETE E0:exp
+	{: RESULT = sem.ins_delete(exp); :};
+
+instruccion ::= CALL IDENTIFICADOR:id PARA parametros_reales_opt:parRopt PARC
+	{: RESULT = sem.ins_call(id.str(), parRopt).ponFila(id.fila()).ponCol(id.col()); :};
+
+instruccion ::= bloque:bloq 
+	{: RESULT = sem.ins_bloque(bloq); :};
+
+parametros_reales_opt ::= parametros_reales: parR
+	{: RESULT = sem.si_preal(parR); :};
+	
+parametros_reales_opt ::= 
+	{: RESULT = sem.no_preal(); :};
+
+parametros_reales ::= parametros_reales: pReals COMA E0: exp 
+	{: RESULT = sem.muchos_preal(pReals, exp); :};
+
+parametros_reales ::= E0:exp
+	{: RESULT = sem.un_preal(exp); :};
+
+E0 ::= E1:op1 ASIG E0:op2
+	{: RESULT = sem.asig(op1,op2); :};
+
+E0 ::= E1: exp
+	{: RESULT = exp; :};
+
+E1 ::= E1:opn1 op1:op E2:opn2
+	{: RESULT = sem.mkop2(op, opn1,opn2); :};
+
+E1 ::= E2:exp 
+	{: RESULT = exp; :};
+
+E2 ::= E2:opn1 SUMA E3:opn2
+	{: RESULT = sem.mkop2("+", opn1,opn2); :};
+
+E2 ::= E3:opn1 RESTA E3:opn2
+	{: RESULT = sem.mkop2("-", opn1,opn2); :};
+
+E2 ::= E3:exp
+	{: RESULT = exp; :};
+
+E3 ::= E4:opn1 AND E3:opn2
+	{: RESULT = sem.and(opn1,opn2); :};
+
+E3 ::= E4:opn1 OR E4:opn2
+	{: RESULT = sem.or(opn1,opn2); :};
+
+E3 ::= E4:exp
+	{: RESULT = exp; :};
+
+E4 ::= E4:opn1 op4:op E5:opn2
+	{: RESULT = sem.mkop2(op, opn1,opn2); :};
+
+E4 ::= E5:exp
+	{: RESULT = exp; :};
+
+E5 ::= op5:op E5:opn1
+	{: RESULT = sem.mkop1(op, opn1); :};
+
+E5 ::= E6:exp
+	{: RESULT = exp; :};
+
+E6 ::= E6:opn1 CORCHETEA E0:exp CORCHETEC
+	{: RESULT = sem.acceso_array(opn1,exp); :};
+
+E6 ::= E6:exp PUNTO IDENTIFICADOR:id
+	{: RESULT = (Exp)sem.acceso_campo(exp, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+
+E6 ::= E6:exp CIRCUNFLEJO
+	{: RESULT = sem.acceso_puntero(exp); :};
+
+E6 ::= E7:exp
+	{: RESULT = exp; :};
+
+E7 ::= LITENTERO:num
+	{: RESULT = (Exp)sem.exp_litEntero(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+
+E7 ::= LITEREAL:num
+	{: RESULT = (Exp)sem.exp_litReal(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+
+E7 ::= LITCADENA:num
+	{: RESULT = (Exp)sem.exp_litCadena(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+
+E7 ::= TRUE
+	{: RESULT = (Exp)sem.exp_litBoolTrue(); :};
+
+E7 ::= FALSE
+	{: RESULT = (Exp)sem.exp_litBoolFalse(); :};
+
+E7 ::= IDENTIFICADOR:id
+	{: RESULT = (Exp)sem.exp_litIdentificador(id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+
+E7 ::= NULL
+	{: RESULT = (Exp)sem.exp_null(); :};
+
+E7 ::= PARA E0:exp PARC
+	{: RESULT = exp; :};
+
+op1 ::= MAYOR
+   {: RESULT = ">"; :};
+
+op1 ::= MENOR
+   {: RESULT = "<"; :};
+
+op1 ::= MAYORIGUAL
+   {: RESULT = ">="; :};
+
+op1 ::= MENORIGUAL
+   {: RESULT = "<="; :};
+
+op1 ::= IGUAL
+   {: RESULT = "=="; :};
+
+op1 ::= DESIGUAL
+   {: RESULT = "!="; :};
+
+op4 ::= MUL
+   {: RESULT = "*"; :};
+
+op4 ::= DIV
+   {: RESULT = "/"; :};
+
+op4 ::= MOD
+   {: RESULT = "%"; :};
+
+op5 ::= RESTA
+   {: RESULT = "-"; :};
+
+op5 ::= NOT
+   {: RESULT = "not"; :};
+
+
+
+

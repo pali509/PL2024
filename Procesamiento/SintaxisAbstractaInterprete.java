@@ -11,14 +11,13 @@ public class SintaxisAbstractaInterprete {
         if(opnd.prioridad() < np) {System.out.print(")");};
     }
 
-    /*
+
     private static void imprimeExpBin(Exp opnd0, String op, Exp opnd1, int np0, int np1) {
         imprimeOpnd(opnd0,np0);
         System.out.print(" "+op+" ");
         imprimeOpnd(opnd1,np1);
     }
 
-     */
 
     public static abstract class Nodo  {
         public Nodo() {
@@ -75,9 +74,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,2);
-            System.out.print(" + ");
-            imprimeOpnd(opnd1,3);
+            imprimeExpBin(opnd0,"+",opnd1,2,3);
         }
         public int prioridad() {return 2;}
 
@@ -90,9 +87,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,2);
-            System.out.print(" - ");
-            imprimeOpnd(opnd1,3);
+            imprimeExpBin(opnd0,"-",opnd1,2,3);
         }
         public int prioridad() {return 2;}
         public String toString() {
@@ -104,9 +99,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,4);
-            System.out.print(" * ");
-            imprimeOpnd(opnd1,5);
+            imprimeExpBin(opnd0,"*",opnd1,4,5);
         }
         public int prioridad() {return 4;}
         public String toString() {
@@ -118,9 +111,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,4);
-            System.out.print(" / ");
-            imprimeOpnd(opnd1,5);
+            imprimeExpBin(opnd0,"/",opnd1,4,5);
         }
         public int prioridad() {return 4;}
         public String toString() {
@@ -139,9 +130,7 @@ public class SintaxisAbstractaInterprete {
         }
 
         public void imprime() {
-            imprimeOpnd(opnd0,4);
-            System.out.print(" % ");
-            imprimeOpnd(opnd1,5);
+            imprimeExpBin(opnd0,"%",opnd1,4,5);
         }
     }
     public static class Asig extends ExpBin {
@@ -149,9 +138,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,0);
-            System.out.print(" = ");
-            imprimeOpnd(opnd1,1);
+            imprimeExpBin(opnd0,"=",opnd1,0,1);
         }
         public int prioridad() {return 0;}
         public String toString() {
@@ -163,9 +150,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" > ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,">",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -177,9 +162,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" < ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,"<",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -191,9 +174,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" >= ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,">=",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -205,9 +186,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" >= ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,"<=",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -219,9 +198,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" == ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,"==",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -233,9 +210,7 @@ public class SintaxisAbstractaInterprete {
             super(opnd0,opnd1);
         }
         public void imprime() {
-            imprimeOpnd(opnd0,1);
-            System.out.print(" != ");
-            imprimeOpnd(opnd1,2);
+            imprimeExpBin(opnd0,"!=",opnd1,1,2);
         }
         public int prioridad() {return 1;}
         public String toString() {
@@ -269,25 +244,162 @@ public class SintaxisAbstractaInterprete {
         }
     }
 
+    public static abstract class Tipo extends Nodo {
+        public Tipo() {}
+    }
 
-    public static class Lit_ent extends Exp {
-        private String num;
-        public Lit_ent(String num) {
+    public static class Lit_ent extends Tipo {
+
+        public Lit_ent() {
             super();
-            this.num = num;
         }
-        public void imprime() {
-            System.out.print(num);
+
+        public void imprime(){
+            System.out.println("<int>");
         }
-        public int prioridad() {return 2;}
         public String toString() {
-            return "lit_ent("+num+"["+leeFila()+","+leeCol()+"])";
+            return "<Int>";
         }
     }
 
-    public static class Lit_real extends Exp {
+    public static class Lit_real extends Tipo {
+
+        public Lit_real() {
+            super();
+        }
+
+        public void imprime() {
+            System.out.println("<real>");
+        }
+
+
+        public String toString() {
+            return "<Real>";
+        }
+    }
+    public static class Lit_bool extends Tipo {
+
+        public Lit_bool() {
+            super();
+        }
+
+        public void imprime() {
+            System.out.println("<bool>");
+        }
+
+
+        public String toString() {
+            return "<Bool>";
+        }
+    }
+
+    public static class Lit_string extends Tipo {
+
+        public Lit_string() {
+            super();
+        }
+
+        public void imprime() {
+            System.out.println("<string>");
+        }
+
+        public String toString() {
+            return "<String>";
+        }
+    }
+
+    public static class Iden extends Tipo { //No da error por no poner imprime?????????
+        private String id;
+        public Iden(String id) {
+            super();
+            this.id = id;
+        }
+        public String iden() {return id;}
+
+        public String toString() {
+            return "iden("+id+")";
+        }
+    }
+
+    public static class Array extends Tipo {
+        private String id;
+        private Tipo t;
+        public Array(String id, Tipo t) {
+            super();
+            this.t = t;
+            this.id = id;
+        }
+
+        public String iden() {return id;}
+
+        public Tipo tipo() {return t;}
+
+        public String toString() {
+            return "Array(tipo "+t.toString()+" string " +id+")";
+        }
+
+        public void imprime() {
+            //TODO
+        }
+    }
+
+    public static class Puntero extends Tipo {
+
+        private Tipo t;
+        public Puntero(Tipo t) {
+            super();
+            this.t = t;
+
+        }
+
+        public Tipo tipo() {return t;}
+
+        public String toString() {
+            return "Puntero(tipo "+t.toString()+")";
+        }
+
+        public void imprime() {
+            //TODO
+        }
+    }
+
+    public static class Struct extends Tipo { //TODO IMPRIME()??
+
+        private LCamp lc;
+        public Struct(LCamp lc) {
+            super();
+            this.lc = lc;
+
+        }
+        public LCamp lcamp() {return lc;}
+
+        public String toString() {
+            return "Struct(listaCampos "+lc.toString()+")";
+        }
+
+        public void imprime() {
+
+        }
+    }
+
+    public static class Exp_lit_ent extends Exp {
         private String num;
-        public Lit_real(String num) {
+        public Exp_lit_ent(String num) {
+            super();
+            this.num = num;
+        }
+        public void imprime() {
+            System.out.print(num);
+        }
+        public int prioridad() {return 7;}
+        public String toString() {
+            return "Exp_lit_ent("+num+"["+leeFila()+","+leeCol()+"])";
+        }
+    }
+
+    public static class Exp_lit_real extends Exp {
+        private String num;
+        public Exp_lit_real(String num) {
             super();
             this.num = num;
         }
@@ -296,7 +408,7 @@ public class SintaxisAbstractaInterprete {
         }
         public int prioridad() {return 2;}
         public String toString() {
-            return "lit_real("+num+"["+leeFila()+","+leeCol()+"])";
+            return "Exp_lit_real("+num+"["+leeFila()+","+leeCol()+"])";
         }
     }
 
@@ -439,11 +551,11 @@ public class SintaxisAbstractaInterprete {
     public Exp div(Exp opnd0, Exp opnd1) {
         return new Div(opnd0,opnd1);
     }
-    public Exp lit_ent(String num) {
-        return new Lit_ent(num);
+    public Exp Exp_lit_ent(String num) {
+        return new Exp_lit_ent(num);
     }
-    public Exp lit_real(String num) {
-        return new Lit_real(num);
+    public Exp Exp_lit_real(String num) {
+        return new Exp_lit_real(num);
     }
     public Exp iden(String num) {
         return new Iden(num);
