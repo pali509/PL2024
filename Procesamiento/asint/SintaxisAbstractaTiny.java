@@ -73,9 +73,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "suma("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Resta extends ExpBin {
         public Resta(Exp opnd0, Exp opnd1) {
@@ -85,9 +83,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
        public int prioridad() {return 2;}
-       public String toString() {
-            return "resta("+opnd0+","+opnd1+")";
-        } 
+
     }
     public static class Mul extends ExpBin {
         public Mul(Exp opnd0, Exp opnd1) {
@@ -97,9 +93,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 4;}
-        public String toString() {
-            return "mul("+opnd0+","+opnd1+")";
-        } 
     }
     public static class Div extends ExpBin {
         public Div(Exp opnd0, Exp opnd1) {
@@ -109,9 +102,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 4;}
-        public String toString() {
-            return "div("+opnd0+","+opnd1+")";
-        } 
+
     }
 
     //NUEVOS!!
@@ -124,9 +115,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 4;}
-        public String toString() {
-            return "mod("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Asig extends ExpBin {
         public Asig(Exp opnd0, Exp opnd1) {
@@ -136,9 +125,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 0;}
-        public String toString() {
-            return "asig("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Mayor extends ExpBin {
         public Mayor(Exp opnd0, Exp opnd1) {
@@ -148,9 +135,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        public String toString() {
-            return "mayor("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Menor extends ExpBin {
         public Menor(Exp opnd0, Exp opnd1) {
@@ -160,9 +145,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        public String toString() {
-            return "menor("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class MayorIg extends ExpBin {
         public MayorIg(Exp opnd0, Exp opnd1) {
@@ -172,10 +155,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        //Alomejor no es asi el toString, no lo se
-        public String toString() {
-            return "mayorIgual("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class MenorIg extends ExpBin {
         public MenorIg(Exp opnd0, Exp opnd1) {
@@ -185,10 +165,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        //Lo mismo que mayorIgual
-        public String toString() {
-            return "menorIgual("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Igual extends ExpBin {
         public Igual(Exp opnd0, Exp opnd1) {
@@ -198,9 +175,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        public String toString() {
-            return "igual("+opnd0+","+opnd1+")";
-        }
+
     }
     public static class Desigual extends ExpBin {
         public Desigual(Exp opnd0, Exp opnd1) {
@@ -210,9 +185,8 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 1;}
-        public String toString() {
-            return "desigual("+opnd0+","+opnd1+")";
-        }
+
+
     }
     public static class Neg extends ExpUn {
         public Neg(Exp opnd) {
@@ -222,9 +196,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 5;}
-        public String toString() {
-            return "negacion("+opnd+")";
-        }
+
     }
     public static class Not extends ExpUn {
         public Not(Exp opnd) {
@@ -234,9 +206,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 5;}
-        public String toString() {
-            return "not("+opnd+")";
-        }
+
     }
 
     public static abstract class Tipo extends Nodo{
@@ -255,9 +225,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "Int";
-        }
+
     }
     public static class Lit_real extends Tipo {
 
@@ -268,9 +236,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "Real";
-        }
+
     }
     public static class Lit_bool extends Tipo {
 
@@ -281,9 +247,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "Bool";
-        }
+
     }
     public static class Lit_string extends Tipo {
 
@@ -294,9 +258,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "String";
-        }
+
     }
     public static class Iden extends Tipo {
         private String id;
@@ -310,9 +272,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public String iden() {return id;}
-        public String toString() {
-            return "iden("+id+")";
-        }
+
     }
     public static class Array extends Tipo {
         private String id;
@@ -330,9 +290,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String toString() {
-            return "Array(tipo "+t.toString()+" string " +id+")";
-        }
+
     }
     public static class Puntero extends Tipo {
 
@@ -348,9 +306,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String toString() {
-            return "Puntero(tipo "+t.toString()+")";
-        }
     }
     public static class Struct extends Tipo {
 
@@ -365,9 +320,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String toString() {
-            return "Struct(listaCampos "+lc.toString()+")";
-        }
     }
 
     public static class Exp_lit_ent extends Exp {
@@ -379,9 +331,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Exp_lit_ent";
-        } 
+
     }
 
     public static class Exp_lit_real extends Exp {
@@ -393,9 +343,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Exp_lit_real";
-        } 
+
     }
     public static class Exp_lit_BoolTrue extends Exp {
         public Exp_lit_BoolTrue() {
@@ -406,9 +354,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Exp_lit_Bool_true";
-        }
+
     }
     public static class Exp_null extends Exp {
         public Exp_null() {
@@ -419,9 +365,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-        public String toString() {
-            return "exp_null";
-        }
+
     }
     public static class Exp_lit_BoolFalse extends Exp {
         public Exp_lit_BoolFalse() {
@@ -432,9 +376,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Exp_lit_Bool_false";
-        }
+
     }
 
     public static class Exp_lit_cadena extends Exp {
@@ -448,9 +390,7 @@ public class SintaxisAbstractaTiny {
         }
         public String num(){return num;}
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Exp_lit_cadena("+num+")";
-        }
+
     }
     public static class Exp_Iden extends Exp {
 
@@ -465,9 +405,7 @@ public class SintaxisAbstractaTiny {
 
         public String num(){return num;}
         public int prioridad() {return 7;}
-        public String toString() {
-            return "Identificador("+num+")";
-        }
+
     }
 
     public static class AccesoArray extends Exp {
@@ -484,9 +422,6 @@ public class SintaxisAbstractaTiny {
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 6;}
-        public String toString() {
-            return "AccesoArray("+exp1+", "+exp2+")";
-        }
     }
     public static class AccesoCampo extends Exp {
         private String num;
@@ -502,9 +437,6 @@ public class SintaxisAbstractaTiny {
         public String num(){return num;}
         public Exp exp(){return exp;}
         public int prioridad() {return 6;}
-        public String toString() {
-            return "AccesoCampo("+num+", "+exp+")";
-        }
     }
 
     public static class AccesoPuntero extends Exp {
@@ -518,9 +450,7 @@ public class SintaxisAbstractaTiny {
         }
         public Exp exp(){return exp;}
         public int prioridad() {return 6;}
-        public String toString() {
-            return "AccesoPuntero("+exp+")";
-        }
+
     }
 
     public static class And extends Exp {
@@ -537,9 +467,7 @@ public class SintaxisAbstractaTiny {
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
-        public String toString() {
-            return "And("+exp1+", "+exp2+")";
-        }
+
     }
 
     public static class Or extends Exp {
@@ -556,9 +484,7 @@ public class SintaxisAbstractaTiny {
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
-        public String toString() {
-            return "Or("+exp1+", "+exp2+")";
-        }
+
     }
 
     public static abstract class Pform extends Nodo {
@@ -573,9 +499,6 @@ public class SintaxisAbstractaTiny {
         public Tipo t(){return t;}
         public abstract void procesa(Procesamiento p);
 
-        public String toString() {
-            return "Parametro Formal(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
-        }
     }
     public static class PFref extends Pform {
         private Tipo t;
@@ -591,9 +514,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String toString() {
-            return "Parametro Formal con ref(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
-        }
     }
 
     public static class PFnoref extends Pform {
@@ -608,10 +528,6 @@ public class SintaxisAbstractaTiny {
         public Tipo t(){return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
-        }
-
-        public String toString() {
-            return "Parametro Formal sin ref(["+leeFila()+","+leeCol()+"], "+t+", "+st+")";
         }
     }
 
@@ -629,18 +545,13 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public PFormOpt pforms() {return pforms;}
-        public String toString() {
-            return "si_pforms("+pforms.toString()+")";
-        }
 
     }
     public static class No_pforms extends PFormOpt {
         public No_pforms() {
             super();
         }
-        public String toString() {
-            return "no_pforms()";
-        }
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -656,9 +567,6 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Pform pform() {return pform;}
-        public String toString() {
-            return "un_pform("+pform.toString()+")";
-        }
     }
 
     public static class Muchos_pforms extends PFormOpt {
@@ -673,9 +581,6 @@ public class SintaxisAbstractaTiny {
         public PFormOpt pforms() {return pforms;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
-        }
-        public String toString() {
-            return "muchos_pforms("+pforms.toString()+","+pform.toString()+")";
         }
     }
 
@@ -700,9 +605,6 @@ public class SintaxisAbstractaTiny {
         }
         public String iden() {return id;}
         public Tipo tipo() {return t;}
-        public String toString() {
-            return "dec_var("+id+"["+leeFila()+","+leeCol()+"],"+t.toString()+")";
-        }
     }
     public static class Dec_tipo extends Dec {
         private String id;
@@ -717,9 +619,6 @@ public class SintaxisAbstractaTiny {
         }
         public String iden() {return id;}
         public Tipo tipo() {return t;}
-        public String toString() {
-            return "dec_tipo("+id+"["+leeFila()+","+leeCol()+"],"+t.toString()+")";
-        }
     }
     public static class Dec_proc extends Dec {
         private String id;
@@ -737,9 +636,7 @@ public class SintaxisAbstractaTiny {
         public String iden() {return id;}
         public PFormOpt pf() {return pf;}
         public Bloque bq() {return bq;}
-        public String toString() {
-            return "dec_proc("+id+"["+leeFila()+","+leeCol()+"],"+pf.toString()+ ", "+pf.toString()+ ")";
-        }
+
     }
 
     public static abstract class LDecs{
@@ -758,18 +655,13 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public LDecs decs() {return decs;}
-        public String toString() {
-            return "si_decs("+decs+")";
-        } 
- 
+
     }
     public static class No_decs extends LDecs {
        public No_decs() {
           super();
        }   
-       public String toString() {
-            return "no_decs()";
-        } 
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -785,9 +677,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Dec dec() {return dec;}
-        public String toString() {
-            return "una_dec("+dec+")";
-        }
+
     }
 
     public static class Muchas_decs extends LDecs {
@@ -803,9 +693,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-       public String toString() {
-            return "muchas_decs("+decs+","+dec+")";
-        } 
+
     }
 
 
@@ -821,9 +709,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-       public String toString() {
-            return "prog("+bq.toString()+")";
-        } 
+
     }
     public static class Bloque {
         private LDecs lds;
@@ -838,9 +724,6 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "bloque("+lds.toString()+ ", " +lis.toString()+ ")";
-        }
     }
     public static  class Camp {
         private Tipo t;
@@ -854,9 +737,7 @@ public class SintaxisAbstractaTiny {
         }
         public String iden() {return id;}
         public Tipo tipo() {return t;}
-        public String toString() {
-            return "Campo("+t.toString()+ ", "+id+")";
-        }
+
     }
 
     public static abstract class LCamp {
@@ -876,9 +757,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "un_camp("+campo.toString()+")";
-        }
+
     }
 
     public static class Muchos_camp extends LCamp {
@@ -900,9 +779,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "muchos_campos("+lcs.toString()+","+campo.toString()+")";
-        }
+
     }
     public static abstract class Ins {
         public Ins() {}
@@ -919,9 +796,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_asig("+e.toString()+")";
-        }
+
     }
 
     public static class Ins_if extends Ins {
@@ -937,9 +812,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_if("+e.toString()+ ", " +bq.toString()+ ")";
-        }
+
     }
 
     public static class Ins_if_else extends Ins {
@@ -958,9 +831,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_if_else("+e.toString()+ ", " +bq1.toString()+", " +bq2.toString()+ ")";
-        }
+
     }
 
     public static class Ins_while extends Ins {
@@ -976,9 +847,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_while("+e.toString()+ ", " +bq.toString()+ ")";
-        }
+
     }
 
     public static class Ins_read extends Ins {
@@ -991,9 +860,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_read("+e.toString()+")";
-        }
+
     }
 
     public static class Ins_write extends Ins {
@@ -1006,9 +873,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_write("+e.toString()+")";
-        }
+
     }
 
     public static class Ins_new extends Ins {
@@ -1021,9 +886,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_new("+e.toString()+")";
-        }
+
     }
 
     public static class Ins_delete extends Ins {
@@ -1036,9 +899,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_delete("+e.toString()+")";
-        }
+
     }
     public static class Ins_nl extends Ins {
         public Ins_nl() {
@@ -1047,9 +908,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_nl";
-        }
+
     }
 
     public static class Ins_call extends Ins {
@@ -1065,9 +924,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_call("+st+", "+pr.toString()+")";
-        }
+
     }
 
     public static class Ins_bloque extends Ins {
@@ -1080,9 +937,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "ins_bloque(" +bq.toString()+ ")";
-        }
+
     }
 
     public static abstract class LIns {
@@ -1101,9 +956,7 @@ public class SintaxisAbstractaTiny {
         }
         public LIns ins() {return ins;}
         
-        public String toString() {
-            return "si_ins("+ins+")";
-        } 
+
 
     }
 
@@ -1111,9 +964,7 @@ public class SintaxisAbstractaTiny {
         public No_Ins() {
             super();
         }   
-        public String toString() {
-            return "no_ins()";
-        } 
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -1131,9 +982,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "una_ins("+ins.toString()+")";
-        }
+
     }
 
     public static class Muchas_ins extends LIns {
@@ -1150,9 +999,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "muchas_ins("+li.toString()+","+ins.toString()+")";
-        }
+
     }
 
     public static abstract class LPReal{
@@ -1169,18 +1016,14 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public LPReal lpr() {return lpr;}
-        public String toString() {
-            return "si_pforms("+lpr+")";
-        }
+
 
     }
     public static class No_preal extends LPReal {
         public No_preal() {
             super();
         }
-        public String toString() {
-            return "no_preal()";
-        }
+
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -1196,9 +1039,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Exp e() {return e;}
-        public String toString() {
-            return "una_ins("+e.toString()+")";
-        }
+
     }
 
     public static class Muchos_preal extends LPReal {
@@ -1215,9 +1056,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String toString() {
-            return "muchas_ins("+lpr+","+e.toString()+")";
-        }
+
     }
 
     // Constructoras

@@ -1,8 +1,3 @@
-import asint.Procesamiento;
-import asint.SintaxisAbstractaTiny;
-
-import java.util.HashMap;
-import java.util.Map;
 public class ImpresionInterprete {
 
     private static void imprimeOpnd(Exp opnd, int np) {
