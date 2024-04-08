@@ -1183,6 +1183,7 @@ public class SintaxisAbstractaTiny {
     public LCamp muchos_camp(LCamp lc, Camp c) {
         return new Muchos_camp(lc,c);
     }
+	//yo pondria mismo tipo a PFref y PFnoref
     public PFref pfref(Tipo t, String st) {
         return new PFref(t, st);
     }
@@ -1264,7 +1265,7 @@ public class SintaxisAbstractaTiny {
     public Exp Exp_Iden(String num) {
         return new Exp_Iden(num);
     }
-
+	//yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
     public LDecs si_decs(LDecs decs) {
         return new Si_decs(decs);
     }
@@ -1276,6 +1277,18 @@ public class SintaxisAbstractaTiny {
     }
     public LDecs una_dec(Dec dec) {
         return new Una_dec(dec);
+    }
+	//he añadido los diferentes tipos de declaraciones
+    public Dec dec_var(Tipo t, Id identificador) {
+    	return new Dec_var(t, identificador);
+    }
+    
+    public Dec dec_tipo(Tipo t, Id identificador) {
+    	return new Dec_tipo(t, identificador);
+    }
+    
+    public Dec dec_proc(Id identificador, ParamForm_opt pformOpt, Bloque bloq) {
+    	return new Dec_proc(identificador, pformOpt, bloq);
     }
 
 
