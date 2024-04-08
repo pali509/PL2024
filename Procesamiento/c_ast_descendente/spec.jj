@@ -108,13 +108,13 @@ PARSER_END(ConstructorASTsEval)
        {Token t; Exp e;} 
        {
         t = <iden> 
-          {return (Exp)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
+          {return (Exp)sem.lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
         |
         t = <lit_ent> 
-          {return (Exp)sem.lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
+          {return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
         |  
         t = <lit_real> 
-          {return (Exp)sem.lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
+          {return (Exp)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);} 
         | 
         "(" e =e0() ")" 
           {return e;}

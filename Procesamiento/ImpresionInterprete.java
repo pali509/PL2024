@@ -3,7 +3,7 @@ import asint.SintaxisAbstractaTiny;
 
 import java.util.HashMap;
 import java.util.Map;
-public class SintaxisAbstractaInterprete {
+public class ImpresionInterprete {
 
     private static void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
