@@ -438,13 +438,8 @@ public class ImpresionInterprete {
             return "dec("+id+"["+leeFila()+","+leeCol()+"],"+exp+")";
         }
     }
-    public static abstract class Decs extends Nodo {
-        public Decs() {
-        }
-        public LDecs ldecs() {throw new UnsupportedOperationException();}
 
-    }
-    public static class Si_decs extends Decs {
+    public static class Si_decs extends LDecs {
         private LDecs decs;
         public Si_decs(LDecs decs) {
             super();
@@ -459,7 +454,7 @@ public class ImpresionInterprete {
         }
 
     }
-    public static class No_decs extends Decs {
+    public static class No_decs extends LDecs {
         public No_decs() {
             super();
         }
