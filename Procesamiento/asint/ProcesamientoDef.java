@@ -237,5 +237,13 @@ public class ProcesamientoDef implements Procesamiento {
 
     public void procesa(SintaxisAbstractaTiny.Not exp) { }
 
+    public void procesa(Si_Ins ins) {
+
+    }
+
+    public void procesa(No_Ins ins) {
+
+    }
+
 
 }
