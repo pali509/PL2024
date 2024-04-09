@@ -3,7 +3,7 @@ package c_ast_ascendente;
 %%
 %line
 %column
-%class AnalizadorLexicoEval
+%class AnalizadorLexicoTiny
 %type  UnidadLexica
 %unicode
 %public
@@ -11,11 +11,11 @@ package c_ast_ascendente;
 
 %{
   private ALexOperations ops;
-  private GestionErroresEval errores;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}
-  public void fijaGestionErrores(GestionErroresEval errores) {
+  public void fijaGestionErrores(GestionErroresTiny errores) {
    this.errores = errores;
   }
 
