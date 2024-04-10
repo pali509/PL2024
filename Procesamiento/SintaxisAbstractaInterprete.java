@@ -319,7 +319,7 @@ public class SintaxisAbstractaInterprete {
         }
     }
 
-    public static class Struct extends Tipo { //TODO IMPRIME()??
+    public static class Struct extends Tipo {
 
         private LCamp lc;
         public Struct(LCamp lc) {
@@ -418,7 +418,7 @@ public class SintaxisAbstractaInterprete {
             this.id = id;
         }
         public void imprime() {
-            System.out.println(id);
+            System.out.println(id + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
         }
         public int prioridad() {return 7;}
         
@@ -481,30 +481,35 @@ public class SintaxisAbstractaInterprete {
 
     }
 
-    public static class And extends Exp {
+    public static class And extends ExpBin {
         private Exp exp1;
         private Exp exp2;
         public And(Exp exp1, Exp exp2) {
-            super();
+            super(exp1,exp2);
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
-        public void imprime(){}
+        public void imprime(){
+            imprimeExpBin(this, exp1, "<and>", exp2, 4, 3);
+
+        }
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
 
     }
 
-    public static class Or extends Exp {
+    public static class Or extends ExpBin {
         private Exp exp1;
         private Exp exp2;
         public Or(Exp exp1, Exp exp2) {
-            super();
+            super(exp1,exp2);
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
-        public void imprime(){}
+        public void imprime(){
+            imprimeExpBin(this, exp1, "<and>", exp2, 4, 3);
+        }
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
@@ -752,8 +757,8 @@ public class SintaxisAbstractaInterprete {
        
     }
 
-    public static class Bloque extends Nodo {
-        private LDecs lds;
+    public static class Bloque extends Nodo { //TODO ESTO DEBERIA SER LDECSOPT Y LINSOPT :(
+        private  LDecs lds;
         private LIns lis;
         public Bloque(LDecs lds, LIns lis) {
             this.lds = lds;
@@ -762,7 +767,12 @@ public class SintaxisAbstractaInterprete {
 
         public LDecs lds() {return lds;}
         public LIns lis() {return lis;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("{");
+            lds.imprime();
+            lis.imprime();
+            System.out.println("}");
+        }
     }
     public static class Camp extends Nodo {
         private Tipo t;
@@ -836,7 +846,11 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("@");
+            e.imprime();
+            System.out.println(";");
+        }
 
     }
 
@@ -850,7 +864,11 @@ public class SintaxisAbstractaInterprete {
         }
         public Exp e() {return e;}
         public Bloque bloque(){return bq;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<if>");
+            e.imprime();
+            bq.imprime();
+        }
 
     }
 
@@ -868,14 +886,11 @@ public class SintaxisAbstractaInterprete {
         public Bloque bloque1(){return bq1;}
         public Bloque bloque2(){return bq2;}
         public void imprime(){
-            /*
-            print “<if>”
-	    imprime(Exp)
-	    imprime(Bloq)
-	    print “<else>”
-    	imprime(Bloq)
-
-             */
+            System.out.println("<if>");
+            e.imprime();
+            bloque1().imprime();
+            System.out.println("<else>");
+            bloque2().imprime();
         }
 
     }
@@ -890,7 +905,11 @@ public class SintaxisAbstractaInterprete {
         }
         public Exp e() {return e;}
         public Bloque bloque(){return bq;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<while>");
+            e.imprime();
+            bq.imprime();
+        }
 
     }
 
@@ -901,7 +920,10 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<read>");
+            e.imprime();
+        }
 
     }
 
@@ -912,7 +934,10 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<write>");
+            e.imprime();
+        }
 
     }
 
@@ -923,7 +948,10 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<new>");
+            e.imprime();
+        }
 
     }
 
@@ -934,14 +962,19 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<delete>");
+            e.imprime();
+        }
 
     }
     public static class Ins_nl extends Ins {
         public Ins_nl() {
             super();
         }
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<nl>");
+        }
 
     }
 
@@ -974,7 +1007,9 @@ public class SintaxisAbstractaInterprete {
             this.bq = bq;
         }
         public Bloque bloque(){return bq;}
-        public void imprime(){}
+        public void imprime(){
+            bq.imprime();
+        }
 
     }
 
@@ -989,7 +1024,9 @@ public class SintaxisAbstractaInterprete {
             super();
             this.ins = ins;
         }
-        public void imprime(){}
+        public void imprime(){
+            ins.imprime();
+        }
         public LIns ins() {return ins;}
 
 
@@ -1001,7 +1038,9 @@ public class SintaxisAbstractaInterprete {
             super();
         }
 
-        public void imprime(){}
+        public void imprime(){
+            //skip
+        }
     }
 
     public static class Una_ins extends LIns {
@@ -1013,7 +1052,9 @@ public class SintaxisAbstractaInterprete {
 
         public Ins ins() {return ins;}
 
-        public void imprime(){}
+        public void imprime(){
+            ins.imprime();
+        }
 
     }
 
@@ -1028,7 +1069,11 @@ public class SintaxisAbstractaInterprete {
 
         public Ins ins() {return ins;}
         public LIns li() {return li;}
-        public void imprime(){}
+        public void imprime(){
+            li.imprime();
+            System.out.println(";");
+            ins.imprime();
+        }
 
     }
 
@@ -1054,7 +1099,9 @@ public class SintaxisAbstractaInterprete {
             super();
         }
 
-        public void imprime(){}
+        public void imprime(){
+            //skip
+        }
     }
     public static class Un_PReal extends LPReal {
         private Exp e;
@@ -1111,6 +1158,7 @@ public class SintaxisAbstractaInterprete {
     }
 
     //NUEVOS!!
+
     public Exp mod(Exp opnd0, Exp opnd1) {
         return new Mod(opnd0,opnd1);
     }
@@ -1168,8 +1216,8 @@ public class SintaxisAbstractaInterprete {
     public AccesoArray accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public AccesoCampo accesoCampo(String st, Exp exp) {
-        return new AccesoCampo(st, exp);
+    public AccesoCampo accesoCampo(Iden id, Exp exp) {
+        return new AccesoCampo(id, exp);
     }
     public AccesoPuntero accesoPuntero(Exp exp) {
         return new AccesoPuntero(exp);
@@ -1194,8 +1242,8 @@ public class SintaxisAbstractaInterprete {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, String st) {
-        return new Array(st, t);
+    public Tipo array(Tipo t, Lit_ent num) {
+        return new Array(num,t);
     }
     public Tipo puntero(Tipo t) {
         return new Puntero(t);
@@ -1204,8 +1252,8 @@ public class SintaxisAbstractaInterprete {
         return new Struct(lc);
     }
 
-    public Camp camp(Tipo t, String st) {
-        return new Camp(t, st);
+    public Camp camp(Tipo t, Iden id) {
+        return new Camp(t, id);
     }
 
     public LCamp un_camp(Camp c) {
@@ -1215,11 +1263,11 @@ public class SintaxisAbstractaInterprete {
         return new Muchos_camp(lc,c);
     }
     //yo pondria mismo tipo a PFref y PFnoref
-    public PFref pfref(Tipo t, String st) {
-        return new PFref(t, st);
+    public PFref pfref(Tipo t, Iden id) {
+        return new PFref(t, id);
     }
-    public PFnoref pfnoref(Tipo t, String st) {
-        return new PFnoref(t, st);
+    public PFnoref pfnoref(Tipo t, Iden id) {
+        return new PFnoref(t, id);
     }
     public PFormOpt si_pforms(PFormOpt lpf){
         return new Si_pforms(lpf);
@@ -1234,6 +1282,12 @@ public class SintaxisAbstractaInterprete {
         return new Muchos_pforms(lpf, pf);
     }
 
+    public LIns si_ins(LIns ins){
+        return new Si_Ins(ins);
+    }
+    public LIns no_ins(){
+        return new No_Ins();
+    }
     public LIns una_ins(Ins ins){
         return new Una_ins(ins);
     }
@@ -1268,8 +1322,8 @@ public class SintaxisAbstractaInterprete {
     public Ins ins_delete(Exp e){
         return new Ins_delete(e);
     }
-    public Ins ins_call(String st, LPReal lpr){
-        return new Ins_call(st, lpr);
+    public Ins ins_call(Iden id, LPReal lpr){
+        return new Ins_call(id, lpr);
     }
 
 
@@ -1287,13 +1341,13 @@ public class SintaxisAbstractaInterprete {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp Exp_lit_ent(String lex) {
-        return new Exp_lit_ent(lex);
+    public Exp exp_lit_ent(String st) {
+        return new Exp_lit_ent(st);
     }
-    public Exp Exp_lit_real(String lex) {
-        return new Exp_lit_real(lex);
+    public Exp exp_lit_real(String st) {
+        return new Exp_lit_real(st);
     }
-    public Exp Exp_Iden(String num) {
+    public Exp exp_Iden(String num) {
         return new Exp_Iden(num);
     }
     //yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
@@ -1321,4 +1375,5 @@ public class SintaxisAbstractaInterprete {
     public Dec dec_proc(Iden identificador, PFormOpt pformOpt, Bloque bloq) {
         return new Dec_proc(identificador, pformOpt, bloq);
     }
+
 }

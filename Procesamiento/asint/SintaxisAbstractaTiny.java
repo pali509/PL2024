@@ -459,11 +459,11 @@ public class SintaxisAbstractaTiny {
 
     }
 
-    public static class And extends Exp {
+    public static class And extends ExpBin {
         private Exp exp1;
         private Exp exp2;
         public And(Exp exp1, Exp exp2) {
-            super();
+            super(exp1,exp2);
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
@@ -476,11 +476,11 @@ public class SintaxisAbstractaTiny {
 
     }
 
-    public static class Or extends Exp {
+    public static class Or extends ExpBin {
         private Exp exp1;
         private Exp exp2;
         public Or(Exp exp1, Exp exp2) {
-            super();
+            super(exp1,exp2);
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
@@ -1269,11 +1269,11 @@ public class SintaxisAbstractaTiny {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp exp_lit_ent() {
-        return new Exp_lit_ent();
+    public Exp exp_lit_ent(String st) {
+        return new Exp_lit_ent(st);
     }
-    public Exp exp_lit_real() {
-        return new Exp_lit_real();
+    public Exp exp_lit_real(String st) {
+        return new Exp_lit_real(st);
     }
     public Exp exp_Iden(String num) {
         return new Exp_Iden(num);
