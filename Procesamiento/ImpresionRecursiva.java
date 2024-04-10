@@ -6,82 +6,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
-        if(claseDe(opnd, Asig.class)){
-            imprime((Asig)opnd);
-        }
-        else if(claseDe(opnd, Mayor.class)){
-            imprime((Mayor)opnd);
-        }
-        else if(claseDe(opnd, Menor.class)){
-            imprime((Menor)opnd);
-        }
-        else if(claseDe(opnd, MayorIg.class)){
-            imprime((MayorIg)opnd);
-        }
-        else if(claseDe(opnd, MenorIg.class)){
-            imprime((MenorIg)opnd);
-        }
-        else if(claseDe(opnd, Igual.class)){
-            imprime((Igual)opnd);
-        }
-        else if(claseDe(opnd, Desigual.class)){
-            imprime((Desigual)opnd);
-        }
-        else if(claseDe(opnd, Suma.class)){
-            imprime((Suma)opnd);
-        }
-        else if(claseDe(opnd, Resta.class)){
-            imprime((Resta)opnd);
-        }
-        else if(claseDe(opnd, And.class)){
-            imprime((And)opnd);
-        }
-        else if(claseDe(opnd, Or.class)){
-            imprime((Or)opnd);
-        }
-        else if(claseDe(opnd, Mul.class)){
-            imprime((Mul)opnd);
-        }
-        else if(claseDe(opnd, Div.class)){
-            imprime((Div)opnd);
-        }
-        else if(claseDe(opnd, Mod.class)){
-            imprime((Mod)opnd);
-        }
-        else if(claseDe(opnd, Neg.class)){
-            imprime((Neg)opnd);
-        }
-        else if(claseDe(opnd, Not.class)){
-            imprime((Not)opnd);
-        }
-        else if(claseDe(opnd, AccesoArray.class)){
-            imprime((AccesoArray)opnd);
-        }
-        else if(claseDe(opnd, AccesoCampo.class)){
-            imprime((AccesoCampo)opnd);
-        }
-        else if(claseDe(opnd, AccesoPuntero.class)){
-            imprime((AccesoPuntero)opnd);
-        }
-        else if(claseDe(opnd, Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)opnd);
-        }
-        else if(claseDe(opnd, Exp_lit_real.class)){
-            imprime((Exp_lit_real)opnd);
-        }
-        else if(claseDe(opnd, Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)opnd);
-        }
-        else if(claseDe(opnd, Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)opnd);
-        }
-        else if(claseDe(opnd, Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)opnd);
-        }
-        else if(claseDe(opnd, Exp_Iden.class)){
-            imprime((Exp_Iden)opnd);
-        }
-        else imprime((Exp_null)opnd);
+        imprime(opnd);
         if(opnd.prioridad() < np) {System.out.print(")");};        
     }
 
@@ -494,243 +419,18 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_asig asig){
         System.out.println("@");
-        if(claseDe(asig.e(), Asig.class)){
-            imprime((Asig)asig.e());
-        }
-        else if(claseDe(asig.e(), Mayor.class)){
-            imprime((Mayor)asig.e());
-        }
-        else if(claseDe(asig.e(), Menor.class)){
-            imprime((Menor)asig.e());
-        }
-        else if(claseDe(asig.e(), MayorIg.class)){
-            imprime((MayorIg)asig.e());
-        }
-        else if(claseDe(asig.e(), MenorIg.class)){
-            imprime((MenorIg)asig.e());
-        }
-        else if(claseDe(asig.e(), Igual.class)){
-            imprime((Igual)asig.e());
-        }
-        else if(claseDe(asig.e(), Desigual.class)){
-            imprime((Desigual)asig.e());
-        }
-        else if(claseDe(asig.e(), Suma.class)){
-            imprime((Suma)asig.e());
-        }
-        else if(claseDe(asig.e(), Resta.class)){
-            imprime((Resta)asig.e());
-        }
-        else if(claseDe(asig.e(), And.class)){
-            imprime((And)asig.e());
-        }
-        else if(claseDe(asig.e(), Or.class)){
-            imprime((Or)asig.e());
-        }
-        else if(claseDe(asig.e(), Mul.class)){
-            imprime((Mul)asig.e());
-        }
-        else if(claseDe(asig.e(), Div.class)){
-            imprime((Div)asig.e());
-        }
-        else if(claseDe(asig.e(), Mod.class)){
-            imprime((Mod)asig.e());
-        }
-        else if(claseDe(asig.e(), Neg.class)){
-            imprime((Neg)asig.e());
-        }
-        else if(claseDe(asig.e(), Not.class)){
-            imprime((Not)asig.e());
-        }
-        else if(claseDe(asig.e(), AccesoArray.class)){
-            imprime((AccesoArray)asig.e());
-        }
-        else if(claseDe(asig.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)asig.e());
-        }
-        else if(claseDe(asig.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)asig.e());
-        }
-        else if(claseDe(asig.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)asig.e());
-        }
-        else imprime((Exp_null)asig.e());
+        imprime(asig.e());
     }
 
     private void imprime(Ins_if iif){
         System.out.println("<if>");
-        if(claseDe(iif.e(), Asig.class)){
-            imprime((Asig)iif.e());
-        }
-        else if(claseDe(iif.e(), Mayor.class)){
-            imprime((Mayor)iif.e());
-        }
-        else if(claseDe(iif.e(), Menor.class)){
-            imprime((Menor)iif.e());
-        }
-        else if(claseDe(iif.e(), MayorIg.class)){
-            imprime((MayorIg)iif.e());
-        }
-        else if(claseDe(iif.e(), MenorIg.class)){
-            imprime((MenorIg)iif.e());
-        }
-        else if(claseDe(iif.e(), Igual.class)){
-            imprime((Igual)iif.e());
-        }
-        else if(claseDe(iif.e(), Desigual.class)){
-            imprime((Desigual)iif.e());
-        }
-        else if(claseDe(iif.e(), Suma.class)){
-            imprime((Suma)iif.e());
-        }
-        else if(claseDe(iif.e(), Resta.class)){
-            imprime((Resta)iif.e());
-        }
-        else if(claseDe(iif.e(), And.class)){
-            imprime((And)iif.e());
-        }
-        else if(claseDe(iif.e(), Or.class)){
-            imprime((Or)iif.e());
-        }
-        else if(claseDe(iif.e(), Mul.class)){
-            imprime((Mul)iif.e());
-        }
-        else if(claseDe(iif.e(), Div.class)){
-            imprime((Div)iif.e());
-        }
-        else if(claseDe(iif.e(), Mod.class)){
-            imprime((Mod)iif.e());
-        }
-        else if(claseDe(iif.e(), Neg.class)){
-            imprime((Neg)iif.e());
-        }
-        else if(claseDe(iif.e(), Not.class)){
-            imprime((Not)iif.e());
-        }
-        else if(claseDe(iif.e(), AccesoArray.class)){
-            imprime((AccesoArray)iif.e());
-        }
-        else if(claseDe(iif.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)iif.e());
-        }
-        else if(claseDe(iif.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)iif.e());
-        }
-        else if(claseDe(iif.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)iif.e());
-        }
-        else imprime((Exp_null)iif.e());
+        imprime(iif.e());
         imprime(iif.bloque());
     }
 
     private void imprime(Ins_if_else ifelse){
         System.out.println("<if>");
-        if(claseDe(ifelse.e(), Asig.class)){
-            imprime((Asig)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Mayor.class)){
-            imprime((Mayor)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Menor.class)){
-            imprime((Menor)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), MayorIg.class)){
-            imprime((MayorIg)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), MenorIg.class)){
-            imprime((MenorIg)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Igual.class)){
-            imprime((Igual)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Desigual.class)){
-            imprime((Desigual)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Suma.class)){
-            imprime((Suma)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Resta.class)){
-            imprime((Resta)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), And.class)){
-            imprime((And)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Or.class)){
-            imprime((Or)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Mul.class)){
-            imprime((Mul)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Div.class)){
-            imprime((Div)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Mod.class)){
-            imprime((Mod)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Neg.class)){
-            imprime((Neg)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Not.class)){
-            imprime((Not)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), AccesoArray.class)){
-            imprime((AccesoArray)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)ifelse.e());
-        }
-        else if(claseDe(ifelse.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)ifelse.e());
-        }
-        else imprime((Exp_null)ifelse.e());
+        imprime(ifelse.e());
         imprime(ifelse.bloque1());
         System.out.println("<else>");
         imprime(ifelse.bloque2());
@@ -738,243 +438,18 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_while iwhile){
         System.out.println("<while>");
-        if(claseDe(iwhile.e(), Asig.class)){
-            imprime((Asig)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Mayor.class)){
-            imprime((Mayor)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Menor.class)){
-            imprime((Menor)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), MayorIg.class)){
-            imprime((MayorIg)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), MenorIg.class)){
-            imprime((MenorIg)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Igual.class)){
-            imprime((Igual)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Desigual.class)){
-            imprime((Desigual)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Suma.class)){
-            imprime((Suma)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Resta.class)){
-            imprime((Resta)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), And.class)){
-            imprime((And)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Or.class)){
-            imprime((Or)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Mul.class)){
-            imprime((Mul)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Div.class)){
-            imprime((Div)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Mod.class)){
-            imprime((Mod)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Neg.class)){
-            imprime((Neg)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Not.class)){
-            imprime((Not)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), AccesoArray.class)){
-            imprime((AccesoArray)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)iwhile.e());
-        }
-        else if(claseDe(iwhile.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)iwhile.e());
-        }
-        else imprime((Exp_null)iwhile.e());
+        imprime(iwhile.e());
         imprime(iwhile.bloque());
     }
 
     private void imprime(Ins_read read){
         System.out.println("<read>");
-        if(claseDe(read.e(), Asig.class)){
-            imprime((Asig)read.e());
-        }
-        else if(claseDe(read.e(), Mayor.class)){
-            imprime((Mayor)read.e());
-        }
-        else if(claseDe(read.e(), Menor.class)){
-            imprime((Menor)read.e());
-        }
-        else if(claseDe(read.e(), MayorIg.class)){
-            imprime((MayorIg)read.e());
-        }
-        else if(claseDe(read.e(), MenorIg.class)){
-            imprime((MenorIg)read.e());
-        }
-        else if(claseDe(read.e(), Igual.class)){
-            imprime((Igual)read.e());
-        }
-        else if(claseDe(read.e(), Desigual.class)){
-            imprime((Desigual)read.e());
-        }
-        else if(claseDe(read.e(), Suma.class)){
-            imprime((Suma)read.e());
-        }
-        else if(claseDe(read.e(), Resta.class)){
-            imprime((Resta)read.e());
-        }
-        else if(claseDe(read.e(), And.class)){
-            imprime((And)read.e());
-        }
-        else if(claseDe(read.e(), Or.class)){
-            imprime((Or)read.e());
-        }
-        else if(claseDe(read.e(), Mul.class)){
-            imprime((Mul)read.e());
-        }
-        else if(claseDe(read.e(), Div.class)){
-            imprime((Div)read.e());
-        }
-        else if(claseDe(read.e(), Mod.class)){
-            imprime((Mod)read.e());
-        }
-        else if(claseDe(read.e(), Neg.class)){
-            imprime((Neg)read.e());
-        }
-        else if(claseDe(read.e(), Not.class)){
-            imprime((Not)read.e());
-        }
-        else if(claseDe(read.e(), AccesoArray.class)){
-            imprime((AccesoArray)read.e());
-        }
-        else if(claseDe(read.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)read.e());
-        }
-        else if(claseDe(read.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)read.e());
-        }
-        else if(claseDe(read.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)read.e());
-        }
-        else if(claseDe(read.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)read.e());
-        }
-        else if(claseDe(read.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)read.e());
-        }
-        else if(claseDe(read.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)read.e());
-        }
-        else if(claseDe(read.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)read.e());
-        }
-        else if(claseDe(read.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)read.e());
-        }
-        else imprime((Exp_null)read.e());
+        imprime(read.e());
     }
 
     private void imprime(Ins_write write){
         System.out.println("<write>");
-        if(claseDe(write.e(), Asig.class)){
-            imprime((Asig)write.e());
-        }
-        else if(claseDe(write.e(), Mayor.class)){
-            imprime((Mayor)write.e());
-        }
-        else if(claseDe(write.e(), Menor.class)){
-            imprime((Menor)write.e());
-        }
-        else if(claseDe(write.e(), MayorIg.class)){
-            imprime((MayorIg)write.e());
-        }
-        else if(claseDe(write.e(), MenorIg.class)){
-            imprime((MenorIg)write.e());
-        }
-        else if(claseDe(write.e(), Igual.class)){
-            imprime((Igual)write.e());
-        }
-        else if(claseDe(write.e(), Desigual.class)){
-            imprime((Desigual)write.e());
-        }
-        else if(claseDe(write.e(), Suma.class)){
-            imprime((Suma)write.e());
-        }
-        else if(claseDe(write.e(), Resta.class)){
-            imprime((Resta)write.e());
-        }
-        else if(claseDe(write.e(), And.class)){
-            imprime((And)write.e());
-        }
-        else if(claseDe(write.e(), Or.class)){
-            imprime((Or)write.e());
-        }
-        else if(claseDe(write.e(), Mul.class)){
-            imprime((Mul)write.e());
-        }
-        else if(claseDe(write.e(), Div.class)){
-            imprime((Div)write.e());
-        }
-        else if(claseDe(write.e(), Mod.class)){
-            imprime((Mod)write.e());
-        }
-        else if(claseDe(write.e(), Neg.class)){
-            imprime((Neg)write.e());
-        }
-        else if(claseDe(write.e(), Not.class)){
-            imprime((Not)write.e());
-        }
-        else if(claseDe(write.e(), AccesoArray.class)){
-            imprime((AccesoArray)write.e());
-        }
-        else if(claseDe(write.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)write.e());
-        }
-        else if(claseDe(write.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)write.e());
-        }
-        else if(claseDe(write.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)write.e());
-        }
-        else if(claseDe(write.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)write.e());
-        }
-        else if(claseDe(write.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)write.e());
-        }
-        else if(claseDe(write.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)write.e());
-        }
-        else if(claseDe(write.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)write.e());
-        }
-        else if(claseDe(write.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)write.e());
-        }
-        else imprime((Exp_null)write.e());
+        imprime(write.e());
     }
 
     private void imprime(Ins_nl nl){
@@ -983,162 +458,12 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_new inew){
         System.out.println("<new>");
-        if(claseDe(inew.e(), Asig.class)){
-            imprime((Asig)inew.e());
-        }
-        else if(claseDe(inew.e(), Mayor.class)){
-            imprime((Mayor)inew.e());
-        }
-        else if(claseDe(inew.e(), Menor.class)){
-            imprime((Menor)inew.e());
-        }
-        else if(claseDe(inew.e(), MayorIg.class)){
-            imprime((MayorIg)inew.e());
-        }
-        else if(claseDe(inew.e(), MenorIg.class)){
-            imprime((MenorIg)inew.e());
-        }
-        else if(claseDe(inew.e(), Igual.class)){
-            imprime((Igual)inew.e());
-        }
-        else if(claseDe(inew.e(), Desigual.class)){
-            imprime((Desigual)inew.e());
-        }
-        else if(claseDe(inew.e(), Suma.class)){
-            imprime((Suma)inew.e());
-        }
-        else if(claseDe(inew.e(), Resta.class)){
-            imprime((Resta)inew.e());
-        }
-        else if(claseDe(inew.e(), And.class)){
-            imprime((And)inew.e());
-        }
-        else if(claseDe(inew.e(), Or.class)){
-            imprime((Or)inew.e());
-        }
-        else if(claseDe(inew.e(), Mul.class)){
-            imprime((Mul)inew.e());
-        }
-        else if(claseDe(inew.e(), Div.class)){
-            imprime((Div)inew.e());
-        }
-        else if(claseDe(inew.e(), Mod.class)){
-            imprime((Mod)inew.e());
-        }
-        else if(claseDe(inew.e(), Neg.class)){
-            imprime((Neg)inew.e());
-        }
-        else if(claseDe(inew.e(), Not.class)){
-            imprime((Not)inew.e());
-        }
-        else if(claseDe(inew.e(), AccesoArray.class)){
-            imprime((AccesoArray)inew.e());
-        }
-        else if(claseDe(inew.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)inew.e());
-        }
-        else if(claseDe(inew.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)inew.e());
-        }
-        else if(claseDe(inew.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)inew.e());
-        }
-        else imprime((Exp_null)inew.e());
+        imprime(inew.e());
     }
 
     private void imprime(Ins_delete delete){
         System.out.println("<delete>");
-        if(claseDe(delete.e(), Asig.class)){
-            imprime((Asig)delete.e());
-        }
-        else if(claseDe(delete.e(), Mayor.class)){
-            imprime((Mayor)delete.e());
-        }
-        else if(claseDe(delete.e(), Menor.class)){
-            imprime((Menor)delete.e());
-        }
-        else if(claseDe(delete.e(), MayorIg.class)){
-            imprime((MayorIg)delete.e());
-        }
-        else if(claseDe(delete.e(), MenorIg.class)){
-            imprime((MenorIg)delete.e());
-        }
-        else if(claseDe(delete.e(), Igual.class)){
-            imprime((Igual)delete.e());
-        }
-        else if(claseDe(delete.e(), Desigual.class)){
-            imprime((Desigual)delete.e());
-        }
-        else if(claseDe(delete.e(), Suma.class)){
-            imprime((Suma)delete.e());
-        }
-        else if(claseDe(delete.e(), Resta.class)){
-            imprime((Resta)delete.e());
-        }
-        else if(claseDe(delete.e(), And.class)){
-            imprime((And)delete.e());
-        }
-        else if(claseDe(delete.e(), Or.class)){
-            imprime((Or)delete.e());
-        }
-        else if(claseDe(delete.e(), Mul.class)){
-            imprime((Mul)delete.e());
-        }
-        else if(claseDe(delete.e(), Div.class)){
-            imprime((Div)delete.e());
-        }
-        else if(claseDe(delete.e(), Mod.class)){
-            imprime((Mod)delete.e());
-        }
-        else if(claseDe(delete.e(), Neg.class)){
-            imprime((Neg)delete.e());
-        }
-        else if(claseDe(delete.e(), Not.class)){
-            imprime((Not)delete.e());
-        }
-        else if(claseDe(delete.e(), AccesoArray.class)){
-            imprime((AccesoArray)delete.e());
-        }
-        else if(claseDe(delete.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)delete.e());
-        }
-        else if(claseDe(delete.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)delete.e());
-        }
-        else if(claseDe(delete.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)delete.e());
-        }
-        else imprime((Exp_null)delete.e());
+        imprime(delete.e());
     }
 
     private void imprime(Ins_call call){
@@ -1173,167 +498,96 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         }
         else imprime((Un_PReal)muchos.lpr());
         System.out.println(",");
-        if(claseDe(muchos.e(), Asig.class)){
-            imprime((Asig)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Mayor.class)){
-            imprime((Mayor)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Menor.class)){
-            imprime((Menor)muchos.e());
-        }
-        else if(claseDe(muchos.e(), MayorIg.class)){
-            imprime((MayorIg)muchos.e());
-        }
-        else if(claseDe(muchos.e(), MenorIg.class)){
-            imprime((MenorIg)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Igual.class)){
-            imprime((Igual)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Desigual.class)){
-            imprime((Desigual)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Suma.class)){
-            imprime((Suma)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Resta.class)){
-            imprime((Resta)muchos.e());
-        }
-        else if(claseDe(muchos.e(), And.class)){
-            imprime((And)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Or.class)){
-            imprime((Or)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Mul.class)){
-            imprime((Mul)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Div.class)){
-            imprime((Div)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Mod.class)){
-            imprime((Mod)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Neg.class)){
-            imprime((Neg)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Not.class)){
-            imprime((Not)muchos.e());
-        }
-        else if(claseDe(muchos.e(), AccesoArray.class)){
-            imprime((AccesoArray)muchos.e());
-        }
-        else if(claseDe(muchos.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)muchos.e());
-        }
-        else if(claseDe(muchos.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)muchos.e());
-        }
-        else if(claseDe(muchos.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)muchos.e());
-        }
-        else imprime((Exp_null)muchos.e());
+        imprime(muchos.e());
     }
 
     private void imprime(Un_PReal uno){
-        if(claseDe(uno.e(), Asig.class)){
-            imprime((Asig)uno.e());
-        }
-        else if(claseDe(uno.e(), Mayor.class)){
-            imprime((Mayor)uno.e());
-        }
-        else if(claseDe(uno.e(), Menor.class)){
-            imprime((Menor)uno.e());
-        }
-        else if(claseDe(uno.e(), MayorIg.class)){
-            imprime((MayorIg)uno.e());
-        }
-        else if(claseDe(uno.e(), MenorIg.class)){
-            imprime((MenorIg)uno.e());
-        }
-        else if(claseDe(uno.e(), Igual.class)){
-            imprime((Igual)uno.e());
-        }
-        else if(claseDe(uno.e(), Desigual.class)){
-            imprime((Desigual)uno.e());
-        }
-        else if(claseDe(uno.e(), Suma.class)){
-            imprime((Suma)uno.e());
-        }
-        else if(claseDe(uno.e(), Resta.class)){
-            imprime((Resta)uno.e());
-        }
-        else if(claseDe(uno.e(), And.class)){
-            imprime((And)uno.e());
-        }
-        else if(claseDe(uno.e(), Or.class)){
-            imprime((Or)uno.e());
-        }
-        else if(claseDe(uno.e(), Mul.class)){
-            imprime((Mul)uno.e());
-        }
-        else if(claseDe(uno.e(), Div.class)){
-            imprime((Div)uno.e());
-        }
-        else if(claseDe(uno.e(), Mod.class)){
-            imprime((Mod)uno.e());
-        }
-        else if(claseDe(uno.e(), Neg.class)){
-            imprime((Neg)uno.e());
-        }
-        else if(claseDe(uno.e(), Not.class)){
-            imprime((Not)uno.e());
-        }
-        else if(claseDe(uno.e(), AccesoArray.class)){
-            imprime((AccesoArray)uno.e());
-        }
-        else if(claseDe(uno.e(), AccesoCampo.class)){
-            imprime((AccesoCampo)uno.e());
-        }
-        else if(claseDe(uno.e(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)uno.e());
-        }
-        else if(claseDe(uno.e(), Exp_Iden.class)){
-            imprime((Exp_Iden)uno.e());
-        }
-        else imprime((Exp_null)uno.e());
+        imprime(uno.e());
     }
 
     private void imprimeExpBin(Exp o0, Exp o1, String s, int p0, int p1){
         imprimeOpnd(o0, p0);
         System.out.println(s);
         imprimeOpnd(o1, p1);
+    }
+
+    private void imprime(Exp exp){
+        if(claseDe(exp, Asig.class)){
+            imprime(asig(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Mayor.class)){
+            imprime(mayor(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Menor.class)){
+            imprime(menor(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, MayorIg.class)){
+            imprime(mayorIg(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, MenorIg.class)){
+            imprime(menorIg(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Igual.class)){
+            imprime(igual(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Desigual.class)){
+            imprime(desigual(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Suma.class)){
+            imprime(suma(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Resta.class)){
+            imprime(resta(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, And.class)){
+            imprime(and(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Or.class)){
+            imprime(or(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Mul.class)){
+            imprime(mul(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Div.class)){
+            imprime(div(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Mod.class)){
+            imprime(mod(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+        }
+        else if(claseDe(exp, Neg.class)){
+            imprime(neg(((ExpUn)exp).opnd()));
+        }
+        else if(claseDe(exp, Not.class)){
+            imprime(not(((ExpUn)exp).opnd()));
+        }
+        else if(claseDe(exp, AccesoArray.class)){
+            imprime(accesoArray(((AccesoArray)exp).exp1(), ((AccesoArray)exp).exp2()));
+        }
+        else if(claseDe(exp, AccesoCampo.class)){
+            imprime(accesoCampo(((AccesoCampo)exp).num(), ((AccesoCampo)exp).exp()));
+        }
+        else if(claseDe(exp, AccesoPuntero.class)){
+            imprime(accesoPuntero(((AccesoPuntero)exp).exp()));
+        }
+        else if(claseDe(exp, Exp_lit_ent.class)){
+            imprime(exp_lit_ent());
+        }
+        else if(claseDe(exp, Exp_lit_real.class)){
+            imprime(exp_lit_real());
+        }
+        else if(claseDe(exp, Exp_lit_BoolTrue.class)){
+            imprime(exp_lit_BoolTrue());
+        }
+        else if(claseDe(exp, Exp_lit_BoolFalse.class)){
+            imprime(exp_lit_BoolFalse());
+        }
+        else if(claseDe(exp, Exp_lit_cadena.class)){
+            imprime(exp_lit_cadena(((Exp_lit_cadena)exp).num()));
+        }
+        else if(claseDe(exp, Exp_Iden.class)){
+            imprime(exp_Iden(((Exp_Iden)exp).num()));
+        }
+        else imprime(exp_null());
     }
 
     private void imprime(Asig asig){
@@ -1408,82 +662,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     private void imprime(AccesoArray a){
         imprimeOpnd(a.exp1(), 6);
         System.out.println("[");
-        if(claseDe(a.exp2(), Asig.class)){
-            imprime((Asig)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Mayor.class)){
-            imprime((Mayor)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Menor.class)){
-            imprime((Menor)a.exp2());
-        }
-        else if(claseDe(a.exp2(), MayorIg.class)){
-            imprime((MayorIg)a.exp2());
-        }
-        else if(claseDe(a.exp2(), MenorIg.class)){
-            imprime((MenorIg)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Igual.class)){
-            imprime((Igual)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Desigual.class)){
-            imprime((Desigual)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Suma.class)){
-            imprime((Suma)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Resta.class)){
-            imprime((Resta)a.exp2());
-        }
-        else if(claseDe(a.exp2(), And.class)){
-            imprime((And)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Or.class)){
-            imprime((Or)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Mul.class)){
-            imprime((Mul)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Div.class)){
-            imprime((Div)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Mod.class)){
-            imprime((Mod)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Neg.class)){
-            imprime((Neg)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Not.class)){
-            imprime((Not)a.exp2());
-        }
-        else if(claseDe(a.exp2(), AccesoArray.class)){
-            imprime((AccesoArray)a.exp2());
-        }
-        else if(claseDe(a.exp2(), AccesoCampo.class)){
-            imprime((AccesoCampo)a.exp2());
-        }
-        else if(claseDe(a.exp2(), AccesoPuntero.class)){
-            imprime((AccesoPuntero)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_lit_ent.class)){
-            imprime((Exp_lit_ent)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_lit_real.class)){
-            imprime((Exp_lit_real)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_lit_BoolTrue.class)){
-            imprime((Exp_lit_BoolTrue)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_lit_BoolFalse.class)){
-            imprime((Exp_lit_BoolFalse)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_lit_cadena.class)){
-            imprime((Exp_lit_cadena)a.exp2());
-        }
-        else if(claseDe(a.exp2(), Exp_Iden.class)){
-            imprime((Exp_Iden)a.exp2());
-        }
-        else imprime((Exp_null)a.exp2());
+        imprime(a.exp2());
         System.out.println("]");
     }
 

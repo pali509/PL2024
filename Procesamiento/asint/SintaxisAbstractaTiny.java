@@ -43,7 +43,7 @@ public class SintaxisAbstractaTiny {
     }
    
     
-    private static abstract class ExpBin extends Exp {
+    public static abstract class ExpBin extends Exp {
         protected Exp opnd0;
         protected Exp opnd1;
         public Exp opnd0() {return opnd0;}
@@ -56,7 +56,7 @@ public class SintaxisAbstractaTiny {
     }
 
     //Me la he inventado para tener una que solo tuviera 1 opnd
-    private static abstract class ExpUn extends Exp {
+    public static abstract class ExpUn extends Exp {
         protected Exp opnd;
         public Exp opnd() {return opnd;}
         public ExpUn(Exp opnd) {
@@ -1080,6 +1080,7 @@ public class SintaxisAbstractaTiny {
     }
 
     //NUEVOS!!
+
     public Exp mod(Exp opnd0, Exp opnd1) {
         return new Mod(opnd0,opnd1);
     }
@@ -1256,13 +1257,13 @@ public class SintaxisAbstractaTiny {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp Exp_lit_ent() {
+    public Exp exp_lit_ent() {
         return new Exp_lit_ent();
     }
-    public Exp Exp_lit_real() {
+    public Exp exp_lit_real() {
         return new Exp_lit_real();
     }
-    public Exp Exp_Iden(String num) {
+    public Exp exp_Iden(String num) {
         return new Exp_Iden(num);
     }
 	//yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
