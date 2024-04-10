@@ -323,10 +323,12 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Exp_lit_ent extends Exp {
-        public Exp_lit_ent() {
+        private String lex;
+        public Exp_lit_ent(String lex) {
             super();
+            this.lex = lex;
         }
-
+        public String lex(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -335,9 +337,12 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Exp_lit_real extends Exp {
-        public Exp_lit_real() {
+        private String lex;
+        public Exp_lit_real(String lex) {
             super();
+            this.lex = lex;
         }
+        public String lex(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -489,26 +494,26 @@ public class SintaxisAbstractaTiny {
 
     public static abstract class Pform extends Nodo {
         private Tipo t;
-        private String st;
-        public Pform(Tipo t, String st) {
+        private Iden id;
+        public Pform(Tipo t, Iden id) {
             this.t = t;
-            this.st = st;
+            this.id = id;
         }
 
-        public String st(){return st;}
+        public Iden id(){return id;}
         public Tipo t(){return t;}
         public abstract void procesa(Procesamiento p);
 
     }
     public static class PFref extends Pform {
         private Tipo t;
-        private String st;
-        public PFref(Tipo t, String st) {
-            super(t,st);
+        private Iden id;
+        public PFref(Tipo t, Iden id) {
+            super(t,id);
             this.t = t;
-            this.st = st;
+            this.id = id;
         }
-        public String st(){return st;}
+        public Iden id(){return id;}
         public Tipo t(){return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -518,13 +523,13 @@ public class SintaxisAbstractaTiny {
 
     public static class PFnoref extends Pform {
         private Tipo t;
-        private String st;
-        public PFnoref(Tipo t, String st) {
-            super(t,st);
+        private Iden id;
+        public PFnoref(Tipo t, Iden id) {
+            super(t,id);
             this.t = t;
-            this.st = st;
+            this.id = id;
         }
-        public String st(){return st;}
+        public Iden id(){return id;}
         public Tipo t(){return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -727,15 +732,15 @@ public class SintaxisAbstractaTiny {
     }
     public static  class Camp extends Nodo{
         private Tipo t;
-        private String id;
-        public Camp(Tipo t, String id) {
+        private Iden id;
+        public Camp(Tipo t, Iden id) {
             this.t = t;
             this.id = id;
         }
         public void procesa(Procesamiento p){
             p.procesa(this);
         }
-        public String iden() {return id;}
+        public Iden iden() {return id;}
         public Tipo tipo() {return t;}
 
     }
@@ -1173,8 +1178,8 @@ public class SintaxisAbstractaTiny {
         return new Struct(lc);
     }
 
-    public Camp camp(Tipo t, String st) {
-        return new Camp(t, st);
+    public Camp camp(Tipo t, Iden id) {
+        return new Camp(t, id);
     }
 
     public LCamp un_camp(Camp c) {
@@ -1184,11 +1189,11 @@ public class SintaxisAbstractaTiny {
         return new Muchos_camp(lc,c);
     }
 	//yo pondria mismo tipo a PFref y PFnoref
-    public PFref pfref(Tipo t, String st) {
-        return new PFref(t, st);
+    public PFref pfref(Tipo t, Iden id) {
+        return new PFref(t, id);
     }
-    public PFnoref pfnoref(Tipo t, String st) {
-        return new PFnoref(t, st);
+    public PFnoref pfnoref(Tipo t, Iden id) {
+        return new PFnoref(t, id);
     }
     public PFormOpt si_pforms(PFormOpt lpf){
         return new Si_pforms(lpf);
@@ -1256,11 +1261,11 @@ public class SintaxisAbstractaTiny {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp Exp_lit_ent() {
-        return new Exp_lit_ent();
+    public Exp Exp_lit_ent(String lex) {
+        return new Exp_lit_ent(lex);
     }
-    public Exp Exp_lit_real() {
-        return new Exp_lit_real();
+    public Exp Exp_lit_real(String lex) {
+        return new Exp_lit_real(lex);
     }
     public Exp Exp_Iden(String num) {
         return new Exp_Iden(num);
