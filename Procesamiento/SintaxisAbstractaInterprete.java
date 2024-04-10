@@ -279,25 +279,24 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Array extends Tipo {
-        private String id;
+        private Lit_ent num;
         private Tipo t;
-        public Array(String id, Tipo t) {
+        public Array(Lit_ent num, Tipo t) {
             super();
             this.t = t;
-            this.id = id;
+            this.num = num;
         }
 
-        public String iden() {return id;}
+        public Lit_ent num() {return num;}
 
         public Tipo tipo() {return t;}
 
-  
-//TODO que hago con lo de el numero de dimension y el id
+
         public void imprime() {
             this.t.imprime();
             System.out.println("[");
-            System.out.println(id);
-            System.out.println("]" +"$f:"+leeFila()+",c:"+leeCol()+"$");
+            this.num.imprime();
+            System.out.println("]" +"$f:"+this.num.leeFila()+",c:"+this.num.leeCol()+"$");
         }
 
     }
@@ -346,7 +345,7 @@ public class SintaxisAbstractaInterprete {
             this.num = num;
         }
         public void imprime() {
-            System.out.println(num);
+            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
         }
         public int prioridad() {return 7;}
     
@@ -359,7 +358,7 @@ public class SintaxisAbstractaInterprete {
             this.num = num;
         }
         public void imprime() {
-            System.out.println(num);
+            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
         }
         public int prioridad() {return 7;}
 
@@ -370,7 +369,7 @@ public class SintaxisAbstractaInterprete {
             super();
         }
         public void imprime() {
-            
+            System.out.println("<true>" + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
         }
 
         public int prioridad() {return 7;}
@@ -380,7 +379,9 @@ public class SintaxisAbstractaInterprete {
         public Exp_null() {
             super();
         }
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<null>");
+        }
 
         public int prioridad() {return 7;}
 
@@ -389,7 +390,9 @@ public class SintaxisAbstractaInterprete {
         public Exp_lit_BoolFalse() {
             super();
         }
-        public void imprime(){}
+        public void imprime(){
+            System.out.println("<false>" + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        }
 
         public int prioridad() {return 7;}
 
@@ -401,7 +404,9 @@ public class SintaxisAbstractaInterprete {
             super();
             this.num = num;
         }
-        public void imprime(){}
+        public void imprime(){
+            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        }
         public String num(){return num;}
         public int prioridad() {return 7;}
 
@@ -428,22 +433,35 @@ public class SintaxisAbstractaInterprete {
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
-public void imprime(){}
+        public void imprime(){
+
+            imprimeOpnd(exp1, 6);
+            System.out.println("[");
+            exp2.imprime();
+            System.out.println("]");
+
+        }
         public Exp exp1(){return exp1;}
         public Exp exp2(){return exp2;}
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
-        private String num;
+        private Iden id;
         private Exp exp;
-        public AccesoCampo(String num, Exp exp) {
+        public AccesoCampo(Iden id, Exp exp) {
             super();
             this.exp = exp;
-            this.num = num;
+            this.id = id;
         }
-        public void imprime(){}
-        public String num(){return num;}
+
+        public Iden id(){return id;}
         public Exp exp(){return exp;}
+
+        public void imprime(){
+            imprimeOpnd(exp, 6);
+            System.out.println(".");
+            id.imprime();
+        }
         public int prioridad() {return 6;}
     }
 
@@ -453,7 +471,11 @@ public void imprime(){}
             super();
             this.exp = exp;
         }
-        public void imprime(){}
+        public void imprime(){
+            imprimeOpnd(exp, 6);
+            System.out.println("^");
+            System.out.println(";");
+        }
         public Exp exp(){return exp;}
         public int prioridad() {return 6;}
 
@@ -611,6 +633,7 @@ public void imprime(){}
         public void imprime(){
             t.imprime();
             id.imprime();
+            System.out.println(";"); //TODO VER EN TODOS LOS SITIOS DONDE TENGO QUE PONER ESTO
         }
         public Iden iden() {return id;}
         public Tipo tipo() {return t;}
@@ -844,7 +867,16 @@ public void imprime(){}
         public Exp e() {return e;}
         public Bloque bloque1(){return bq1;}
         public Bloque bloque2(){return bq2;}
-        public void imprime(){}
+        public void imprime(){
+            /*
+            print “<if>”
+	    imprime(Exp)
+	    imprime(Bloq)
+	    print “<else>”
+    	imprime(Bloq)
+
+             */
+        }
 
     }
 
@@ -914,16 +946,24 @@ public void imprime(){}
     }
 
     public static class Ins_call extends Ins {
-        private String st;
+        private Iden id;
         private LPReal pr;
-        public Ins_call(String st, LPReal pr) {
+        public Ins_call(Iden id, LPReal pr) {
             super();
-            this.st = st;
+            this.id = id;
             this.pr = pr;
         }
-        public String string() {return st;}
+        public Iden id() {return id;}
         public LPReal pr() {return pr;}
-        public void imprime(){}
+        public void imprime(){
+
+            System.out.println("<call>");
+            id.imprime();
+            System.out.println("(");
+            pr.imprime();
+            System.out.println(")");
+
+        }
 
     }
 
@@ -1002,7 +1042,9 @@ public void imprime(){}
             super();
             this.lpr = lpr;
         }
-        public void imprime(){}
+        public void imprime(){
+            lpr.imprime();
+        }
         public LPReal lpr() {return lpr;}
 
 
@@ -1021,7 +1063,9 @@ public void imprime(){}
             this.e = e;
         }
 
-        public void imprime(){}
+        public void imprime(){
+            e.imprime();
+        }
         public Exp e() {return e;}
 
     }
@@ -1037,7 +1081,11 @@ public void imprime(){}
 
         public LPReal lpr() {return lpr;}
         public Exp e() {return e;}
-        public void imprime(){}
+        public void imprime(){
+            lpr.imprime();
+            System.out.println(",");
+            e.imprime();
+        }
 
     }
 

@@ -275,15 +275,15 @@ public class SintaxisAbstractaTiny {
 
     }
     public static class Array extends Tipo {
-        private String id;
+        private Lit_ent num;
         private Tipo t;
-        public Array(String id, Tipo t) {
+        public Array(Lit_ent num, Tipo t) {
             super();
             this.t = t;
-            this.id = id;
+            this.num = num;
         }
 
-        public String iden() {return id;}
+        public Lit_ent num() {return num;}
 
         public Tipo tipo() {return t;}
         public void procesa(Procesamiento p) {
@@ -429,18 +429,19 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
-        private String num;
+        private Iden id;
         private Exp exp;
-        public AccesoCampo(String num, Exp exp) {
+        public AccesoCampo(Iden id, Exp exp) {
             super();
             this.exp = exp;
-            this.num = num;
+            this.id = id;
         }
+
+        public Iden id(){return id;}
+        public Exp exp(){return exp;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String num(){return num;}
-        public Exp exp(){return exp;}
         public int prioridad() {return 6;}
     }
 
@@ -917,14 +918,14 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Ins_call extends Ins {
-        private String st;
+        private Iden id;
         private LPReal pr;
-        public Ins_call(String st, LPReal pr) {
+        public Ins_call(Iden id, LPReal pr) {
             super();
-            this.st = st;
+            this.id = id;
             this.pr = pr;
         }
-        public String string() {return st;}
+        public Iden id() {return id;}
         public LPReal pr() {return pr;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -1143,8 +1144,8 @@ public class SintaxisAbstractaTiny {
     public AccesoArray accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public AccesoCampo accesoCampo(String st, Exp exp) {
-        return new AccesoCampo(st, exp);
+    public AccesoCampo accesoCampo(Iden id, Exp exp) {
+        return new AccesoCampo(id, exp);
     }
     public AccesoPuntero accesoPuntero(Exp exp) {
         return new AccesoPuntero(exp);
@@ -1169,8 +1170,8 @@ public class SintaxisAbstractaTiny {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, String st) {
-        return new Array(st, t);
+    public Tipo array(Tipo t, Lit_ent num) {
+        return new Array(num,t);
     }
     public Tipo puntero(Tipo t) {
         return new Puntero(t);
@@ -1209,6 +1210,12 @@ public class SintaxisAbstractaTiny {
         return new Muchos_pforms(lpf, pf);
     }
 
+    public LIns si_ins(LIns ins){
+        return new Si_Ins(ins);
+    }
+    public LIns no_ins(){
+        return new No_Ins();
+    }
     public LIns una_ins(Ins ins){
         return new Una_ins(ins);
     }
@@ -1243,8 +1250,8 @@ public class SintaxisAbstractaTiny {
     public Ins ins_delete(Exp e){
         return new Ins_delete(e);
     }
-    public Ins ins_call(String st, LPReal lpr){
-        return new Ins_call(st, lpr);
+    public Ins ins_call(Iden id, LPReal lpr){
+        return new Ins_call(id, lpr);
     }
 
 
