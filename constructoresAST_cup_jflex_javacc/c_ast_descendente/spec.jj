@@ -315,7 +315,7 @@ PARSER_END(ConstructorASTsTiny)
   Exp re2(Exp re3):
   {Exp e3, e2;}
   {
-	"+" e3 = e3()  e2=re2(sem.mkop2(re3, "+" e3))
+	"+" e3 = e3()  e2=re2(sem.mkop2(re3, "+", e3))
 	{return e2;}
 	|
 	{return re3;}
@@ -331,7 +331,7 @@ PARSER_END(ConstructorASTsTiny)
   	{ return rminus; } }
 
   Exp e3():
-  {Exp e3, e4, e41;Token t }
+  {Exp e3, e4, e41; Token t;}
   {
 	e4 = e4() t = < and > e3 = e3()
 	{return sem.and(e4, e3); }
@@ -374,7 +374,7 @@ PARSER_END(ConstructorASTsTiny)
   }
 
   Exp re6(Exp re6):
-  {Exp e0, e6; Token id }
+  {Exp e0, e6; Token id; }
   {
 	"[" e0 = e0() "]"
 	{return sem.acceso_array(re6, e0); }
