@@ -16,22 +16,23 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
     private void imprime(Bloque bloque){
         System.out.println("{");
-        if(claseDe(bloque.lds(), Si_decs.class)){
-            imprime((Si_decs)bloque.lds());
-        }
-        else imprime((No_decs)bloque.lds());
-        if(claseDe(bloque.lis(), Si_Ins.class)){
-            imprime((Si_Ins)bloque.lis());
-        }
-        else imprime((No_Ins)bloque.lis());
+        imprime(bloque.lds());
+        imprime(bloque.lis());
         System.out.println("}");
+    }
+
+    private void imprime(LDecs l){
+        if(claseDe(l, Si_decs.class)){
+            imprime(si_decs(l));
+        }
+        else imprime(no_decs());
     }
 
     private void imprime(Si_decs sidecs){
         if(claseDe(sidecs.decs(), Muchas_decs.class)){
-            imprime((Muchas_decs)sidecs.decs());
+            imprime(muchas_decs(((Muchas_decs)sidecs).ldecs(), ((Muchas_decs)sidecs).dec()));
         }
-        else imprime((Una_dec)sidecs.decs());
+        else imprime(una_dec(sidecs.decs()));
         System.out.println("&&");
     }
 
@@ -331,6 +332,13 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         }
         else imprime((Lit_string)camp.tipo());
         System.out.println(camp.iden());
+    }
+
+    private void imprime(LIns l){
+        if(claseDe(l, Si_Ins.class)){
+            imprime(si_ins(l));
+        }
+        else imprime(no_ins());
     }
 
     private void imprime(Si_Ins s){
