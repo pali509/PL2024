@@ -2,7 +2,7 @@ package c_ast_ascendente;
 
 import java_cup.runtime.*;
 import asint.ClaseSemanticaTiny;
-import asint.SintaxisAbstractaTiny.*;
+import asint.SintaxisAbstractaTiny.*
 import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 
@@ -34,12 +34,12 @@ terminal     SUMA, RESTA, MUL, DIV, MOD, MAYOR,
 terminal StringLocalizado IDENTIFICADOR, LITENTERO, LITREAL, LITCADENA;
 
 non terminal  Prog programa;
-non terminal  Bloque bloque;
+non terminal  Bloque bloque
 non terminal  LDecs declaraciones_opt, declaraciones;
 non terminal  LIns instrucciones_opt, instrucciones;
 non terminal  Dec declaracion, declaracion_var, declaracion_tipo, declaracion_proc;
 non terminal  Tipo tipo, tipo1, tipo2;
-non terminal  PFormOpt parametros_formales_opt, parametros_formales;
+non terminal  PForm parametros_formales_opt, parametros_formales;
 non terminal  Pform parametro_formal;
 non terminal  LCamp campos;
 non terminal  Camp campo;
@@ -122,7 +122,7 @@ tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC
 
 tipo2 ::= INT
 	{: RESULT = sem.lit_ent(); :}; 
-
+;
 tipo2 ::= REAL 
 	{: RESULT = sem.lit_real(); :}; 
 
