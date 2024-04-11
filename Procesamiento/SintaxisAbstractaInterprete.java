@@ -229,7 +229,7 @@ public class SintaxisAbstractaInterprete {
         public Lit_ent() {
             super();
         }
-//TODO TODOS LOS LIT
+        //TODO TODOS LOS LIT
         public void imprime(){
             System.out.println("<int>");
         }
@@ -319,10 +319,9 @@ public class SintaxisAbstractaInterprete {
 
         public Tipo tipo() {return t;}
 
- 
-
         public void imprime() {
-            //TODO
+            t.imprime();
+            System.out.println("^");
         }
     }
 
@@ -441,7 +440,8 @@ public class SintaxisAbstractaInterprete {
             this.exp2 = exp2;
         }
         public void imprime(){
-
+            //TODO El corchete de apertura en una expresión de indexación de un elemento de un
+            //array
             imprimeOpnd(exp1, 6);
             System.out.println("[");
             exp2.imprime();
@@ -480,7 +480,7 @@ public class SintaxisAbstractaInterprete {
         }
         public void imprime(){
             imprimeOpnd(exp, 6);
-            System.out.println("^");
+            System.out.println("^ " + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
             System.out.println(";");
         }
         public Exp exp(){return exp;}
@@ -765,7 +765,8 @@ public class SintaxisAbstractaInterprete {
         }
         public Bloque bq() {return bq;}
         public void imprime() {
-
+            bq.imprime();
+            System.out.println("<EOF>");
         }
        
     }
