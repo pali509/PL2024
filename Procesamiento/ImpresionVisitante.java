@@ -370,118 +370,29 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     
     // 14. LIns
-
-
-    public void imprime(Si_decs sidecs) {
-        System.out.print("donde");
-        sidecs.decs().imprime(this);
-        System.out.println("&&");
+    public void imprime(Una_ins una_ins) {
+        una_ins.ins().imprime(this);
     }
-
-
-    public void imprime(Muchas_decs muchas) {
-        muchas.ldecs().imprime(this);
+    public void imprime(Muchas_ins muchas_ins) {
+        muchas_ins.li().imprime(this);
         System.out.println(";");
-        muchas.dec().imprime(this);
-    }
-
-    public void imprime(Una_dec una) {
-        una.dec().procesa(this);
-    }
-
-    public void imprime(Dec_var var) {
-        var.tipo().imprime(this);
-        System.out.println(var.iden());
+        muchas_ins.ins().imprime(this);
     }
 
 
-    public void imprime(Dec_tipo tipo) {
-        System.out.println("<type>");
-        tipo.tipo().imprime(this);
-        System.out.println(tipo.iden());
+    // 15. LPReal
+    public void imprime(Si_preal si_preal) {
+        si_preal.lpr().imprime(this);
     }
-
-
-    public void imprime(Dec_proc proc) {
-        System.out.println("<proc>");
-        System.out.println(proc.iden());
-        System.out.println("(");
-        proc.pf().imprime(this);
-        System.out.println(")");
-        proc.bq().imprime(this);
-    }
-
-
-    public void imprime(Si_pforms sipform) {
-        sipform.pforms().imprime(this);
-    }
-
-
-    public void imprime(No_pforms nopform) {
+    public void imprime(No_preal no_preal) {
 
     }
-
-
-    public void imprime(Muchos_pforms muchos) {
-        muchos.pforms().imprime(this);
+    public void imprime(Un_PReal un_PReal) {
+        un_PReal.e().imprime(this);
+    }
+    public void imprime(Muchos_preal muchos_preal) {
+        muchos_preal.lpr().imprime(this);
         System.out.println(",");
-        muchos.pform().imprime(this);
-    }
-
-
-    public void imprime(Un_pform uno) {
-        uno.pform().imprime(this);
-    }
-
-
-    public void imprime(Pform pform) {
-        pform.t().imprime(this);
-        System.out.println(pform.st());
-    }
-
-
-
-
-
-    public void imprime(Iden iden) {
-        System.out.println(iden.iden());
-    }
-
-    public void imprime(Struct struct) {
-        System.out.println("<struct>");
-        System.out.println("{");
-        struct.lcamp().imprime(this);
-        System.out.println("}");
-    }
-
-    public void imprime(Lit_ent ent) {
-        System.out.println("<int>");
-    }
-
-    public void imprime(Lit_real real) {
-        System.out.println("<real>");
-    }
-
-    public void imprime(Lit_bool bool) {
-        System.out.println("<bool>");
-    }
-
-    public void imprime(Lit_string string) {
-        System.out.println("<string>");
-    }
-
-    public void imprime(Muchos_camp muchos) {
-        muchos.lcs().imprime(this);
-        System.out.println(",");
-        muchos.campo().imprime(this);
-    }
-
-    public void imprime(Un_camp uno) {
-        uno.campo().imprime(this);
-    }
-
-    public void imprime(Camp camp) {
-        camp.tipo().imprime(this);
-        System.out.imprime(camp.iden());
+        muchos_preal.e().imprime(this);
     }
 }
