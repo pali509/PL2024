@@ -286,32 +286,90 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println("}");
     }
     public void imprime(Camp camp) {
-        camp.tipo().imprime();
-        camp.iden().imprime();
+        camp.tipo().imprime(this);
+        camp.iden().imprime(this);
     }
     public void imprime(Camp camp) {
-        camp.tipo().imprime();
-        camp.iden().imprime();
+        camp.tipo().imprime(this);
+        camp.iden().imprime(this);
     }
 
 
     // 11. LCamp
     public void imprime(Un_camp un_camp) {
-        un_camp.campo().imprime();
+        un_camp.campo().imprime(this);
     }
     public void imprime(Muchos_camp muchos_camp) {
-        muchos_camp.lcs().imprime();
+        muchos_camp.lcs().imprime(this);
         System.out.println(",");
-        muchos_camp.campo().imprime();
+        muchos_camp.campo().imprime(this);
     }
 
 
     // 12. Ins
+    public void imprime(Ins_asig ins_asig) {
+        System.out.println("@");
+        ins_asig.e().imprime();
+        System.out.println(";");
+    }
+    public void imprime(Ins_if ins_if) {
+        System.out.println("<if>");
+        ins_if.e().imprime(this);
+        ins_if.bloque().imprime(this);
+    }
+    public void imprime(Ins_if_else ins_if_else) {
+        System.out.println("<if>");
+        ins_if_else.e().imprime();
+        ins_if_else.bloque1().imprime(this);
+        System.out.println("<else>");
+        ins_if_else.bloque2().imprime(this);
+    }
+    public void imprime(Ins_while ins_while) {
+        System.out.println("<while>");
+        ins_while.e().imprime(this);
+        ins_while.bloque().imprime(this);
+    }
+    public void imprime(Ins_read ins_read) {
+        System.out.println("<read>");
+        ins_read.e().imprime(this);
+    }
+    public void imprime(Ins_write ins_write) {
+        System.out.println("<write>");
+        ins_write.e().imprime(this);
+    }
+    public void imprime(Ins_new ins_new) {
+        System.out.println("<new>");
+        ins_new.e().imprime(this);
+    }
+    public void imprime(Ins_delete ins_delete) {
+        System.out.println("<delete>");
+        ins_delete.e().imprime(this);
+    }
+    public void imprime(Ins_nl ins_nl) {
+        System.out.println("<nl>");
+    }
+    public void imprime(Ins_call ins_call) {
+        System.out.println("<call>");
+        ins_call.id().imprime(this);
+        System.out.println("(");
+        ins_call.pr().imprime(this);
+        System.out.println(")");
+    }
+    public void imprime(Ins_bloque ins_bloque) {
+        ins_bloque.bloque().imprime(this);
+    }
 
 
+    // 13. LInsOpt
+    public void imprime(Si_Ins si_Ins) {
+        si_Ins.ins().imprime(this);
+    }
+    public void imprime(No_Ins no_Ins) {
 
+    }
 
-
+    
+    // 14. LIns
 
 
     public void imprime(Si_decs sidecs) {

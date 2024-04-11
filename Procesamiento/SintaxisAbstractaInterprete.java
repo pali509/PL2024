@@ -901,9 +901,9 @@ public class SintaxisAbstractaInterprete {
         public void imprime(){
             System.out.println("<if>");
             e.imprime();
-            bloque1().imprime();
+            bq1.imprime();
             System.out.println("<else>");
-            bloque2().imprime();
+            bq2.imprime();
         }
 
     }
