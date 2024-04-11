@@ -731,7 +731,7 @@ public class SintaxisAbstractaTiny {
 
 
 
-    public static class Prog extends Nodo { //Falta lo de eof que npi
+    public static class Prog extends Nodo {
 	   private Bloque bq;
 
        public Prog(Bloque bq) {
@@ -824,7 +824,7 @@ public class SintaxisAbstractaTiny {
         public Exp e() {throw new UnsupportedOperationException();}
         public Bloque bloque() {throw new UnsupportedOperationException();}
         public Bloque bloque2() {throw new UnsupportedOperationException();}
-        public LPReal pr() {throw new UnsupportedOperationException();}
+        public LPRealOpt pr() {throw new UnsupportedOperationException();}
         public Iden id() {throw new UnsupportedOperationException();}
     }
 
@@ -956,14 +956,14 @@ public class SintaxisAbstractaTiny {
 
     public static class Ins_call extends Ins {
         private Iden id;
-        private LPReal pr;
-        public Ins_call(Iden id, LPReal pr) {
+        private LPRealOpt pr;
+        public Ins_call(Iden id, LPRealOpt pr) {
             super();
             this.id = id;
             this.pr = pr;
         }
         public Iden id() {return id;}
-        public LPReal pr() {return pr;}
+        public LPRealOpt pr() {return pr;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -1053,10 +1053,19 @@ public class SintaxisAbstractaTiny {
     }
 
     public static abstract class LPReal extends Nodo{
+        public LPReal() {}
         public abstract void procesa(Procesamiento p);
+        public Exp e() {throw new UnsupportedOperationException();}
+        public LPReal lpr() {throw new UnsupportedOperationException();}
     }
 
-    public static class Si_preal extends LPReal {
+    public static abstract class LPRealOpt extends Nodo{
+        public LPRealOpt() {}
+        public abstract void procesa(Procesamiento p);
+        public LPReal lpr() {throw new UnsupportedOperationException();}
+    }
+
+    public static class Si_preal extends LPRealOpt {
         private LPReal lpr;
         public Si_preal(LPReal lpr) {
             super();
@@ -1069,7 +1078,8 @@ public class SintaxisAbstractaTiny {
 
 
     }
-    public static class No_preal extends LPReal {
+    
+    public static class No_preal extends LPRealOpt {
         public No_preal() {
             super();
         }
@@ -1078,6 +1088,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
     }
+    
     public static class Un_PReal extends LPReal{
         private Exp e;
 
@@ -1185,13 +1196,13 @@ public class SintaxisAbstractaTiny {
         return new Exp_lit_cadena(id);
     }
 
-    public AccesoArray accesoArray(Exp exp1, Exp exp2) {
+    public Exp accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public AccesoCampo accesoCampo(Iden id, Exp exp) {
+    public Exp accesoCampo(Iden id, Exp exp) {
         return new AccesoCampo(id, exp);
     }
-    public AccesoPuntero accesoPuntero(Exp exp) {
+    public Exp accesoPuntero(Exp exp) {
         return new AccesoPuntero(exp);
     }
 
@@ -1302,10 +1313,10 @@ public class SintaxisAbstractaTiny {
     }
 
 
-    public LPReal si_preal(LPReal lpr){
+    public LPRealOpt si_preal(LPReal lpr){
         return new Si_preal(lpr);
     }
-    public LPReal no_preal(){
+    public LPRealOpt no_preal(){
         return new No_preal();
     }
     public LPReal un_preal(Exp e){

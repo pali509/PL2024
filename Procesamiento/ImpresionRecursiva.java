@@ -338,10 +338,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         System.out.println("<call>");
         imprime(iden(call.id().str()));
         System.out.println("(");
-        if(claseDe(call.pr(), Si_preal.class)){
-            imprime((Si_preal)call.pr());
-        }
-        else imprime((No_preal)call.pr());
+        imprime(call.pr());
         System.out.println(")");
     }
 
@@ -349,22 +346,30 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         imprime(bloque.bloque());
     }
 
-    private void imprime(Si_preal preal){
-        if(claseDe(preal.lpr(), Muchos_preal.class)){
-            imprime((Muchos_preal)preal.lpr());
+    private void imprime(LPRealOpt l){
+        if(claseDe(l, Si_preal.class)){
+            imprime(si_preal(l.lpr()));
         }
-        else imprime((Un_PReal)preal.lpr());
+        else imprime(no_preal());
+    }
+
+    private void imprime(Si_preal preal){
+        imprime(preal.lpr());
     }
 
     private void imprime(No_preal no){
         //Vacia
     }
 
-    private void imprime(Muchos_preal muchos){
-        if(claseDe(muchos.lpr(), Muchos_preal.class)){
-            imprime((Muchos_preal)muchos.lpr());
+    private void imprime(LPReal l){
+        if(claseDe(l, Muchos_preal.class)){
+            imprime(muchos_preal(l.lpr(), l.e()));
         }
-        else imprime((Un_PReal)muchos.lpr());
+        else imprime(un_preal(l.e()));
+    }
+
+    private void imprime(Muchos_preal muchos){
+        imprime(muchos.lpr());
         System.out.println(",");
         imprime(muchos.e());
     }
@@ -378,7 +383,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         System.out.println(s);
         imprimeOpnd(o1, p1);
     }
-
+//CLAU VAS POR AQUI
     private void imprime(Exp exp){
         if(claseDe(exp, Asig.class)){
             imprime(asig(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
