@@ -692,8 +692,14 @@ public class SintaxisAbstractaInterprete {
         public Bloque bq() {return bq;}
 
     }
+    public static abstract class LDecsOpt extends Nodo {
+        public LDecsOpt() {
+            super();
+        }
+        public LDecs decs() {throw new UnsupportedOperationException();}
+    }
 
-    public static class Si_decs extends LDecs {
+    public static class Si_decs extends LDecsOpt {
         private LDecs decs;
         public Si_decs(LDecs decs) {
             super();
@@ -706,7 +712,7 @@ public class SintaxisAbstractaInterprete {
    
 
     }
-    public static class No_decs extends LDecs {
+    public static class No_decs extends LDecsOpt {
         public No_decs() {
             super();
         }
@@ -765,15 +771,15 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Bloque extends Nodo { //TODO ESTO DEBERIA SER LDECSOPT Y LINSOPT :(
-        private  LDecs lds;
-        private LIns lis;
-        public Bloque(LDecs lds, LIns lis) {
+        private  LDecsOpt lds;
+        private LInsOpt lis;
+        public Bloque(LDecsOpt lds, LInsOpt lis) {
             this.lds = lds;
             this.lis = lis;
         }
 
-        public LDecs lds() {return lds;}
-        public LIns lis() {return lis;}
+        public LDecsOpt lds() {return lds;}
+        public LInsOpt lis() {return lis;}
         public void imprime(){
             System.out.println("{");
             lds.imprime();
@@ -1024,8 +1030,11 @@ public class SintaxisAbstractaInterprete {
         public LIns() {}
         public abstract void imprime();
     }
-
-    public static class Si_Ins extends LIns {
+    public static abstract class LInsOpt extends Nodo {
+        public LInsOpt() {}
+        public LIns ins() {throw new UnsupportedOperationException();}
+    }
+    public static class Si_Ins extends LInsOpt {
         private LIns ins;
         public Si_Ins(LIns ins){
             super();
@@ -1036,11 +1045,9 @@ public class SintaxisAbstractaInterprete {
         }
         public LIns ins() {return ins;}
 
-
-
     }
 
-    public static class No_Ins extends LIns {
+    public static class No_Ins extends LInsOpt {
         public No_Ins() {
             super();
         }
@@ -1148,7 +1155,7 @@ public class SintaxisAbstractaInterprete {
     public Prog prog(Bloque bq) {
         return new Prog(bq);
     }
-    public Bloque bloque(LDecs ld, LIns li){
+    public Bloque bloque(LDecsOpt ld, LInsOpt li){
         return new Bloque(ld,li);
     }
     public Exp suma(Exp opnd0, Exp opnd1) {
@@ -1289,10 +1296,10 @@ public class SintaxisAbstractaInterprete {
         return new Muchos_pforms(lpf, pf);
     }
 
-    public LIns si_ins(LIns ins){
+    public LInsOpt si_ins(LIns ins){
         return new Si_Ins(ins);
     }
-    public LIns no_ins(){
+    public LInsOpt no_ins(){
         return new No_Ins();
     }
     public LIns una_ins(Ins ins){
@@ -1358,10 +1365,10 @@ public class SintaxisAbstractaInterprete {
         return new Exp_Iden(num);
     }
     //yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
-    public LDecs si_decs(LDecs decs) {
+    public LDecsOpt si_decs(LDecs decs) {
         return new Si_decs(decs);
     }
-    public LDecs no_decs() {
+    public LDecsOpt no_decs() {
         return new No_decs();
     }
     public LDecs muchas_decs(LDecs decs, Dec dec) {
