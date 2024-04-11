@@ -30,9 +30,9 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(LDecs l){
         if(claseDe(l, Muchas_decs.class)){
-            imprime(muchas_decs(((Muchas_decs)l).ldecs(), ((Muchas_decs)l).dec()));
+            imprime(muchas_decs(l.ldecs(), l.dec()));
         }
-        else imprime(una_dec(((Una_dec)l).dec()));
+        else imprime(una_dec(l.dec()));
     }
 
     private void imprime(Si_decs sidecs){
@@ -55,28 +55,28 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Dec d){
         if(claseDe(d, Dec_var.class)){
-            imprime(dec_var(((Dec_var)d).iden(), ((Dec_var)d).tipo()));
+            imprime(dec_var(d.iden(), d.tipo()));
         }
         else if(claseDe(d, Dec_tipo.class)){
-            imprime(dec_tipo(((Dec_tipo)d).iden(), ((Dec_tipo)d).tipo()));
+            imprime(dec_tipo(d.iden(), d.tipo()));
         }
-        else imprime(dec_proc(((Dec_proc)d).iden(), ((Dec_proc)d).pf(), ((Dec_proc)d).bq()));
+        else imprime(dec_proc(d.iden(), d.pf(), d.bq()));
     }
 
     private void imprime(Dec_var var){
         imprime(var.tipo());
-        System.out.println(var.iden());
+        imprime(iden(var.iden().str()));
     }
 
     private void imprime(Dec_tipo tipo){
         System.out.println("<type>");
         imprime(tipo.tipo());
-        System.out.println(tipo.iden());
+        imprime(iden(tipo.iden().str()));
     }
 
     private void imprime(Dec_proc proc){
         System.out.println("<proc>");
-        System.out.println(proc.iden());
+        imprime(iden(proc.iden().str()));
         System.out.println("(");
         imprime(proc.pf());
         System.out.println(")");
@@ -85,7 +85,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(PFormOpt p){
         if(claseDe(p, Si_pforms.class)){
-            imprime(si_pforms(p));
+            imprime(si_pforms(p.pforms()));
         }
         else imprime(no_pforms());
     }
@@ -100,39 +100,37 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(LPForm l){
         if(claseDe(l, Muchos_pforms.class)){
-            imprime((Muchos_pforms)sipform.pforms());
+            imprime(muchos_pforms(l.pforms(), l.pform()));
         }
-        else imprime((Un_pform)sipform.pforms());
+        else imprime(un_pform(l.pform()));
     }
 
     private void imprime(Muchos_pforms muchos){
-        if(claseDe(muchos.pforms(), Muchos_pforms.class)){
-            imprime((Muchos_pforms)muchos.pforms());
-        }
-        else imprime((Un_pform)muchos.pforms());
+        imprime(muchos.pforms());
         System.out.println(",");
-        if(claseDe(muchos.pform(), PFref.class)){
-            imprime((PFref)muchos.pform());
-        }
-        else imprime((PFnoref)muchos.pform());
+        imprime(muchos.pform());
     }
 
     private void imprime(Un_pform uno){
-        if(claseDe(uno.pform(), PFref.class)){
-            imprime((PFref)uno.pform());
+        imprime(uno.pform());
+    }
+
+    private void imprime(Pform p){
+        if(claseDe(p, PFref.class)){
+            imprime(pfref(p.t(), p.id()));
         }
-        else imprime((PFnoref)uno.pform());
+        else imprime(pfnoref(p.t(), p.id()));
     }
 
     private void imprime(PFref pform){
         imprime(pform.t());
         System.out.println("&");
-        System.out.println(pform.st());
+        imprime(iden(pform.id().str()));
     }
 
     private void imprime(PFnoref pform){
         imprime(pform.t());
-        System.out.println(pform.st());
+        imprime(iden(pform.id().str()));
     }
 
     private void imprime(Tipo t){
@@ -143,7 +141,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
             imprime(puntero(t.tipo()));
         }
         else if(claseDe(t, Iden.class)){
-            imprime(iden(t.iden()));
+            imprime(iden(t.str()));
         }
         else if(claseDe(t, Struct.class)){
             imprime(struct(t.lcamp()));
@@ -162,7 +160,9 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Array array){
         imprime(array.tipo());
-        System.out.println("[" + array.iden() + "]");
+        System.out.println("[");
+        imprime(iden(array.iden().str()));
+        System.out.println("]");
     }
 
     private void imprime(Puntero puntero){
@@ -171,16 +171,13 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
     
     private void imprime(Iden iden){
-        System.out.println(iden.iden());
+        System.out.println(iden.str());
     }
 
     private void imprime(Struct struct){
         System.out.println("<struct>");
         System.out.println("{");
-        if(claseDe(struct.lcamp(), Muchos_camp.class)){
-            imprime((Muchos_camp)struct.lcamp());
-        }
-        else imprime((Un_camp)struct.lcamp());
+        imprime(struct.lcamp());
         System.out.println("}");
     }
 
@@ -200,11 +197,15 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         System.out.println("<string>");
     }
 
-    private void imprime(Muchos_camp muchos){
-        if(claseDe(muchos.lcs(), Muchos_camp.class)){
-            imprime((Muchos_camp)muchos.lcs());
+    private void imprime(LCamp l){
+        if(claseDe(l, Muchos_camp.class)){
+            imprime(muchos_camp(l.lcs(), l.campo()));
         }
-        else imprime((Un_camp)muchos.lcs());
+        else imprime(un_camp(l.campo()));
+    }
+
+    private void imprime(Muchos_camp muchos){
+        imprime(muchos.lcs());
         System.out.println(",");
         imprime(muchos.campo());
     }
@@ -215,7 +216,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Camp camp){
         imprime(camp.tipo());
-        System.out.println(camp.iden());
+        imprime(iden(camp.iden().str()));
     }
 
     private void imprime(LIns l){
@@ -578,11 +579,11 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Exp_lit_cadena e){
-        System.out.println(e.iden());
+        imprime(iden(e.iden().str()));
     }
 
     private void imprime(Exp_Iden e){
-        System.out.println(e.iden());
+        imprime(iden(e.iden().str()));
     }
 
     private void imprime(Exp_lit_BoolTrue e){

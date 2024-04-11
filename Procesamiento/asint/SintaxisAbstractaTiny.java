@@ -28,17 +28,17 @@ public class SintaxisAbstractaTiny {
     
 
     public static abstract class Exp  extends  Nodo {
-       public Exp() {
-          super();
-       }   
-       public abstract int prioridad();
+        public Exp() {
+            super();
+        }   
+        public abstract int prioridad();
 
        //De recursivo:
-       public String iden() {throw new UnsupportedOperationException();}
+        public Iden iden() {throw new UnsupportedOperationException();}
         public String valor() {throw new UnsupportedOperationException();}
 
-       public Exp opnd0() {throw new UnsupportedOperationException();}
-       public Exp opnd1() {throw new UnsupportedOperationException();}
+        public Exp opnd0() {throw new UnsupportedOperationException();}
+         public Exp opnd1() {throw new UnsupportedOperationException();}
 
     }
    
@@ -214,9 +214,9 @@ public class SintaxisAbstractaTiny {
 
         public abstract void procesa(Procesamiento p);
 
-        public String iden() {throw new UnsupportedOperationException();}
+        public Iden iden() {throw new UnsupportedOperationException();}
         public Lit_ent num() {throw new UnsupportedOperationException();}
-
+        public String str() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
     }
@@ -276,7 +276,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String iden() {return id;}
+        public String str() {return id;}
 
     }
     public static class Array extends Tipo {
@@ -294,8 +294,6 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-
-
     }
     public static class Puntero extends Tipo {
 
@@ -545,17 +543,19 @@ public class SintaxisAbstractaTiny {
     public static abstract class PFormOpt extends Nodo{
         public PFormOpt() {}
         public abstract void procesa(Procesamiento p);
+
+        public LPForm pforms() {throw new UnsupportedOperationException();}
     }
     public static class Si_pforms extends PFormOpt {
-        private LPform pforms;
-        public Si_pforms(LPform pforms) {
+        private LPForm pforms;
+        public Si_pforms(LPForm pforms) {
             super();
             this.pforms = pforms;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public LPform pforms() {return pforms;}
+        public LPForm pforms() {return pforms;}
 
     }
     public static class No_pforms extends PFormOpt {
@@ -566,6 +566,15 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+    }
+
+    public static abstract class LPForm extends Nodo{
+        public LPForm() {}
+
+        public abstract void procesa(Procesamiento p);
+
+        public Pform pform() {throw new UnsupportedOperationException();}
+        public LPForm pforms() {throw new UnsupportedOperationException();}
     }
 
     public static class Un_pform extends LPForm {
@@ -581,15 +590,15 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Muchos_pforms extends LPForm {
-        private PFormOpt pforms;
+        private LPForm pforms;
         private Pform pform;
-        public Muchos_pforms(PFormOpt pforms, Pform pform) {
+        public Muchos_pforms(LPForm pforms, Pform pform) {
             super();
             this.pform = pform;
             this.pforms = pforms;
         }
         public Pform pform() {return pform;}
-        public PFormOpt pforms() {return pforms;}
+        public LPForm pforms() {return pforms;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -603,6 +612,11 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+
+        public Iden iden() {throw new UnsupportedOperationException();}
+        public Tipo tipo() {throw new UnsupportedOperationException();}
+        public PFormOpt pf() {throw new UnsupportedOperationException();}
+        public Bloque bq() {throw new UnsupportedOperationException();}
     }
     public static class Dec_var extends Dec {
         private Iden id;
@@ -654,6 +668,8 @@ public class SintaxisAbstractaTiny {
         public LDecs() {
             super();
         }
+        public LDecs ldecs() {throw new UnsupportedOperationException();}
+        public Dec dec() {throw new UnsupportedOperationException();}
     }
     public static abstract class LDecsOpt extends Nodo{
         public LDecsOpt() {
@@ -760,6 +776,9 @@ public class SintaxisAbstractaTiny {
     public static abstract class LCamp extends Nodo{
         public LCamp() {}
         public abstract void procesa(Procesamiento p);
+
+        public Camp campo() {throw new UnsupportedOperationException();}
+        public LCamp lcs() {throw new UnsupportedOperationException();}
     }
 
     public static class Un_camp extends LCamp{
@@ -1212,16 +1231,16 @@ public class SintaxisAbstractaTiny {
     public PFnoref pfnoref(Tipo t, Iden id) {
         return new PFnoref(t, id);
     }
-    public PFormOpt si_pforms(PFormOpt lpf){
+    public PFormOpt si_pforms(LPForm lpf){
         return new Si_pforms(lpf);
     }
     public PFormOpt no_pforms(){
         return new No_pforms();
     }
-    public PFormOpt un_pform(Pform pf){
+    public LPForm un_pform(Pform pf){
         return new Un_pform(pf);
     }
-    public PFormOpt muchos_pforms(PFormOpt lpf, Pform pf){
+    public LPForm muchos_pforms(LPForm lpf, Pform pf){
         return new Muchos_pforms(lpf, pf);
     }
 
