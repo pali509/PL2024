@@ -724,14 +724,14 @@ public class SintaxisAbstractaTiny {
 
     }
     public static class Bloque extends Nodo{
-        private LDecs lds;
+        private LDecsOpt lds;
         private LIns lis;
-        public Bloque(LDecs lds, LIns lis) {
+        public Bloque(LDecsOpt lds, LIns lis) {
             this.lds = lds;
             this.lis = lis;
         }
 
-        public LDecs lds() {return lds;}
+        public LDecsOpt lds() {return lds;}
         public LIns lis() {return lis;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
