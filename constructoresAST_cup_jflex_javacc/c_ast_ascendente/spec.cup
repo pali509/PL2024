@@ -2,7 +2,7 @@ package c_ast_ascendente;
 
 import java_cup.runtime.*;
 import asint.ClaseSemanticaTiny;
-import asint.SintaxisAbstractaTiny.*
+import asint.SintaxisAbstractaTiny.*;
 import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 
@@ -34,7 +34,7 @@ terminal     SUMA, RESTA, MUL, DIV, MOD, MAYOR,
 terminal StringLocalizado IDENTIFICADOR, LITENTERO, LITREAL, LITCADENA;
 
 non terminal  Prog programa;
-non terminal  Bloque bloque
+non terminal  Bloque bloque;
 non terminal  LDecs declaraciones_opt, declaraciones;
 non terminal  LIns instrucciones_opt, instrucciones;
 non terminal  Dec declaracion, declaracion_var, declaracion_tipo, declaracion_proc;
@@ -44,12 +44,12 @@ non terminal  Pform parametro_formal;
 non terminal  LCamp campos;
 non terminal  Camp campo;
 non terminal  Ins instruccion;
-non terminal  Exp E0, E1, E2, E3, E4, E5, E6;
+non terminal  Exp E0, E1, E2, E3, E4, E5, E6, E7;
 non terminal  LPReal parametros_reales_opt, parametros_reales;
 non terminal  String op1, op4, op5, op6, and_opt;
 
-programa ::= bloque bloq 
-	{: RESULT = sem.prog(bloq);:};
+programa ::= bloque
+	{: RESULT = sem.prog(bloque);:};
 
 bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
    {: RESULT = sem.bloque(exp,decs); :};
@@ -122,7 +122,7 @@ tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC
 
 tipo2 ::= INT
 	{: RESULT = sem.lit_ent(); :}; 
-;
+
 tipo2 ::= REAL 
 	{: RESULT = sem.lit_real(); :}; 
 
@@ -251,7 +251,7 @@ E6 ::= E7:exp
 E7 ::= LITENTERO:num
 	{: RESULT = (Exp)sem.exp_litEntero(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
-E7 ::= LITEREAL:num
+E7 ::= LITREAL:num
 	{: RESULT = (Exp)sem.exp_litReal(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= LITCADENA:num

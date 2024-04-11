@@ -770,7 +770,7 @@ public class SintaxisAbstractaInterprete {
        
     }
 
-    public static class Bloque extends Nodo { //TODO ESTO DEBERIA SER LDECSOPT Y LINSOPT :(
+    public static class Bloque extends Nodo {
         private  LDecsOpt lds;
         private LInsOpt lis;
         public Bloque(LDecsOpt lds, LInsOpt lis) {
