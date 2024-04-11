@@ -650,8 +650,14 @@ public class SintaxisAbstractaTiny {
             super();
         }
     }
+    public static abstract class LDecsOpt extends Nodo{
+        public LDecsOpt() {
+            super();
+        }
+        public LDecs decs() {throw new UnsupportedOperationException();}
+    }
 
-    public static class Si_decs extends LDecs {
+    public static class Si_decs extends LDecsOpt {
        private LDecs decs; 
        public Si_decs(LDecs decs) {
           super();
@@ -663,7 +669,7 @@ public class SintaxisAbstractaTiny {
         public LDecs decs() {return decs;}
 
     }
-    public static class No_decs extends LDecs {
+    public static class No_decs extends LDecsOpt {
        public No_decs() {
           super();
        }   
@@ -951,7 +957,13 @@ public class SintaxisAbstractaTiny {
         public abstract void procesa(Procesamiento p);
     }
 
-    public static class Si_Ins extends LIns{
+    public static abstract class LInsOpt extends Nodo{
+        public LInsOpt() {}
+        public abstract void procesa(Procesamiento p);
+        public LIns ins() {throw new UnsupportedOperationException();}
+    }
+
+    public static class Si_Ins extends LInsOpt{
         private LIns ins;
         public Si_Ins(LIns ins){
             super();
@@ -961,12 +973,10 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public LIns ins() {return ins;}
-        
-
 
     }
 
-    public static class No_Ins extends LIns{
+    public static class No_Ins extends LInsOpt{
         public No_Ins() {
             super();
         }   
@@ -1210,10 +1220,10 @@ public class SintaxisAbstractaTiny {
         return new Muchos_pforms(lpf, pf);
     }
 
-    public LIns si_ins(LIns ins){
+    public LInsOpt si_ins(LIns ins){
         return new Si_Ins(ins);
     }
-    public LIns no_ins(){
+    public LInsOpt no_ins(){
         return new No_Ins();
     }
     public LIns una_ins(Ins ins){
@@ -1279,10 +1289,10 @@ public class SintaxisAbstractaTiny {
         return new Exp_Iden(num);
     }
 	//yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
-    public LDecs si_decs(LDecs decs) {
+    public LDecsOpt si_decs(LDecs decs) {
         return new Si_decs(decs);
     }
-    public LDecs no_decs() {
+    public LDecsOpt no_decs() {
         return new No_decs();
     }
     public LDecs muchas_decs(LDecs decs, Dec dec) {
