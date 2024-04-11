@@ -568,7 +568,7 @@ public class SintaxisAbstractaTiny {
         }
     }
 
-    public static class Un_pform extends PFormOpt {
+    public static class Un_pform extends LPForm {
         private Pform pform;
         public Un_pform(Pform pform) {
             super();
@@ -580,7 +580,7 @@ public class SintaxisAbstractaTiny {
         public Pform pform() {return pform;}
     }
 
-    public static class Muchos_pforms extends PFormOpt {
+    public static class Muchos_pforms extends LPForm {
         private PFormOpt pforms;
         private Pform pform;
         public Muchos_pforms(PFormOpt pforms, Pform pform) {

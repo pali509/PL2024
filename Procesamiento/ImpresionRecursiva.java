@@ -99,7 +99,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(LPForm l){
-        if(claseDe(p, Muchos_pforms.class)){
+        if(claseDe(l, Muchos_pforms.class)){
             imprime((Muchos_pforms)sipform.pforms());
         }
         else imprime((Un_pform)sipform.pforms());
