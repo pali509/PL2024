@@ -137,12 +137,12 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println("<string>");
     }
     public void imprime(Iden iden) {
-        System.out.println(iden.id +"$f:"+iden.leeFila()+",c:"+iden.leeCol()+"$");
+        System.out.println(iden.str() +"$f:"+iden.leeFila()+",c:"+iden.leeCol()+"$");
     }
     public void imprime(Array array) {
         array.tipo().imprime(this);
         System.out.print("[");
-        array.num().imprime();
+        array.num().imprime(this);
         System.out.println("] $f:" + array.num().leeFila() + ",c:" + array.num().leeCol() + "$");
     }
     public void imprime(Puntero puntero) {
@@ -153,17 +153,17 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     public void imprime(Struct struct) {
         System.out.println("<struct>");
         System.out.println("{");
-        struct.lcamp().imprime();
+        struct.lcamp().imprime(this);
         System.out.println("}");
     }
 
 
     // 4. Exp
     public void imprime(Exp_lit_ent exp_lit_ent) {
-        System.out.println(exp_lit_ent.num() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
+        System.out.println(exp_lit_ent.lex() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
     }
     public void imprime(Exp_lit_real exp_lit_real) {
-        System.out.println(exp_lit_real.num() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
+        System.out.println(exp_lit_real.lex() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
     }
     public void imprime(Exp_lit_BoolTrue exp_lit_BoolTrue) {
         System.out.println("<true>" + "$f:"+exp_lit_BoolTrue.leeFila()+",c:"+exp_lit_BoolTrue.leeCol()+"$" );
@@ -208,9 +208,6 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         pfnoref.t().imprime(this);
         pfnoref.id().imprime(this);
     }
-    public void imprime(PFormOpt pformOpt) {
-        pformOpt.pforms().imprime(this);
-    }
 
 
     // 6. PFormOpt
@@ -220,6 +217,8 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     public void imprime(No_pforms no_pforms) {
         // TODO: Se deja vacio?
     }
+
+    // 7. LPForm
     public void imprime(Un_pform un_pform) {
         un_pform.pform().imprime(this);
     }
@@ -230,7 +229,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     }
 
 
-    // 7. Dec
+    // 8. Dec
     public void imprime(Dec_var dec_var) {
         dec_var.tipo().imprime(this);
         dec_var.iden().imprime(this);
@@ -251,7 +250,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     }
 
 
-    // 8. LDecsOpt
+    // 9. LDecsOpt
     public void imprime(Si_decs si_decs) {
         System.out.println("");
         si_decs.decs().imprime(this);
