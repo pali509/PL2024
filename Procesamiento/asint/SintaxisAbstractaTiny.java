@@ -214,6 +214,11 @@ public class SintaxisAbstractaTiny {
 
         public abstract void procesa(Procesamiento p);
 
+        public String iden() {throw new UnsupportedOperationException();}
+        public Lit_ent num() {throw new UnsupportedOperationException();}
+
+        public Tipo tipo() {throw new UnsupportedOperationException();}
+        public LCamp lcamp() {throw new UnsupportedOperationException();}
     }
 
     public static class Lit_ent extends Tipo {
@@ -1288,7 +1293,7 @@ public class SintaxisAbstractaTiny {
     public Exp exp_Iden(String num) {
         return new Exp_Iden(num);
     }
-	//yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
+
     public LDecsOpt si_decs(LDecs decs) {
         return new Si_decs(decs);
     }

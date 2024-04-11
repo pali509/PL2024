@@ -215,6 +215,13 @@ public class SintaxisAbstractaInterprete {
 
     public static abstract class Tipo extends Nodo {
         public Tipo() {}
+
+        public String iden() {throw new UnsupportedOperationException();}
+        public Lit_ent num() {throw new UnsupportedOperationException();}
+
+        public Tipo tipo() {throw new UnsupportedOperationException();}
+        public LCamp lcamp() {throw new UnsupportedOperationException();}
+
     }
 
     public static class Lit_ent extends Tipo {
