@@ -28,85 +28,79 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         Exp opnd0 = resta.opnd0();
         Exp opnd1 = resta.opnd1();
 
-        imprimeExpBin(this,opnd0,"-",opnd1,2,3);
+        imprimeExpBin(resta,opnd0,"-",opnd1,2,3);
     }
     public void imprime(Mul mul) {
         Exp opnd0 = mul.opnd0();
         Exp opnd1 = mul.opnd1();
 
-        imprimeExpBin(this,opnd0,"*",opnd1,4,5);
+        imprimeExpBin(mul,opnd0,"*",opnd1,4,5);
     }
     public void imprime(Div div) {
         Exp opnd0 = div.opnd0();
         Exp opnd1 = div.opnd1();
 
-        imprimeExpBin(this,opnd0,"/",opnd1,4,5);
+        imprimeExpBin(div,opnd0,"/",opnd1,4,5);
     }
     public void imprime(Mod mod) {
         Exp opnd0 = mod.opnd0();
         Exp opnd1 = mod.opnd1();
 
-        imprimeExpBin(this,opnd0,"%",opnd1,4,5);
+        imprimeExpBin(mod,opnd0,"%",opnd1,4,5);
     }
     public void imprime(Asig asig) {
         Exp opnd0 = asig.opnd0();
         Exp opnd1 = asig.opnd1();
 
-        imprimeExpBin(this,opnd0,"=",opnd1,0,1);
+        imprimeExpBin(asig,opnd0,"=",opnd1,0,1);
     }
     public void imprime(Mayor mayor) {
         Exp opnd0 = mayor.opnd0();
         Exp opnd1 = mayor.opnd1();
 
-        imprimeExpBin(this,opnd0,">",opnd1,1,2);
+        imprimeExpBin(mayor,opnd0,">",opnd1,1,2);
     }
     public void imprime(Menor menor) {
         Exp opnd0 = menor.opnd0();
         Exp opnd1 = menor.opnd1();
 
-        imprimeExpBin(this,opnd0,"<",opnd1,1,2);
-    }
-    public void imprime(Mayor mayor) {
-        Exp opnd0 = mayor.opnd0();
-        Exp opnd1 = mayor.opnd1();
-
-        imprimeExpBin(this,opnd0,">",opnd1,1,2);
+        imprimeExpBin(menor,opnd0,"<",opnd1,1,2);
     }
     public void imprime(MayorIg mayorIg) {
         Exp opnd0 = mayorIg.opnd0();
         Exp opnd1 = mayorIg.opnd1();
 
-        imprimeExpBin(this,opnd0,">=",opnd1,1,2);
+        imprimeExpBin(mayorIg,opnd0,">=",opnd1,1,2);
     }
     public void imprime(MenorIg menorIg) {
         Exp opnd0 = menorIg.opnd0();
         Exp opnd1 = menorIg.opnd1();
 
-        imprimeExpBin(this,opnd0,"<=",opnd1,1,2);
+        imprimeExpBin(menorIg,opnd0,"<=",opnd1,1,2);
     }
     public void imprime(Igual igual) {
         Exp opnd0 = igual.opnd0();
         Exp opnd1 = igual.opnd1();
 
-        imprimeExpBin(this,opnd0,"==",opnd1,1,2);
+        imprimeExpBin(igual,opnd0,"==",opnd1,1,2);
     }
     public void imprime(Desigual desigual) {
         Exp opnd0 = desigual.opnd0();
         Exp opnd1 = desigual.opnd1();
 
-        imprimeExpBin(this,opnd0,"!=",opnd1,1,2);
+        imprimeExpBin(desigual,opnd0,"!=",opnd1,1,2);
     }
     public void imprime(And and) {
-        Exp opnd0 = And.opnd0();
-        Exp opnd1 = And.opnd1();
+        Exp exp1 = And.exp1();
+        Exp exp2 = And.exp2();
 
-        imprimeExpBin(this, exp1, "<and>", exp2, 4, 3);
+        imprimeExpBin(and, exp1, "<and>", exp2, 4, 3);
     }
     public void imprime(Or or) {
-        Exp opnd0 = or.opnd0();
-        Exp opnd1 = or.opnd1();
+        Exp exp1 = or.exp1();
+        Exp exp2 = or.exp2();
 
-        imprimeExpBin(this, exp1, "<or>", exp2, 4, 3);
+        imprimeExpBin(or, exp1, "<or>", exp2, 4, 3);
     }
 
     // 2. ExpUn
@@ -273,8 +267,6 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     // 10. Nodo
     public void imprime(Prog prog) {
-        System.out.println("evalua");
-        System.out.print("  ");
         prog.bq().imprime(this);
         System.out.println("<EOF>");
     }
@@ -283,10 +275,6 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         bloque.lds().imprime(this);
         bloque.lis().imprime(this);
         System.out.println("}");
-    }
-    public void imprime(Camp camp) {
-        camp.tipo().imprime(this);
-        camp.iden().imprime(this);
     }
     public void imprime(Camp camp) {
         camp.tipo().imprime(this);
