@@ -547,15 +547,15 @@ public class SintaxisAbstractaTiny {
         public abstract void procesa(Procesamiento p);
     }
     public static class Si_pforms extends PFormOpt {
-        private PFormOpt pforms;
-        public Si_pforms(PFormOpt pforms) {
+        private Pform pforms;
+        public Si_pforms(Pform pforms) {
             super();
             this.pforms = pforms;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public PFormOpt pforms() {return pforms;}
+        public Pform pforms() {return pforms;}
 
     }
     public static class No_pforms extends PFormOpt {

@@ -16,28 +16,27 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
     private void imprime(Bloque bloque){
         System.out.println("{");
-        imprime((LDecsOpt)bloque.lds());
+        imprime(bloque.lds());
         imprime(bloque.lis());
         System.out.println("}");
     }
 
     private void imprime(LDecsOpt l){
-
-    }
-
-    private void imprime(LDecs l){
         if(claseDe(l, Si_decs.class)){
-            imprime(si_decs(l));
+            imprime(si_decs(l.decs()));
         }
         else imprime(no_decs());
     }
 
-    private void imprime(Si_decs sidecs){
-        if(claseDe(sidecs.decs(), Muchas_decs.class)){
-            imprime(muchas_decs(((Muchas_decs)sidecs).ldecs(), ((Muchas_decs)sidecs).dec()));
+    private void imprime(LDecs l){
+        if(claseDe(l, Muchas_decs.class)){
+            imprime(muchas_decs(((Muchas_decs)l).ldecs(), ((Muchas_decs)l).dec()));
         }
-        else imprime(una_dec(sidecs.decs()));
-        System.out.println("&&");
+        else imprime(una_dec(((Una_dec)l).dec()));
+    }
+
+    private void imprime(Si_decs sidecs){
+        imprime(sidecs.decs());
     }
 
     private void imprime(No_decs nodecs){
@@ -45,80 +44,33 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Muchas_decs muchas){
-        if (claseDe(muchas.ldecs(), Muchas_decs.class)){
-            imprime((Muchas_decs)muchas.ldecs());
-        }
-        else imprime((Una_dec)muchas.ldecs());
+        imprime(muchas.ldecs());
         System.out.println(";");
-        if(claseDe(muchas.dec(), Dec_var.class)){
-            imprime((Dec_var)muchas.dec());
-        }
-        else if(claseDe(muchas.dec(), Dec_tipo.class)){
-            imprime((Dec_tipo)muchas.dec());
-        }
-        else imprime((Dec_proc)muchas.dec());
+        imprime(una_dec(muchas.dec()));
     }
 
     private void imprime(Una_dec una){
-        if(claseDe(una.dec(), Dec_var.class)){
-            imprime((Dec_var)una.dec());
+        imprime(una.dec());
+    }
+
+    private void imprime(Dec d){
+        if(claseDe(d, Dec_var.class)){
+            imprime(dec_var(((Dec_var)d).iden(), ((Dec_var)d).tipo()));
         }
-        else if(claseDe(una.dec(), Dec_tipo.class)){
-            imprime((Dec_tipo)una.dec());
+        else if(claseDe(d, Dec_tipo.class)){
+            imprime(dec_tipo(((Dec_tipo)d).iden(), ((Dec_tipo)d).tipo()));
         }
-        else imprime((Dec_proc)una.dec());
+        else imprime(dec_proc(((Dec_proc)d).iden(), ((Dec_proc)d).pf(), ((Dec_proc)d).bq()));
     }
 
     private void imprime(Dec_var var){
-        if(claseDe(var.tipo(), Array.class)){
-            imprime((Array)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Puntero.class)){
-            imprime((Puntero)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Iden.class)){
-            imprime((Iden)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Struct.class)){
-            imprime((Struct)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Lit_ent.class)){
-            imprime((Lit_ent)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Lit_real.class)){
-            imprime((Lit_real)var.tipo());
-        }
-        else if(claseDe(var.tipo(), Lit_bool.class)){
-            imprime((Lit_bool)var.tipo());
-        }
-        else imprime((Lit_string)var.tipo());
+        imprime(var.tipo());
         System.out.println(var.iden());
     }
 
     private void imprime(Dec_tipo tipo){
         System.out.println("<type>");
-        if(claseDe(tipo.tipo(), Array.class)){
-            imprime((Array)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Puntero.class)){
-            imprime((Puntero)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Iden.class)){
-            imprime((Iden)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Struct.class)){
-            imprime((Struct)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Lit_ent.class)){
-            imprime((Lit_ent)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Lit_real.class)){
-            imprime((Lit_real)tipo.tipo());
-        }
-        else if(claseDe(tipo.tipo(), Lit_bool.class)){
-            imprime((Lit_bool)tipo.tipo());
-        }
-        else imprime((Lit_string)tipo.tipo());
+        imprime(tipo.tipo());
         System.out.println(tipo.iden());
     }
 
@@ -165,107 +117,48 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(PFref pform){
-        if(claseDe(pform.t(), Array.class)){
-            imprime((Array)pform.t());
-        }
-        else if(claseDe(pform.t(), Puntero.class)){
-            imprime((Puntero)pform.t());
-        }
-        else if(claseDe(pform.t(), Iden.class)){
-            imprime((Iden)pform.t());
-        }
-        else if(claseDe(pform.t(), Struct.class)){
-            imprime((Struct)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_ent.class)){
-            imprime((Lit_ent)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_real.class)){
-            imprime((Lit_real)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_bool.class)){
-            imprime((Lit_bool)pform.t());
-        }
-        else imprime((Lit_string)pform.t());
+        imprime(pform.t());
         System.out.println("&");
         System.out.println(pform.st());
     }
 
     private void imprime(PFnoref pform){
-        if(claseDe(pform.t(), Array.class)){
-            imprime((Array)pform.t());
-        }
-        else if(claseDe(pform.t(), Puntero.class)){
-            imprime((Puntero)pform.t());
-        }
-        else if(claseDe(pform.t(), Iden.class)){
-            imprime((Iden)pform.t());
-        }
-        else if(claseDe(pform.t(), Struct.class)){
-            imprime((Struct)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_ent.class)){
-            imprime((Lit_ent)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_real.class)){
-            imprime((Lit_real)pform.t());
-        }
-        else if(claseDe(pform.t(), Lit_bool.class)){
-            imprime((Lit_bool)pform.t());
-        }
-        else imprime((Lit_string)pform.t());
+        imprime(pform.t());
         System.out.println(pform.st());
     }
 
+    private void imprime(Tipo t){
+        if(claseDe(t, Array.class)){
+            imprime(array(t.tipo(), t.num()));
+        }
+        else if(claseDe(t, Puntero.class)){
+            imprime(puntero(t.tipo()));
+        }
+        else if(claseDe(t, Iden.class)){
+            imprime(iden(t.iden()));
+        }
+        else if(claseDe(t, Struct.class)){
+            imprime(struct(t.lcamp()));
+        }
+        else if(claseDe(t, Lit_ent.class)){
+            imprime(lit_ent());
+        }
+        else if(claseDe(t, Lit_real.class)){
+            imprime(lit_real());
+        }
+        else if(claseDe(t, Lit_bool.class)){
+            imprime(lit_bool());
+        }
+        else imprime(lit_string());
+    }
+
     private void imprime(Array array){
-        if(claseDe(array.tipo(), Array.class)){
-            imprime((Array)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Puntero.class)){
-            imprime((Puntero)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Iden.class)){
-            imprime((Iden)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Struct.class)){
-            imprime((Struct)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Lit_ent.class)){
-            imprime((Lit_ent)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Lit_real.class)){
-            imprime((Lit_real)array.tipo());
-        }
-        else if(claseDe(array.tipo(), Lit_bool.class)){
-            imprime((Lit_bool)array.tipo());
-        }
-        else imprime((Lit_string)array.tipo());
+        imprime(array.tipo());
         System.out.println("[" + array.iden() + "]");
     }
 
     private void imprime(Puntero puntero){
-        if(claseDe(puntero.tipo(), Array.class)){
-            imprime((Array)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Puntero.class)){
-            imprime((Puntero)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Iden.class)){
-            imprime((Iden)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Struct.class)){
-            imprime((Struct)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Lit_ent.class)){
-            imprime((Lit_ent)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Lit_real.class)){
-            imprime((Lit_real)puntero.tipo());
-        }
-        else if(claseDe(puntero.tipo(), Lit_bool.class)){
-            imprime((Lit_bool)puntero.tipo());
-        }
-        else imprime((Lit_string)puntero.tipo());
+        imprime(puntero.tipo());
         System.out.println("^");
     }
     
@@ -313,28 +206,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Camp camp){
-        if(claseDe(camp.tipo(), Array.class)){
-            imprime((Array)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Puntero.class)){
-            imprime((Puntero)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Iden.class)){
-            imprime((Iden)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Struct.class)){
-            imprime((Struct)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Lit_ent.class)){
-            imprime((Lit_ent)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Lit_real.class)){
-            imprime((Lit_real)camp.tipo());
-        }
-        else if(claseDe(camp.tipo(), Lit_bool.class)){
-            imprime((Lit_bool)camp.tipo());
-        }
-        else imprime((Lit_string)camp.tipo());
+        imprime(camp.tipo());
         System.out.println(camp.iden());
     }
 
