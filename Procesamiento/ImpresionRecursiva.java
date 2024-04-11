@@ -78,23 +78,31 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         System.out.println("<proc>");
         System.out.println(proc.iden());
         System.out.println("(");
-        if(claseDe(proc.pf(), Si_pforms.class)){
-            imprime((Si_pforms)proc.pf());
-        }
-        else imprime((No_pforms)proc.pf());
+        imprime(proc.pf());
         System.out.println(")");
         imprime(proc.bq());
     }
 
-    private void imprime(Si_pforms sipform){
-        if(claseDe(sipform.pforms(), Muchos_pforms.class)){
-            imprime((Muchos_pforms)sipform.pforms());
+    private void imprime(PFormOpt p){
+        if(claseDe(p, Si_pforms.class)){
+            imprime(si_pforms(p));
         }
-        else imprime((Un_pform)sipform.pforms());
+        else imprime(no_pforms());
+    }
+
+    private void imprime(Si_pforms sipform){
+        imprime(sipform.pforms());
     }
 
     private void imprime(No_pforms nopform){
         //Vacía
+    }
+
+    private void imprime(LPForm l){
+        if(claseDe(p, Muchos_pforms.class)){
+            imprime((Muchos_pforms)sipform.pforms());
+        }
+        else imprime((Un_pform)sipform.pforms());
     }
 
     private void imprime(Muchos_pforms muchos){
