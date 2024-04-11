@@ -220,17 +220,21 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(LIns l){
+        if(claseDe(l, Muchas_ins.class)){
+            imprime(muchas_ins(l.li(), l.ins()));
+        }
+        else imprime(una_ins(l.ins()));
+    }
+
+    private void imprime(LInsOpt l){
         if(claseDe(l, Si_Ins.class)){
-            imprime(si_ins(l));
+            imprime(si_ins(l.ins()));
         }
         else imprime(no_ins());
     }
 
     private void imprime(Si_Ins s){
-        if(claseDe(s.ins(), Muchas_ins.class)){
-            imprime((Muchas_ins)s.ins());
-        }
-        else imprime((Una_ins)s.ins());
+        imprime(s.ins());
     }
 
     private void imprime(No_Ins n){
@@ -238,76 +242,47 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Muchas_ins muchas){
-        if(claseDe(muchas.li(), Muchas_ins.class)){
-            imprime((Muchas_ins)muchas.li());
-        }
-        else imprime((Una_ins)muchas.li());
+        imprime(muchas.li());
         System.out.println(";");
-        if(claseDe(muchas.ins(), Ins_asig.class)){
-            imprime((Ins_asig)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_if.class)){
-            imprime((Ins_if)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_if_else.class)){
-            imprime((Ins_if_else)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_while.class)){
-            imprime((Ins_while)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_read.class)){
-            imprime((Ins_read)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_write.class)){
-            imprime((Ins_write)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_nl.class)){
-            imprime((Ins_nl)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_new.class)){
-            imprime((Ins_new)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_delete.class)){
-            imprime((Ins_delete)muchas.ins());
-        }
-        else if(claseDe(muchas.ins(), Ins_call.class)){
-            imprime((Ins_call)muchas.ins());
-        }
-        imprime((Ins_bloque)muchas.ins());
+        imprime(una_ins(muchas.ins()));
     }
 
     private void imprime(Una_ins una){
-        if(claseDe(una.ins(), Ins_asig.class)){
-            imprime((Ins_asig)una.ins());
+        imprime(una.ins());
+    }
+
+    private void imprime(Ins i){
+        if(claseDe(i, Ins_asig.class)){
+            imprime(ins_asig(i.e()));
         }
-        else if(claseDe(una.ins(), Ins_if.class)){
-            imprime((Ins_if)una.ins());
+        else if(claseDe(i, Ins_if.class)){
+            imprime(ins_if(i.e(), i.bloque()));
         }
-        else if(claseDe(una.ins(), Ins_if_else.class)){
-            imprime((Ins_if_else)una.ins());
+        else if(claseDe(i, Ins_if_else.class)){
+            imprime(ins_if_else(i.e(), i.bloque(), i.bloque2()));
         }
-        else if(claseDe(una.ins(), Ins_while.class)){
-            imprime((Ins_while)una.ins());
+        else if(claseDe(i, Ins_while.class)){
+            imprime(ins_while(i.e(), i.bloque()));
         }
-        else if(claseDe(una.ins(), Ins_read.class)){
-            imprime((Ins_read)una.ins());
+        else if(claseDe(i, Ins_read.class)){
+            imprime(ins_read(i.e()));
         }
-        else if(claseDe(una.ins(), Ins_write.class)){
-            imprime((Ins_write)una.ins());
+        else if(claseDe(i, Ins_write.class)){
+            imprime(ins_write(i.e()));
         }
-        else if(claseDe(una.ins(), Ins_nl.class)){
-            imprime((Ins_nl)una.ins());
+        else if(claseDe(i, Ins_nl.class)){
+            imprime(ins_nl());
         }
-        else if(claseDe(una.ins(), Ins_new.class)){
-            imprime((Ins_new)una.ins());
+        else if(claseDe(i, Ins_new.class)){
+            imprime(ins_new(i.e()));
         }
-        else if(claseDe(una.ins(), Ins_delete.class)){
-            imprime((Ins_delete)una.ins());
+        else if(claseDe(i, Ins_delete.class)){
+            imprime(ins_delete(i.e()));
         }
-        else if(claseDe(una.ins(), Ins_call.class)){
-            imprime((Ins_call)una.ins());
+        else if(claseDe(i, Ins_call.class)){
+            imprime(ins_call(i.id(), i.pr()));
         }
-        imprime((Ins_bloque)una.ins());
+        else imprime(ins_bloque(i.bloque()));
     }
 
     private void imprime(Ins_asig asig){
@@ -324,7 +299,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     private void imprime(Ins_if_else ifelse){
         System.out.println("<if>");
         imprime(ifelse.e());
-        imprime(ifelse.bloque1());
+        imprime(ifelse.bloque());
         System.out.println("<else>");
         imprime(ifelse.bloque2());
     }
@@ -361,7 +336,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_call call){
         System.out.println("<call>");
-        System.out.println(call.string());
+        imprime(iden(call.id().str()));
         System.out.println("(");
         if(claseDe(call.pr(), Si_preal.class)){
             imprime((Si_preal)call.pr());

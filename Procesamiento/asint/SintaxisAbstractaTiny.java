@@ -820,6 +820,12 @@ public class SintaxisAbstractaTiny {
     public static abstract class Ins extends Nodo{
         public Ins() {}
         public abstract void procesa(Procesamiento p);
+
+        public Exp e() {throw new UnsupportedOperationException();}
+        public Bloque bloque() {throw new UnsupportedOperationException();}
+        public Bloque bloque2() {throw new UnsupportedOperationException();}
+        public LPReal pr() {throw new UnsupportedOperationException();}
+        public Iden id() {throw new UnsupportedOperationException();}
     }
 
     public static class Ins_asig extends Ins {
@@ -862,7 +868,7 @@ public class SintaxisAbstractaTiny {
             this.bq2 = bq2;
         }
         public Exp e() {return e;}
-        public Bloque bloque1(){return bq1;}
+        public Bloque bloque(){return bq1;}
         public Bloque bloque2(){return bq2;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -937,6 +943,7 @@ public class SintaxisAbstractaTiny {
         }
 
     }
+    
     public static class Ins_nl extends Ins {
         public Ins_nl() {
             super();
@@ -979,6 +986,9 @@ public class SintaxisAbstractaTiny {
     public static abstract class LIns extends Nodo{
         public LIns() {}
         public abstract void procesa(Procesamiento p);
+
+        public Ins ins() {throw new UnsupportedOperationException();}
+        public LIns li() {throw new UnsupportedOperationException();}
     }
 
     public static abstract class LInsOpt extends Nodo{
@@ -1286,6 +1296,9 @@ public class SintaxisAbstractaTiny {
     }
     public Ins ins_call(Iden id, LPReal lpr){
         return new Ins_call(id, lpr);
+    }
+    public Ins ins_bloque(Bloque b){
+        return new Ins_bloque(b);
     }
 
 
