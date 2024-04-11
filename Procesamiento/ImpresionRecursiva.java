@@ -16,9 +16,13 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
     private void imprime(Bloque bloque){
         System.out.println("{");
-        imprime(bloque.lds());
+        imprime((LDecsOpt)bloque.lds());
         imprime(bloque.lis());
         System.out.println("}");
+    }
+
+    private void imprime(LDecsOpt l){
+
     }
 
     private void imprime(LDecs l){
