@@ -706,8 +706,8 @@ public class SintaxisAbstractaInterprete {
             this.decs = decs;
         }
         public void imprime() {
-            System.out.println("");
             decs.imprime();
+            System.out.println("&&");
         }
    
 
@@ -717,7 +717,9 @@ public class SintaxisAbstractaInterprete {
             super();
         }
   
-        public void imprime() {}
+        public void imprime() {
+            //skip
+        }
     }
 
     public static abstract class LDecs extends Nodo {
@@ -756,7 +758,7 @@ public class SintaxisAbstractaInterprete {
 
     }
 
-    public static class Prog extends Nodo { //Falta lo de eof que npi
+    public static class Prog extends Nodo {
         private Bloque bq;
 
         public Prog(Bloque bq) {
