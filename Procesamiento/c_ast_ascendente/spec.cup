@@ -1,12 +1,8 @@
 package c_ast_ascendente;
 
 import java_cup.runtime.*;
-import asint.ClaseSemanticaEval;
-import asint.SintaxisAbstractaEval.Exp;
-import asint.SintaxisAbstractaEval.Decs;
-import asint.SintaxisAbstractaEval.LDecs;
-import asint.SintaxisAbstractaEval.Dec;
-import asint.SintaxisAbstractaEval.Prog;
+import asint.ClaseSemanticaTiny;
+import asint.SintaxisAbstractaTiny.*;
 import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 
@@ -14,35 +10,46 @@ scan with {:
   return getScanner().next_token(); 
 :};
 parser code {: 
-   private GestionErroresEval errores;
+   private GestionErroresTiny errores;
    public void syntax_error(Symbol unidadLexica) {
      errores.errorSintactico((UnidadLexica)unidadLexica);
    }
 :};
 init with {: 
-   errores = new GestionErroresEval();
-   AnalizadorLexicoEval alex = (AnalizadorLexicoEval)getScanner();
+   errores = new GestionErroresTiny();
+   AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
    alex.fijaGestionErrores(errores);
 :};
 action code {:
-  ClaseSemanticaEval sem = new ClaseSemanticaEval();
+  ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
 :}
 
 
-terminal     IDENTIFICADOR, LITENTERO,  LITEREAL,  LITCADENA, SUMA, RESTA, MUL, DIV, MOD, MAYOR,
+terminal     SUMA, RESTA, MUL, DIV, MOD, MAYOR,
 			 MENOR, MAYORIGUAL, MENORIGUAL, IGUAL, DESIGUAL, ASIG, PARA, PARC, PUNTOYCOMA, COMA,
 			 CIRCUNFLEJO, PUNTO, CORCHETEA, CORCHETEC, LLAVEA, LLAVEC, ARROBA, AMPERSAND, AMPERSAND2,
 			 INT, REAL, BOOL, STRING, NULL, PROC, IF, ELSE, WHILE, STRUCT, NEW, DELETE, READ, WRITE,
 			 NL, TYPE, CALL, TRUE, FALSE, AND, NOT, OR;
+			 
+terminal StringLocalizado IDENTIFICADOR, LITENTERO, LITREAL, LITCADENA;
 
-non terminal  programa, bloque, declaraciones_opt, instrucciones_opt, declaraciones, instrucciones,
-			  declaracion, declaracion_var, declaracion_tipo, declaracion_proc, tipo, parametros_formales_opt,
-			  parametros_formales, parametro_formal, and_opt,tipo1, tipo2, campos, campo, instruccion, 
-			  if_select, E0, parametros_reales_opt, parametros_reales, E1, E2, E3, E4, E5, E6, op1,
-			  op4, op5, op6;
+non terminal  Prog programa;
+non terminal  Bloque bloque;
+non terminal  LDecs declaraciones_opt, declaraciones;
+non terminal  LIns instrucciones_opt, instrucciones;
+non terminal  Dec declaracion, declaracion_var, declaracion_tipo, declaracion_proc;
+non terminal  Tipo tipo, tipo1, tipo2;
+non terminal  PForm parametros_formales_opt, parametros_formales;
+non terminal  Pform parametro_formal;
+non terminal  LCamp campos;
+non terminal  Camp campo;
+non terminal  Ins instruccion;
+non terminal  Exp E0, E1, E2, E3, E4, E5, E6, E7;
+non terminal  LPReal parametros_reales_opt, parametros_reales;
+non terminal  String op1, op4, op5, op6, and_opt;
 
-programa ::= bloque bloq 
-	{: RESULT = sem.prog(bloq);:};
+programa ::= bloque
+	{: RESULT = sem.prog(bloque);:};
 
 bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
    {: RESULT = sem.bloque(exp,decs); :};
@@ -115,7 +122,7 @@ tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC
 
 tipo2 ::= INT
 	{: RESULT = sem.lit_ent(); :}; 
-;
+
 tipo2 ::= REAL 
 	{: RESULT = sem.lit_real(); :}; 
 
@@ -244,7 +251,7 @@ E6 ::= E7:exp
 E7 ::= LITENTERO:num
 	{: RESULT = (Exp)sem.exp_litEntero(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
-E7 ::= LITEREAL:num
+E7 ::= LITREAL:num
 	{: RESULT = (Exp)sem.exp_litReal(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= LITCADENA:num
