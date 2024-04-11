@@ -48,13 +48,13 @@ non terminal  PFnoref parametro_formal;
 non terminal  LCamp campos;
 non terminal  Camp campo;
 non terminal  Ins instruccion;
-non terminal  Exp E0, E1, E2, E3, E4, E5, E6;
+non terminal  Exp E0, E1, E2, E3, E4, E5, E6, E7;
 non terminal  LPRealOpt parametros_reales_opt;
 non terminal  LPReal parametros_reales;
 non terminal  String op1, op4, op5, and_opt;
 
-programa ::= bloque bloq 
-	{: RESULT = sem.prog(bloq);:};
+programa ::= bloque
+	{: RESULT = sem.prog(bloque);:};
 
 bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
    {: RESULT = sem.bloque(exp,decs); :};
@@ -125,7 +125,7 @@ tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC
 
 tipo2 ::= INT
 	{: RESULT = sem.lit_ent(); :}; 
-;
+
 tipo2 ::= REAL 
 	{: RESULT = sem.lit_real(); :}; 
 
@@ -254,7 +254,7 @@ E6 ::= E7:exp
 E7 ::= LITENTERO:num
 	{: RESULT = (Exp)sem.exp_lit_ent(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
-E7 ::= LITEREAL:num
+E7 ::= LITREAL:num
 	{: RESULT = (Exp)sem.exp_lit_real(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= LITCADENA:num

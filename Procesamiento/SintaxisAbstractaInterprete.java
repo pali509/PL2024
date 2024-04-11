@@ -216,6 +216,7 @@ public class SintaxisAbstractaInterprete {
     public static abstract class Tipo extends Nodo {
         public Tipo() {}
 
+        //TODO COGER LOS DE ASINT QUE FALTAN AQUI VARIOS DE ESTOS
         public String iden() {throw new UnsupportedOperationException();}
         public Lit_ent num() {throw new UnsupportedOperationException();}
 
