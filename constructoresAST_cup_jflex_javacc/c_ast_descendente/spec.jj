@@ -64,11 +64,11 @@ PARSER_END(ConstructorASTsTiny)
      }
 
   Bloque bloque()	:
-  	{ LDecs decs_opt; LIns ins_opt; }
+  	{ LDecsOpt decs_opt; LInsOpt ins_opt; }
   	{ " { " decs_opt = declaraciones_opt() ins_opt = instrucciones_opt() " }"
   		{ return sem.bloque(decs_opt, ins_opt); } }
 
-  LDecs declaraciones_opt():
+  LDecsOpt declaraciones_opt():
   	{LDecs decs; }
   	{ decs = lista_decs() "&&"
   		{ return sem.si_decs(decs); } 
@@ -76,7 +76,7 @@ PARSER_END(ConstructorASTsTiny)
 	{return sem.no_decs(); } 
   	}
   	
-  LIns instrucciones_opt():
+  LInsOpt instrucciones_opt():
   	{LIns ins; }
   	{ ins = lista_ins()
   		{ return sem.si_ins(ins); } 
@@ -98,7 +98,7 @@ PARSER_END(ConstructorASTsTiny)
   		{ return rdecs; } }
 
   Dec declaracion():
-  {Token id;Token a; Tipo t; PForm pform_opt; Bloque bloque; }
+  {Token id;Token a; Tipo t; PFormOpt pform_opt; Bloque bloque; }
   {
     t = tipo() id = < identificador >
     { return (Dec)sem.dec_var(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
@@ -110,35 +110,35 @@ PARSER_END(ConstructorASTsTiny)
  	{return (Dec)sem.dec_proc(id.image, pform_opt, bloque).ponFila(id.beginLine).ponCol(id.beginColumn);} }
     
 
-  LPForm parametrosFormales_opt():
+  PFormOpt parametrosFormales_opt():
   {LPForm params; }
   	{ params = lista_pforms()
-  	{ return sem.si_pform(params); }
+  	{ return sem.si_pforms(params); }
  	 |
- 	{return sem.no_pform();} } 
+ 	{return sem.no_pforms();} } 
     
 
   LPForm lista_pforms():
     { LPForm params; PForm param; }
     {
-      param = parametroFormal() params = rlista_pforms(sem.una_pform(param))
+      param = parametroFormal() params = rlista_pforms(sem.un_pform(param))
       { return  params;} }
       
   LPForm rlista_pforms(LPForm rparams):
-  	{ LPForm params; PForm param;}
+  	{ LPForm params; Pform param;}
   	{
-  	  "," param = parametroFormal()  params = rlista_pforms(sem.muchas_pforms(rparams,param))
+  	  "," param = parametroFormal()  params = rlista_pforms(sem.muchos_pforms(rparams,param))
   	  { return params; }
   		|
   		{ return rparams; } }
 
-  PForm parametroFormal():
-  	{ Tipo t;Token and_opt; Token id; }
-  	{ t = tipo() and_opt = "&" id = < identificador >
-  		{ return sem.pform_ref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+  Pform parametroFormal():
+  	{ Tipo t; Token id; }
+  	{ t = tipo() "&" id = < identificador >
+  		{ return sem.pfref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
   	|
  	  t = tipo() id = < identificador >
- 		 {return sem.pform_no_ref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);} }
+ 		 {return sem.pfnoref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);} }
 
   Tipo tipo():
   	{Tipo t1; Tipo t;}
@@ -166,7 +166,7 @@ PARSER_END(ConstructorASTsTiny)
  }
 
    Tipo tipo2():
-   { Token t; LCamps campos; }
+   { Token t; LCamp campos; }
     {
       t = < identificador >
       { return sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
@@ -186,14 +186,14 @@ PARSER_END(ConstructorASTsTiny)
       t = < string >
       { return sem.lit_string(); } }
   
-  LCamps lista_campos():
-    { LCamps campos;Camp campo; }
+  LCamp lista_campos():
+    { LCamp campos;Camp campo; }
     {
       campo = campo() campos = rlista_campos(sem.un_camp(campo))
       { return  campos;} }
       
-  LCamps rlista_campos(LCamps rcampos):
-  	{ LCamps campos; Camp campo; }
+  LCamp rlista_campos(LCamp rcampos):
+  	{ LCamp campos; Camp campo; }
   	{
   	  "," campo = campo()  campos = rlista_campos(sem.muchos_camp(rcampos,campo))
   	  { return campos; }
@@ -259,7 +259,7 @@ PARSER_END(ConstructorASTsTiny)
  	  return sem.ins_bloque(bloque); }
    }
 
-  LPReal parametrosReales_opt():
+  LPRealOpt parametrosReales_opt():
   	{LPReal params; }
   	{ params = lista_preal()
   		{ return sem.si_preal(params); } 
@@ -315,7 +315,7 @@ PARSER_END(ConstructorASTsTiny)
   Exp re2(Exp re3):
   {Exp e3, e2;}
   {
-	"+" e3 = e3()  e2=re2(sem.mkop2(re3, "+", e3))
+	"+" e3 = e3()  e2=re2(sem.mkop2(re3, "+",e3))
 	{return e2;}
 	|
 	{return re3;}
@@ -331,13 +331,13 @@ PARSER_END(ConstructorASTsTiny)
   	{ return rminus; } }
 
   Exp e3():
-  {Exp e3, e4, e41; Token t;}
+  {Exp e3, e4, e41;Token t;}
   {
 	e4 = e4() t = < and > e3 = e3()
-	{return sem.and(e4, e3); }
+	{return (Exp)sem.and(e4, e3); }
 	|
 	e4 = e4() t = < or >  e41 = e4()
-	{return sem.or(e4, e41); }
+	{return (Exp)sem.or(e4, e41); }
 	|
 	e4 = e4()
 	{return e4;} }
@@ -374,16 +374,16 @@ PARSER_END(ConstructorASTsTiny)
   }
 
   Exp re6(Exp re6):
-  {Exp e0, e6; Token id; }
+  {Exp e0, e6; Token id;}
   {
 	"[" e0 = e0() "]"
-	{return sem.acceso_array(re6, e0); }
+	{return (Exp)sem.accesoArray(re6, e0); }
 	|
 	"." id = < identificador > 
-	{return  sem.acceso_campo(re6, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+	{return  (Exp)sem.accesoCampo(re6, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
 	|
 	"^"
-	{return sem.acceso_puntero(re6); }
+	{return (Exp)sem.accesoPuntero(re6); }
 	|
 	{return re6; } } 
 	  
@@ -392,22 +392,22 @@ PARSER_END(ConstructorASTsTiny)
   {Token t; Exp e0; }
   {
     t = <literalEntero>
-    { return (Exp)sem.exp_litEntero(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+    { return (Exp)sem.exp_lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
  	 |
  	 t = < literalReal >
- 	  { return (Exp)sem.exp_litReal(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+ 	  { return (Exp)sem.exp_lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
 	 |
 	 t = <true_ >
-	  { return (Exp)sem.exp_litBoolTrue(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+	  { return (Exp)sem.exp_lit_BoolTrue(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
 	 |
 	 t = < false_ >
-	  { return (Exp)sem.exp_litBoolFalse(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); } 
+	  { return (Exp)sem.exp_lit_BoolFalse(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); } 
   	 |
   	 t = < literalCadena >
-  	  { return (Exp)sem.exp_litCadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+  	  { return (Exp)sem.exp_lit_cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
   	 |
   	 t = < identificador >
-  	 { return (Exp)sem.exp_litIdentificador(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+  	 { return (Exp)sem.exp_iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
   	 |
   	 t = < null_ >
   	  { return (Exp)sem.exp_null(); }
