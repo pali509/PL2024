@@ -110,6 +110,8 @@ public interface Procesamiento {
 
     void procesa(Not exp);
 
+    void procesa(LDecsOpt ldecs);
+    void procesa(LInsOpt ins);
     void procesa(Si_Ins ins);
 
     void procesa(No_Ins ins);
