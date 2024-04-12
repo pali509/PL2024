@@ -1,7 +1,7 @@
 import asint.SintaxisAbstractaTiny.*;
 import c_ast_ascendente.AnalizadorLexicoTiny;
 import c_ast_ascendente.ConstructorASTTiny;
-//import c_ast_descendente.ConstructorASTTiny;
+import c_ast_descendente.*;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
