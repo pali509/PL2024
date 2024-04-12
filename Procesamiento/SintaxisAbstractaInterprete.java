@@ -4,9 +4,9 @@ import asint.SintaxisAbstractaTiny;
 public class SintaxisAbstractaInterprete {
 
     private static void imprimeOpnd(Exp opnd, int np) {
-        if(opnd.prioridad() < np) {System.out.println("(");};
+        if(opnd.prioridad() < np) {System.out.println("(");}
         opnd.imprime();
-        if(opnd.prioridad() < np) {System.out.println(")");};
+        if(opnd.prioridad() < np) {System.out.println(")");}
     }
 
 
@@ -215,8 +215,6 @@ public class SintaxisAbstractaInterprete {
 
     public static abstract class Tipo extends Nodo {
         public Tipo() {}
-
-        //TODO COGER LOS DE ASINT QUE FALTAN AQUI VARIOS DE ESTOS
         public String iden() {throw new UnsupportedOperationException();}
         public Lit_ent num() {throw new UnsupportedOperationException();}
 
@@ -230,7 +228,6 @@ public class SintaxisAbstractaInterprete {
         public Lit_ent() {
             super();
         }
-        //TODO TODOS LOS LIT
         public void imprime(){
             System.out.println("<int>");
         }
@@ -574,18 +571,18 @@ public class SintaxisAbstractaInterprete {
 
     public static abstract class PFormOpt extends Nodo {
         public PFormOpt() {}
-        
+        public LPForm pforms() {throw new UnsupportedOperationException();}
     }
     public static class Si_pforms extends PFormOpt {
-        private PFormOpt pforms;
-        public Si_pforms(PFormOpt pforms) {
+        private LPForm pforms;
+        public Si_pforms(LPForm pforms) {
             super();
             this.pforms = pforms;
         }
         public void imprime(){
             pforms.imprime();
         }
-        public PFormOpt pforms() {return pforms;}
+        public LPForm pforms() {return pforms;}
 
     }
     public static class No_pforms extends PFormOpt {
@@ -597,8 +594,13 @@ public class SintaxisAbstractaInterprete {
             //Se deja vacio?
         }
     }
+    public static abstract class LPForm extends Nodo {
+        public LPForm() {}
 
-    public static class Un_pform extends PFormOpt {
+        public Pform pform() {throw new UnsupportedOperationException();}
+        public LPForm pforms() {throw new UnsupportedOperationException();}
+    }
+    public static class Un_pform extends LPForm {
         private Pform pform;
         public Un_pform(Pform pform) {
             super();
@@ -610,16 +612,16 @@ public class SintaxisAbstractaInterprete {
         public Pform pform() {return pform;}
     }
 
-    public static class Muchos_pforms extends PFormOpt {
-        private PFormOpt pforms;
+    public static class Muchos_pforms extends LPForm {
+        private LPForm pforms;
         private Pform pform;
-        public Muchos_pforms(PFormOpt pforms, Pform pform) {
+        public Muchos_pforms(LPForm pforms, Pform pform) {
             super();
             this.pform = pform;
             this.pforms = pforms;
         }
         public Pform pform() {return pform;}
-        public PFormOpt pforms() {return pforms;}
+        public LPForm pforms() {return pforms;}
         public void imprime(){
             pforms.imprime();
             System.out.println(",");
@@ -631,6 +633,11 @@ public class SintaxisAbstractaInterprete {
 
         public Dec() {}
         public abstract void imprime();
+
+        public Iden iden() {throw new UnsupportedOperationException();}
+        public Tipo tipo() {throw new UnsupportedOperationException();}
+        public PFormOpt pf() {throw new UnsupportedOperationException();}
+        public Bloque bq() {throw new UnsupportedOperationException();}
       
     }
 
@@ -662,6 +669,7 @@ public class SintaxisAbstractaInterprete {
             System.out.println("<type>");
             t.imprime();
             id.imprime();
+            System.out.println(";");
         }
         public Iden iden() {return id;}
         public Tipo tipo() {return t;}
@@ -810,6 +818,10 @@ public class SintaxisAbstractaInterprete {
     public static abstract class LCamp extends Nodo {
         public LCamp() {}
         public abstract void imprime();
+
+        public Camp campo() {throw new UnsupportedOperationException();}
+        public LCamp lcs() {throw new UnsupportedOperationException();}
+
     }
 
     public static class Un_camp extends LCamp {
@@ -853,6 +865,11 @@ public class SintaxisAbstractaInterprete {
     public static abstract class Ins extends Nodo {
         public Ins() {}
         public abstract void imprime();
+        public Exp e() {throw new UnsupportedOperationException();}
+        public Bloque bloque() {throw new UnsupportedOperationException();}
+        public Bloque bloque2() {throw new UnsupportedOperationException();}
+        public LPReal pr() {throw new UnsupportedOperationException();}
+        public Iden id() {throw new UnsupportedOperationException();}
     }
 
     public static class Ins_asig extends Ins {
@@ -1032,6 +1049,8 @@ public class SintaxisAbstractaInterprete {
     public static abstract class LIns extends Nodo {
         public LIns() {}
         public abstract void imprime();
+        public Ins ins() {throw new UnsupportedOperationException();}
+        public LIns li() {throw new UnsupportedOperationException();}
     }
     public static abstract class LInsOpt extends Nodo {
         public LInsOpt() {}
@@ -1286,16 +1305,16 @@ public class SintaxisAbstractaInterprete {
     public PFnoref pfnoref(Tipo t, Iden id) {
         return new PFnoref(t, id);
     }
-    public PFormOpt si_pforms(PFormOpt lpf){
+    public PFormOpt si_pforms(LPForm lpf){
         return new Si_pforms(lpf);
     }
     public PFormOpt no_pforms(){
         return new No_pforms();
     }
-    public PFormOpt un_pform(Pform pf){
+    public LPForm un_pform(Pform pf){
         return new Un_pform(pf);
     }
-    public PFormOpt muchos_pforms(PFormOpt lpf, Pform pf){
+    public LPForm muchos_pforms(LPForm lpf, Pform pf){
         return new Muchos_pforms(lpf, pf);
     }
 
