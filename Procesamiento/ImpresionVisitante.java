@@ -5,9 +5,9 @@ import asint.ProcesamientoDef;
 import asint.SintaxisAbstractaTiny;
 
 public class ImpresionVisitante extends SintaxisAbstractaTiny {
-    private void imprimeOpnd(Exp opnd, int np) {
+    private static void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
-        opnd.imprime(this);
+        opnd.imprime();
         if(opnd.prioridad() < np) {System.out.print(")");};        
     }
 
@@ -97,15 +97,15 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         imprimeExpBin(and, exp1, "<and>", exp2, 4, 3);
     }
     public void imprime(Or or) {
-        Exp exp1 = or.exp1();
-        Exp exp2 = or.exp2();
+        Exp exp1 = or.opnd0();
+        Exp exp2 = or.opnd1();
 
         imprimeExpBin(or, exp1, "<or>", exp2, 4, 3);
     }
 
     // 2. ExpUn
     public void imprime(Neg neg) {
-        Exp opnd = neg.opnd();
+        Exp opnd = neg.opnd0();
 
         System.out.println("- $f:"+neg.leeFila()+",c:"+neg.leeCol()+"$");
         imprimeOpnd(opnd, 5);
@@ -157,7 +157,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println(exp_lit_ent.lex() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
     }
     public void imprime(Exp_lit_real exp_lit_real) {
-        System.out.println(exp_lit_real.lex() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
+        System.out.println(exp_lit_real.lex() + "$f:"+exp_lit_real.leeFila()+",c:"+exp_lit_real.leeCol()+"$" );
     }
     public void imprime(Exp_lit_BoolTrue exp_lit_BoolTrue) {
         System.out.println("<true>" + "$f:"+exp_lit_BoolTrue.leeFila()+",c:"+exp_lit_BoolTrue.leeCol()+"$" );
@@ -172,7 +172,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println(exp_lit_cadena.num() + "$f:"+exp_lit_cadena.leeFila()+",c:"+exp_lit_cadena.leeCol()+"$" );
     }
     public void imprime(Exp_Iden exp_Iden) {
-        System.out.println(exp_Iden.num() + "$f:"+exp_lit_cadena.leeFila()+",c:"+exp_lit_cadena.leeCol()+"$" );
+        System.out.println(exp_Iden.num() + "$f:"+exp_Iden.leeFila()+",c:"+exp_Iden.leeCol()+"$" );
     }
     public void imprime(AccesoArray accesoArray) {
         imprimeOpnd(accesoArray.exp1(), 6);
