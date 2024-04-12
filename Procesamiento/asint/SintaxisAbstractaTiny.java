@@ -34,9 +34,9 @@ public class SintaxisAbstractaTiny {
             this.beginLine = fila;
             this.beginColumn = col;
         }
-        public int fila() {return beginLine;}
-        public int col() {return beginColumn;}
-        public String toString() {
+        public int beginLine() {return beginLine;}
+        public int beginColumn() {return beginColumn;}
+        public String image() {
             return image;
         }
         public boolean equals(Object o) {
