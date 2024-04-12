@@ -38,8 +38,7 @@ public class SintaxisAbstractaTiny {
         public String valor() {throw new UnsupportedOperationException();}
 
         public Exp opnd0() {throw new UnsupportedOperationException();}
-         public Exp opnd1() {throw new UnsupportedOperationException();}
-
+        public Exp opnd1() {throw new UnsupportedOperationException();}
     }
    
     
@@ -58,7 +57,7 @@ public class SintaxisAbstractaTiny {
     //Me la he inventado para tener una que solo tuviera 1 opnd
     public static abstract class ExpUn extends Exp {
         protected Exp opnd;
-        public Exp opnd() {return opnd;}
+        public Exp opnd0() {return opnd;}
         public ExpUn(Exp opnd) {
             super();
             this.opnd = opnd;
@@ -331,7 +330,7 @@ public class SintaxisAbstractaTiny {
             super();
             this.lex = lex;
         }
-        public String lex(){return lex;}
+        public String valor(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -345,7 +344,7 @@ public class SintaxisAbstractaTiny {
             super();
             this.lex = lex;
         }
-        public String lex(){return lex;}
+        public String valor(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -396,7 +395,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String num(){return num;}
+        public String valor(){return num;}
         public int prioridad() {return 7;}
 
     }
@@ -411,7 +410,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String num(){return num;}
+        public String valor(){return num;}
         public int prioridad() {return 7;}
 
     }
@@ -427,8 +426,8 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
+        public Exp opnd0(){return exp1;}
+        public Exp opnd1(){return exp2;}
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
@@ -440,8 +439,8 @@ public class SintaxisAbstractaTiny {
             this.id = id;
         }
 
-        public Iden id(){return id;}
-        public Exp exp(){return exp;}
+        public Iden iden(){return id;}
+        public Exp opnd0(){return exp;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -457,7 +456,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public Exp exp(){return exp;}
+        public Exp opnd0(){return exp;}
         public int prioridad() {return 6;}
 
     }
@@ -473,27 +472,20 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
+        public Exp opnd0(){return exp1;}
+        public Exp opnd1(){return exp2;}
         public int prioridad() {return 3;}
 
     }
 
     public static class Or extends ExpBin {
-        private Exp exp1;
-        private Exp exp2;
         public Or(Exp exp1, Exp exp2) {
             super(exp1,exp2);
-            this.exp1 = exp1;
-            this.exp2 = exp2;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
-
     }
 
     public static abstract class Pform extends Nodo {
@@ -1173,10 +1165,10 @@ public class SintaxisAbstractaTiny {
         return new Not(opnd);
     }
 
-    public Exp Exp_lit_BoolTrue() {
+    public Exp exp_lit_BoolTrue() {
         return new Exp_lit_BoolTrue();
     }
-    public Exp Exp_lit_BoolFalse() {
+    public Exp exp_lit_BoolFalse() {
         return new Exp_lit_BoolFalse();
     }
 

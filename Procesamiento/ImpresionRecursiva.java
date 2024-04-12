@@ -378,75 +378,75 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         imprime(uno.e());
     }
 
-    private void imprimeExpBin(Exp o0, Exp o1, String s, int p0, int p1){
+    private void imprimeExpBin(Exp expb, Exp o0, Exp o1, String s, int p0, int p1){
         imprimeOpnd(o0, p0);
-        System.out.println(s);
+        System.out.println(" "+s+" $f:"+ expb.leeFila()+",c:"+ expb.leeCol()+"$");
         imprimeOpnd(o1, p1);
     }
-//CLAU VAS POR AQUI
+
     private void imprime(Exp exp){
         if(claseDe(exp, Asig.class)){
-            imprime(asig(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(asig(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Mayor.class)){
-            imprime(mayor(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(mayor(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Menor.class)){
-            imprime(menor(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(menor(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, MayorIg.class)){
-            imprime(mayorIg(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(mayorIg(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, MenorIg.class)){
-            imprime(menorIg(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(menorIg(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Igual.class)){
-            imprime(igual(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(igual(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Desigual.class)){
-            imprime(desigual(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(desigual(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Suma.class)){
-            imprime(suma(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(suma(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Resta.class)){
-            imprime(resta(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(resta(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, And.class)){
-            imprime(and(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(and(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Or.class)){
-            imprime(or(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(or(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Mul.class)){
-            imprime(mul(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(mul(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Div.class)){
-            imprime(div(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(div(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Mod.class)){
-            imprime(mod(((ExpBin)exp).opnd0(), ((ExpBin)exp).opnd1()));
+            imprime(mod(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, Neg.class)){
-            imprime(neg(((ExpUn)exp).opnd()));
+            imprime(neg(exp.opnd0()));
         }
         else if(claseDe(exp, Not.class)){
-            imprime(not(((ExpUn)exp).opnd()));
+            imprime(not(exp.opnd0()));
         }
         else if(claseDe(exp, AccesoArray.class)){
-            imprime(accesoArray(((AccesoArray)exp).exp1(), ((AccesoArray)exp).exp2()));
+            imprime(accesoArray(exp.opnd0(), exp.opnd1()));
         }
         else if(claseDe(exp, AccesoCampo.class)){
-            imprime(accesoCampo(((AccesoCampo)exp).num(), ((AccesoCampo)exp).exp()));
+            imprime(accesoCampo(exp.iden(), exp.opnd0()));
         }
         else if(claseDe(exp, AccesoPuntero.class)){
-            imprime(accesoPuntero(((AccesoPuntero)exp).exp()));
+            imprime(accesoPuntero(exp.opnd0()));
         }
         else if(claseDe(exp, Exp_lit_ent.class)){
-            imprime(exp_lit_ent());
+            imprime(exp_lit_ent(exp.valor()));
         }
         else if(claseDe(exp, Exp_lit_real.class)){
-            imprime(exp_lit_real());
+            imprime(exp_lit_real(exp.valor()));
         }
         else if(claseDe(exp, Exp_lit_BoolTrue.class)){
             imprime(exp_lit_BoolTrue());
@@ -455,98 +455,98 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
             imprime(exp_lit_BoolFalse());
         }
         else if(claseDe(exp, Exp_lit_cadena.class)){
-            imprime(exp_lit_cadena(((Exp_lit_cadena)exp).num()));
+            imprime(exp_lit_cadena(exp.valor()));
         }
         else if(claseDe(exp, Exp_Iden.class)){
-            imprime(exp_Iden(((Exp_Iden)exp).num()));
+            imprime(exp_Iden(exp.valor()));
         }
         else imprime(exp_null());
     }
 
     private void imprime(Asig asig){
-        imprimeExpBin(asig.opnd0(), asig.opnd1(), "=", 1, 0);
+        imprimeExpBin(asig, asig.opnd0(), asig.opnd1(), "=", 1, 0);
     }
 
     private void imprime(Mayor mayor){
-        imprimeExpBin(mayor.opnd0(), mayor.opnd1(), ">", 1, 2);
+        imprimeExpBin(mayor, mayor.opnd0(), mayor.opnd1(), ">", 1, 2);
     }
 
     private void imprime(Menor menor){
-        imprimeExpBin(menor.opnd0(), menor.opnd1(), "<", 1, 2);
+        imprimeExpBin(menor, menor.opnd0(), menor.opnd1(), "<", 1, 2);
     }
 
     private void imprime(MayorIg m){
-        imprimeExpBin(m.opnd0(), m.opnd1(), ">=", 1, 2);
+        imprimeExpBin(m, m.opnd0(), m.opnd1(), ">=", 1, 2);
     }
 
     private void imprime(MenorIg m){
-        imprimeExpBin(m.opnd0(), m.opnd1(), "<=", 1, 2);
+        imprimeExpBin(m, m.opnd0(), m.opnd1(), "<=", 1, 2);
     }
 
     private void imprime(Igual igual){
-        imprimeExpBin(igual.opnd0(), igual.opnd1(), "==", 1, 2);
+        imprimeExpBin(igual, igual.opnd0(), igual.opnd1(), "==", 1, 2);
     }
 
     private void imprime(Desigual desi){
-        imprimeExpBin(desi.opnd0(), desi.opnd1(), "!=", 1, 2);
+        imprimeExpBin(desi, desi.opnd0(), desi.opnd1(), "!=", 1, 2);
     }
 
     private void imprime(Suma suma){
-        imprimeExpBin(suma.opnd0(), suma.opnd1(), "+", 2, 3);
+        imprimeExpBin(suma, suma.opnd0(), suma.opnd1(), "+", 2, 3);
     }
 
     private void imprime(Resta resta){
-        imprimeExpBin(resta.opnd0(), resta.opnd1(), "-", 3, 3);
+        imprimeExpBin(resta, resta.opnd0(), resta.opnd1(), "-", 3, 3);
     }
 
     private void imprime(And and){
-        imprimeExpBin(and.opnd0(), and.opnd1(), "<and>", 4, 3);
+        imprimeExpBin(and, and.opnd0(), and.opnd1(), "<and>", 4, 3);
     }
 
     private void imprime(Or or){
-        imprimeExpBin(or.opnd0(), or.opnd1(), "<or>", 4, 4);
+        imprimeExpBin(or, or.opnd0(), or.opnd1(), "<or>", 4, 4);
     }
 
     private void imprime(Mul mul){
-        imprimeExpBin(mul.opnd0(), mul.opnd1(), "*", 4, 5);
+        imprimeExpBin(mul, mul.opnd0(), mul.opnd1(), "*", 4, 5);
     }
 
     private void imprime(Div div){
-        imprimeExpBin(div.opnd0(), div.opnd1(), "/", 4, 5);
+        imprimeExpBin(div, div.opnd0(), div.opnd1(), "/", 4, 5);
     }
 
     private void imprime(Mod mod){
-        imprimeExpBin(mod.opnd0(), mod.opnd1(), "%", 4, 5);
+        imprimeExpBin(mod, mod.opnd0(), mod.opnd1(), "%", 4, 5);
     }
 
-    private void imprimeExpUn(String s, Exp e, int p){
-        System.out.println(s);
+    private void imprimeExpUn(Exp eu, String s, Exp e, int p){
+        System.out.println(s+" $f:"+eu.leeFila()+",c:"+eu.leeCol()+"$");
         imprimeOpnd(e, p);
     }
 
     private void imprime(Neg neg){
-        imprimeExpUn("-", neg.opnd(), 5);
+        imprimeExpUn(neg, "-", neg.opnd0(), 5);
     }
 
     private void imprime(Not not){
-        imprimeExpUn("<not>", not.opnd(), 5);
+        imprimeExpUn(not, "<not>", not.opnd0(), 5);
     }
 
     private void imprime(AccesoArray a){
-        imprimeOpnd(a.exp1(), 6);
+        imprimeOpnd(a.opnd0(), 6);
         System.out.println("[");
-        imprime(a.exp2());
+        imprime(a.opnd1());
         System.out.println("]");
     }
 
     private void imprime(AccesoCampo a){
-        imprimeOpnd(a.exp(), 6);
+        imprimeOpnd(a.opnd0(), 6);
         System.out.println(". ");
-        System.out.println(a.num()); //CHEQUEAR
+        imprime(iden(a.iden().str()));
     }
 
     private void imprime(AccesoPuntero a){
-        imprimeOpnd(a.exp(), 6);
+        imprimeOpnd(a.opnd0(), 6);
         System.out.println("^ ");
     }
 
