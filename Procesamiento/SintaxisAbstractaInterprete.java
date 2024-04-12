@@ -441,7 +441,7 @@ public class SintaxisAbstractaInterprete {
             //TODO El corchete de apertura en una expresión de indexación de un elemento de un
             //array
             imprimeOpnd(exp1, 6);
-            System.out.println("[");
+            System.out.println("[ " + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
             exp2.imprime();
             System.out.println("]");
 
