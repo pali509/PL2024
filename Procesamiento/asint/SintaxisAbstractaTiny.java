@@ -2,7 +2,7 @@ package asint;
 
 
 public class SintaxisAbstractaTiny {
-          
+    
     public static abstract class Nodo  {
        public Nodo() {
 		   fila=col=-1;
@@ -25,7 +25,29 @@ public class SintaxisAbstractaTiny {
 	   }
            public abstract void procesa(Procesamiento p);
     }
-    
+    public static class StringLocalizado {
+        private String image;
+        private int beginLine;
+        private int beginColumn;
+        public StringLocalizado(String s, int fila, int col) {
+            this.image = s;
+            this.beginLine = fila;
+            this.beginColumn = col;
+        }
+        public int fila() {return beginLine;}
+        public int col() {return beginColumn;}
+        public String toString() {
+            return image;
+        }
+        public boolean equals(Object o) {
+            return (o == this) || (
+                (o instanceof StringLocalizado) &&
+                (((StringLocalizado)o).image.equals(image)));                
+        }
+        public int hashCode() {
+            return image.hashCode();
+        }
+    }
 
     public static abstract class Exp  extends  Nodo {
         public Exp() {
@@ -34,8 +56,8 @@ public class SintaxisAbstractaTiny {
         public abstract int prioridad();
 
        //De recursivo:
-        public String iden() {throw new UnsupportedOperationException();}
-        public String valor() {throw new UnsupportedOperationException();}
+        public StringLocalizado iden() {throw new UnsupportedOperationException();}
+        public StringLocalizado valor() {throw new UnsupportedOperationException();}
 
         public Exp opnd0() {throw new UnsupportedOperationException();}
         public Exp opnd1() {throw new UnsupportedOperationException();}
@@ -213,8 +235,8 @@ public class SintaxisAbstractaTiny {
 
         public abstract void procesa(Procesamiento p);
 
-        public String iden() {throw new UnsupportedOperationException();}
-        public String num() {throw new UnsupportedOperationException();}
+        public StringLocalizado iden() {throw new UnsupportedOperationException();}
+        public StringLocalizado num() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
     }
@@ -264,8 +286,8 @@ public class SintaxisAbstractaTiny {
 
     }
     public static class Iden extends Tipo {
-        private String id;
-        public Iden(String id) {
+        private StringLocalizado id;
+        public Iden(StringLocalizado id) {
             super();
             this.id = id;
         }
@@ -274,19 +296,19 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String str() {return id;}
+        public StringLocalizado str() {return id;}
 
     }
     public static class Array extends Tipo {
-        private String num;
+        private StringLocalizado num;
         private Tipo t;
-        public Array(String image, Tipo t) {
+        public Array(StringLocalizado image, Tipo t) {
             super();
             this.t = t;
             this.num = image;
         }
 
-        public String num() {return num;}
+        public StringLocalizado num() {return num;}
 
         public Tipo tipo() {return t;}
         public void procesa(Procesamiento p) {
@@ -324,12 +346,12 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Exp_lit_ent extends Exp {
-        private String lex;
-        public Exp_lit_ent(String lex) {
+        private StringLocalizado lex;
+        public Exp_lit_ent(StringLocalizado lex) {
             super();
             this.lex = lex;
         }
-        public String valor(){return lex;}
+        public StringLocalizado valor(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -338,12 +360,12 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Exp_lit_real extends Exp {
-        private String lex;
-        public Exp_lit_real(String lex) {
+        private StringLocalizado lex;
+        public Exp_lit_real(StringLocalizado lex) {
             super();
             this.lex = lex;
         }
-        public String valor(){return lex;}
+        public StringLocalizado valor(){return lex;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -386,22 +408,22 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Exp_lit_cadena extends Exp {
-        private String num;
-        public Exp_lit_cadena(String num) {
+        private StringLocalizado num;
+        public Exp_lit_cadena(StringLocalizado num) {
             super();
             this.num = num;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String valor(){return num;}
+        public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
 
     }
     public static class Exp_Iden extends Exp {
 
-        private String num;
-        public Exp_Iden(String num) {
+        private StringLocalizado num;
+        public Exp_Iden(StringLocalizado num) {
             super();
             this.num = num;
         }
@@ -409,7 +431,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String valor(){return num;}
+        public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
 
     }
@@ -430,15 +452,15 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
-        private String id;
+        private StringLocalizado id;
         private Exp exp;
-        public AccesoCampo(String id, Exp exp) {
+        public AccesoCampo(StringLocalizado id, Exp exp) {
             super();
             this.exp = exp;
             this.id = id;
         }
 
-        public String iden(){return id;}
+        public StringLocalizado iden(){return id;}
         public Exp opnd0(){return exp;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -489,26 +511,26 @@ public class SintaxisAbstractaTiny {
 
     public static abstract class Pform extends Nodo {
         private Tipo t;
-        private String id;
-        public Pform(Tipo t, String id) {
+        private StringLocalizado id;
+        public Pform(Tipo t, StringLocalizado id) {
             this.t = t;
             this.id = id;
         }
 
-        public String id(){return id;}
+        public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
         public abstract void procesa(Procesamiento p);
 
     }
     public static class PFref extends Pform {
         private Tipo t;
-        private String id;
-        public PFref(Tipo t, String id) {
+        private StringLocalizado id;
+        public PFref(Tipo t, StringLocalizado id) {
             super(t,id);
             this.t = t;
             this.id = id;
         }
-        public String id(){return id;}
+        public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -518,13 +540,13 @@ public class SintaxisAbstractaTiny {
 
     public static class PFnoref extends Pform {
         private Tipo t;
-        private String id;
-        public PFnoref(Tipo t, String id) {
+        private StringLocalizado id;
+        public PFnoref(Tipo t, StringLocalizado id) {
             super(t,id);
             this.t = t;
             this.id = id;
         }
-        public String id(){return id;}
+        public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -604,44 +626,44 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
-        public String iden() {throw new UnsupportedOperationException();}
+        public StringLocalizado iden() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public PFormOpt pf() {throw new UnsupportedOperationException();}
         public Bloque bq() {throw new UnsupportedOperationException();}
     }
     public static class Dec_var extends Dec {
-        private String id;
+        private StringLocalizado id;
         private Tipo t;
-        public Dec_var(String identificador, Tipo t) {
+        public Dec_var(StringLocalizado identificador, Tipo t) {
             this.id = identificador;
             this.t = t;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String iden() {return id;}
+        public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
     }
     public static class Dec_tipo extends Dec {
-        private String id;
+        private StringLocalizado id;
         private Tipo t;
 
-        public Dec_tipo(String id, Tipo t) {
+        public Dec_tipo(StringLocalizado id, Tipo t) {
             this.id = id;
             this.t = t;
         }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String iden() {return id;}
+        public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
     }
     public static class Dec_proc extends Dec {
-        private String id;
+        private StringLocalizado id;
         private PFormOpt pf;
         private Bloque bq;
 
-        public Dec_proc(String id, PFormOpt pf, Bloque bq) {
+        public Dec_proc(StringLocalizado id, PFormOpt pf, Bloque bq) {
             this.id = id;
             this.pf = pf;
             this.bq = bq;
@@ -649,7 +671,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-        public String iden() {return id;}
+        public StringLocalizado iden() {return id;}
         public PFormOpt pf() {return pf;}
         public Bloque bq() {return bq;}
 
@@ -751,15 +773,15 @@ public class SintaxisAbstractaTiny {
     }
     public static  class Camp extends Nodo{
         private Tipo t;
-        private String id;
-        public Camp(Tipo t, String id) {
+        private StringLocalizado id;
+        public Camp(Tipo t, StringLocalizado id) {
             this.t = t;
             this.id = id;
         }
         public void procesa(Procesamiento p){
             p.procesa(this);
         }
-        public String iden() {return id;}
+        public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
 
     }
@@ -816,7 +838,7 @@ public class SintaxisAbstractaTiny {
         public Bloque bloque() {throw new UnsupportedOperationException();}
         public Bloque bloque2() {throw new UnsupportedOperationException();}
         public LPRealOpt pr() {throw new UnsupportedOperationException();}
-        public String id() {throw new UnsupportedOperationException();}
+        public StringLocalizado id() {throw new UnsupportedOperationException();}
     }
 
     public static class Ins_asig extends Ins {
@@ -946,14 +968,14 @@ public class SintaxisAbstractaTiny {
     }
 
     public static class Ins_call extends Ins {
-        private String id;
+        private StringLocalizado id;
         private LPRealOpt pr;
-        public Ins_call(String id, LPRealOpt pr) {
+        public Ins_call(StringLocalizado id, LPRealOpt pr) {
             super();
             this.id = id;
             this.pr = pr;
         }
-        public String id() {return id;}
+        public StringLocalizado id() {return id;}
         public LPRealOpt pr() {return pr;}
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -1179,18 +1201,18 @@ public class SintaxisAbstractaTiny {
         return new Lit_string();
     }
 
-    public Exp exp_iden(String id) {
+    public Exp exp_iden(StringLocalizado id) {
         return new Exp_Iden(id);
     }
 
-    public Exp exp_lit_cadena(String id) {
+    public Exp exp_lit_cadena(StringLocalizado id) {
         return new Exp_lit_cadena(id);
     }
 
     public Exp accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public Exp accesoCampo(String id, Exp exp) {
+    public Exp accesoCampo(StringLocalizado id, Exp exp) {
         return new AccesoCampo(id, exp);
     }
     public Exp accesoPuntero(Exp exp) {
@@ -1204,7 +1226,7 @@ public class SintaxisAbstractaTiny {
         return new Or(exp1,exp2);
     }
 
-    public Tipo iden(String id) {
+    public Tipo iden(StringLocalizado id) {
         return new Iden(id);
     }
     public Tipo lit_ent() {
@@ -1216,7 +1238,7 @@ public class SintaxisAbstractaTiny {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, String image) {
+    public Tipo array(Tipo t, StringLocalizado image) {
         return new Array(image,t);
     }
     public Tipo puntero(Tipo t) {
@@ -1226,7 +1248,7 @@ public class SintaxisAbstractaTiny {
         return new Struct(lc);
     }
 
-    public Camp camp(Tipo t, String id) {
+    public Camp camp(Tipo t, StringLocalizado id) {
         return new Camp(t, id);
     }
 
@@ -1237,10 +1259,10 @@ public class SintaxisAbstractaTiny {
         return new Muchos_camp(lc,c);
     }
 	//yo pondria mismo tipo a PFref y PFnoref
-    public PFref pfref(Tipo t, String id) {
+    public PFref pfref(Tipo t, StringLocalizado id) {
         return new PFref(t, id);
     }
-    public PFnoref pfnoref(Tipo t, String id) {
+    public PFnoref pfnoref(Tipo t, StringLocalizado id) {
         return new PFnoref(t, id);
     }
     public PFormOpt si_pforms(LPForm lpf){
@@ -1296,7 +1318,7 @@ public class SintaxisAbstractaTiny {
     public Ins ins_delete(Exp e){
         return new Ins_delete(e);
     }
-    public Ins ins_call(String id, LPRealOpt params_opt){
+    public Ins ins_call(StringLocalizado id, LPRealOpt params_opt){
         return new Ins_call(id, params_opt);
     }
     public Ins ins_bloque(Bloque b){
@@ -1318,13 +1340,13 @@ public class SintaxisAbstractaTiny {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp exp_lit_ent(String st) {
+    public Exp exp_lit_ent(StringLocalizado st) {
         return new Exp_lit_ent(st);
     }
-    public Exp exp_lit_real(String st) {
+    public Exp exp_lit_real(StringLocalizado st) {
         return new Exp_lit_real(st);
     }
-    public Exp exp_Iden(String num) {
+    public Exp exp_Iden(StringLocalizado num) {
         return new Exp_Iden(num);
     }
 
@@ -1340,16 +1362,16 @@ public class SintaxisAbstractaTiny {
     public LDecs una_dec(Dec dec) {
         return new Una_dec(dec);
     }
-	//he añadido los diferentes tipos de declaraciones
-    public Dec dec_var(String identificador, Tipo t) {
+
+    public Dec dec_var(StringLocalizado identificador, Tipo t) {
     	return new Dec_var(identificador, t);
     }
     
-    public Dec dec_tipo(String identificador, Tipo t) {
+    public Dec dec_tipo(StringLocalizado identificador, Tipo t) {
     	return new Dec_tipo(identificador, t);
     }
     
-    public Dec dec_proc(String identificador, PFormOpt pformOpt, Bloque bloq) {
+    public Dec dec_proc(StringLocalizado identificador, PFormOpt pformOpt, Bloque bloq) {
     	return new Dec_proc(identificador, pformOpt, bloq);
     }
 
