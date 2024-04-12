@@ -18,7 +18,7 @@ parser code {:
 init with {: 
    errores = new GestionErroresTiny();
    AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
-   alex.fijaGestionErrores(errores);
+   alex.GestionErroresTiny(errores);
 :};
 action code {:
   ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
@@ -53,8 +53,8 @@ non terminal  LPRealOpt parametros_reales_opt;
 non terminal  LPReal parametros_reales;
 non terminal  String op1, op4, op5, and_opt;
 
-programa ::= bloque
-	{: RESULT = sem.prog(bloque);:};
+programa ::= bloque: bloq
+	{: RESULT = sem.prog(bloq);:};
 
 bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
    {: RESULT = sem.bloque(decs_opt, ins_opt); :};
@@ -142,7 +142,7 @@ campos ::= campo: camp
 	{: RESULT = sem.un_camp(camp); :};
 
 campo ::= tipo: t IDENTIFICADOR: id 
-	{: RESULT = sem.camp(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+	{: RESULT = (Camp)sem.camp(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
  
 instrucciones ::= instrucciones: ins PUNTOYCOMA instruccion: in 
 	{: RESULT = sem.muchas_ins(ins,in); :};
@@ -155,35 +155,35 @@ instruccion ::= ARROBA E0: exp
 
 
 instruccion ::= IF E0: exp bloque: bloq 
-	{: RESULT = sem.ins_if(exp, bloq); :};
+	{: RESULT = (Ins)sem.ins_if(exp, bloq); :};
 
 
 instruccion ::= IF E0: exp bloque: bloq  ELSE bloque: bloq1
-	{: RESULT = sem.ins_if_else(exp, bloq, bloq1); :};
+	{: RESULT = (Ins)sem.ins_if_else(exp, bloq, bloq1); :};
 
 instruccion ::= WHILE E0: exp bloque: bloq
-	{: RESULT = sem.ins_while(exp, bloq); :};
+	{: RESULT = (Ins)sem.ins_while(exp, bloq); :};
 
 instruccion ::= READ E0:exp
-	{: RESULT = sem.ins_read(exp); :};
+	{: RESULT = (Ins)sem.ins_read(exp); :};
 
 instruccion ::= WRITE E0:exp
-	{: RESULT = sem.ins_write(exp); :};
+	{: RESULT = (Ins)sem.ins_write(exp); :};
 
 instruccion ::= NL
-	{: RESULT = sem.ins_nl(); :};
+	{: RESULT = (Ins)sem.ins_nl(); :};
 
 instruccion ::= NEW E0: exp
-	{: RESULT = sem.ins_new(exp); :};
+	{: RESULT = (Ins)sem.ins_new(exp); :};
 
 instruccion ::= DELETE E0:exp
-	{: RESULT = sem.ins_delete(exp); :};
+	{: RESULT = (Ins)sem.ins_delete(exp); :};
 
 instruccion ::= CALL IDENTIFICADOR:id PARA parametros_reales_opt:parRopt PARC
-	{: RESULT = sem.ins_call(id.str(), parRopt).ponFila(id.fila()).ponCol(id.col()); :};
+	{: RESULT = (Ins)sem.ins_call(id.str(), parRopt).ponFila(id.fila()).ponCol(id.col()); :};
 
 instruccion ::= bloque:bloq 
-	{: RESULT = sem.ins_bloque(bloq); :};
+	{: RESULT = (Ins)sem.ins_bloque(bloq); :};
 
 parametros_reales_opt ::= parametros_reales: parR
 	{: RESULT = sem.si_preal(parR); :};
@@ -243,7 +243,7 @@ E6 ::= E6:opn1 CORCHETEA E0:exp CORCHETEC
 	{: RESULT = (Exp)sem.accesoArray(opn1,exp); :};
 
 E6 ::= E6:exp PUNTO IDENTIFICADOR:id
-	{: RESULT = (Exp)sem.accesoCampo(exp, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+	{: RESULT = (Exp)sem.accesoCampo(id.str(), exp).ponFila(id.fila()).ponCol(id.col()); :};
 
 E6 ::= E6:exp CIRCUNFLEJO
 	{: RESULT = (Exp)sem.accesoPuntero(exp); :};
