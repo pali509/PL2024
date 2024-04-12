@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+
 public class Main {
     public static void main(String[] args) throws Exception {
         if(args[0].equals("asc")) {
@@ -28,7 +29,7 @@ public class Main {
                 Reader input = new InputStreamReader(new FileInputStream(args[2]));
                 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
                 c_ast_ascendente.ConstructorASTTiny asint = new c_ast_ascendente.ConstructorASTTiny(alex);
-                Prog prog = (Prog)asint.parse().value;
+                SintaxisAbstractaInterprete.ProgInt prog = (SintaxisAbstractaInterprete.ProgInt)asint.parse().value;
                 prog.imprime();
             }
         }
