@@ -162,7 +162,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         imprime(array.tipo());
         System.out.println("[");
         imprime(iden(array.iden().str()));
-        System.out.println("]");
+        System.out.println("]" +"$f:"+array.num().leeFila()+",c:"+array.num().leeCol()+"$");
     }
 
     private void imprime(Puntero puntero){
@@ -171,7 +171,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
     
     private void imprime(Iden iden){
-        System.out.println(iden.str());
+        System.out.println(iden.str() +"$f:"+iden.leeFila()+",c:"+iden.leeCol()+"$");
     }
 
     private void imprime(Struct struct){
@@ -547,15 +547,15 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(AccesoPuntero a){
         imprimeOpnd(a.opnd0(), 6);
-        System.out.println("^ ");
+        System.out.println("^ " +"$f:"+a.leeFila()+",c:"+a.leeCol()+"$");
     }
 
     private void imprime(Exp_lit_ent e){
-        System.out.println("N");
+        System.out.println("N" +"$f:"+e.leeFila()+",c:"+e.leeCol()+"$");
     }
 
     private void imprime(Exp_lit_real e){
-        System.out.println("R");
+        System.out.println("R" +"$f:"+e.leeFila()+",c:"+e.leeCol()+"$");
     }
 
     private void imprime(Exp_lit_cadena e){
@@ -567,11 +567,11 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Exp_lit_BoolTrue e){
-        System.out.println("<true>");
+        System.out.println("<true>" +"$f:"+e.leeFila()+",c:"+e.leeCol()+"$");
     }
 
     private void imprime(Exp_lit_BoolFalse e){
-        System.out.println("<false>");
+        System.out.println("<false>" +"$f:"+e.leeFila()+",c:"+e.leeCol()+"$");
     }
 
     private void imprime(Exp_null e){

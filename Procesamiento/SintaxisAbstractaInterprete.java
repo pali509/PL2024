@@ -482,7 +482,6 @@ public class SintaxisAbstractaInterprete {
         public void imprime(){
             imprimeOpnd(exp, 6);
             System.out.println("^ " + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
-            System.out.println(";");
         }
         public Exp exp(){return exp;}
         public int prioridad() {return 6;}
