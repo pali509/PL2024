@@ -534,7 +534,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(AccesoArray a){
         imprimeOpnd(a.opnd0(), 6);
-        System.out.println("[");
+        System.out.println("[ " + "$f:"+a.leeFila()+",c:"+a.leeCol()+"$");
         imprime(a.opnd1());
         System.out.println("]");
     }
