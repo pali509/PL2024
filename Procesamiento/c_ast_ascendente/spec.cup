@@ -35,24 +35,29 @@ terminal StringLocalizado IDENTIFICADOR, LITENTERO, LITREAL, LITCADENA;
 
 non terminal  Prog programa;
 non terminal  Bloque bloque;
-non terminal  LDecs declaraciones_opt, declaraciones;
-non terminal  LIns instrucciones_opt, instrucciones;
-non terminal  Dec declaracion, declaracion_var, declaracion_tipo, declaracion_proc;
+non terminal  LDecsOpt declaraciones_opt;
+non terminal  LDecs declaraciones;
+non terminal  LInsOpt instrucciones_opt;
+non terminal  LIns instrucciones;
+non terminal  Dec declaracion;
 non terminal  Tipo tipo, tipo1, tipo2;
-non terminal  PForm parametros_formales_opt, parametros_formales;
-non terminal  Pform parametro_formal;
+non terminal  LPForm parametros_formales;
+non terminal  PFormOpt parametros_formales_opt; 
+non terminal  PFref parametro_formal_ref;
+non terminal  PFnoref parametro_formal; 
 non terminal  LCamp campos;
 non terminal  Camp campo;
 non terminal  Ins instruccion;
 non terminal  Exp E0, E1, E2, E3, E4, E5, E6, E7;
-non terminal  LPReal parametros_reales_opt, parametros_reales;
-non terminal  String op1, op4, op5, op6, and_opt;
+non terminal  LPRealOpt parametros_reales_opt;
+non terminal  LPReal parametros_reales;
+non terminal  String op1, op4, op5, and_opt;
 
 programa ::= bloque
 	{: RESULT = sem.prog(bloque);:};
 
 bloque		::= LLAVEA declaraciones_opt: decs_opt instrucciones_opt: ins_opt LLAVEC
-   {: RESULT = sem.bloque(exp,decs); :};
+   {: RESULT = sem.bloque(decs_opt, ins_opt); :};
    
 declaraciones_opt ::= declaraciones: decs AMPERSAND2 
 	{: RESULT = sem.si_decs(decs); :};
@@ -73,34 +78,32 @@ declaraciones ::= declaracion: dec
 	{: RESULT = sem.una_dec(dec); :};
 
 declaracion ::= tipo: t IDENTIFICADOR: id
-	{: RESULT = (Dec)sem.dec_var(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+	{: RESULT = (Dec)sem.dec_var(id.str(),t).ponFila(id.fila()).ponCol(id.col()); :}; 
  
 declaracion ::= TYPE tipo: t IDENTIFICADOR: id 
-	{: RESULT = (Dec)sem.dec_tipo(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+	{: RESULT = (Dec)sem.dec_tipo(id.str(), t).ponFila(id.fila()).ponCol(id.col()); :}; 
 	
 declaracion ::= PROC IDENTIFICADOR: id  PARA parametros_formales_opt: parFopt PARC bloque: bloq
 	{: RESULT = (Dec)sem.dec_proc(id.str(), parFopt, bloq).ponFila(id.fila()).ponCol(id.col()); :}; 
 
 parametros_formales_opt ::= parametros_formales: parFs
-	{: RESULT = sem.si_pform(parFs); :};
+	{: RESULT = sem.si_pforms(parFs); :};
 	
 parametros_formales_opt ::= 
-	{: RESULT = sem.no_pform(); :};
+	{: RESULT = sem.no_pforms(); :};
 
 parametros_formales ::= parametros_formales:parFs COMA parametro_formal: parF 
-	{: RESULT = sem.muchas_pforms(parFs, parF); :};
+	{: RESULT = sem.muchos_pforms(parFs, parF); :};
 	
 parametros_formales ::= parametro_formal: parF
-	{: RESULT = sem.una_pform(parF); :};
+	{: RESULT = sem.un_pform(parF); :};
 	
-parametro_formal ::= tipo: t and_opt: a IDENTIFICADOR: id
-	{: RESULT = sem.pform(t, a, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+parametro_formal_ref ::= tipo: t AMPERSAND IDENTIFICADOR: id
+	{: RESULT = (PFref)sem.pfref(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+	
+parametro_formal ::= tipo: t  IDENTIFICADOR: id
+	{: RESULT = (PFref)sem.pfnoref(t, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
-and_opt ::= AMPERSAND 
-	{: RESULT = sem.pform_ref(); :};
-
-and_opt ::= 
-	{: RESULT = sem.pform_no_ref(); :};
 
 tipo ::= tipo: t CORCHETEA LITENTERO: num CORCHETEC  
 	{: RESULT = (Tipo)sem.array(t, num.str()).ponFila(num.fila()).ponCol(num.col()); :};
@@ -109,16 +112,16 @@ tipo ::= tipo1: t
 	{: RESULT = t; :};
 	
 tipo1 ::=  CIRCUNFLEJO tipo1: t
-	{: RESULT = sem.puntero(t); :};
+	{: RESULT = (Tipo)sem.puntero(t); :};
 
 tipo1 ::= tipo2: t
 	{: RESULT = t; :};
 	
 tipo2 ::= IDENTIFICADOR: id 
-	{: RESULT = (Tipo)sem.dec_iden(id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
+	{: RESULT = (Tipo)sem.iden(id.str()).ponFila(id.fila()).ponCol(id.col()); :}; 
 
 tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC 
-	{: RESULT = sem.struct(camps); :}; 
+	{: RESULT = (Tipo)sem.struct(camps); :}; 
 
 tipo2 ::= INT
 	{: RESULT = sem.lit_ent(); :}; 
@@ -237,34 +240,34 @@ E5 ::= E6:exp
 	{: RESULT = exp; :};
 
 E6 ::= E6:opn1 CORCHETEA E0:exp CORCHETEC
-	{: RESULT = sem.acceso_array(opn1,exp); :};
+	{: RESULT = (Exp)sem.accesoArray(opn1,exp); :};
 
 E6 ::= E6:exp PUNTO IDENTIFICADOR:id
-	{: RESULT = (Exp)sem.acceso_campo(exp, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+	{: RESULT = (Exp)sem.accesoCampo(exp, id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
 E6 ::= E6:exp CIRCUNFLEJO
-	{: RESULT = sem.acceso_puntero(exp); :};
+	{: RESULT = (Exp)sem.accesoPuntero(exp); :};
 
 E6 ::= E7:exp
 	{: RESULT = exp; :};
 
 E7 ::= LITENTERO:num
-	{: RESULT = (Exp)sem.exp_litEntero(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+	{: RESULT = (Exp)sem.exp_lit_ent(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= LITREAL:num
-	{: RESULT = (Exp)sem.exp_litReal(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+	{: RESULT = (Exp)sem.exp_lit_real(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= LITCADENA:num
-	{: RESULT = (Exp)sem.exp_litCadena(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
+	{: RESULT = (Exp)sem.exp_lit_cadena(num.str()).ponFila(num.fila()).ponCol(num.col()); :};
 
 E7 ::= TRUE
-	{: RESULT = (Exp)sem.exp_litBoolTrue(); :};
+	{: RESULT = (Exp)sem.exp_lit_BoolTrue(); :};
 
 E7 ::= FALSE
-	{: RESULT = (Exp)sem.exp_litBoolFalse(); :};
+	{: RESULT = (Exp)sem.exp_lit_BoolFalse(); :};
 
 E7 ::= IDENTIFICADOR:id
-	{: RESULT = (Exp)sem.exp_litIdentificador(id.str()).ponFila(id.fila()).ponCol(id.col()); :};
+	{: RESULT = (Exp)sem.exp_iden(id.str()).ponFila(id.fila()).ponCol(id.col()); :};
 
 E7 ::= NULL
 	{: RESULT = (Exp)sem.exp_null(); :};

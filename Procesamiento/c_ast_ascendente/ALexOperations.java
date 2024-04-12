@@ -19,7 +19,7 @@ public class ALexOperations {
 		 return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.LITENTERO,alex.lexema()); 
 	  } 
 	  public UnidadLexica unidadLitReal() {
-		 return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.LITEREAL,alex.lexema());
+		 return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.LITREAL,alex.lexema());
 	  } 
 	  public UnidadLexica unidadCadena() {
 		 return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.LITCADENA,alex.lexema()); 
