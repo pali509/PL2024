@@ -3,7 +3,6 @@ package c_ast_ascendente;
 import java_cup.runtime.*;
 import asint.ClaseSemanticaTiny;
 import asint.SintaxisAbstractaTiny.*;
-import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 
 scan with {: 
@@ -18,7 +17,7 @@ parser code {:
 init with {: 
    errores = new GestionErroresTiny();
    AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
-   fijaGestionErroresTiny(errores);
+   alex.fijaGestionErrores(errores);
 :};
 action code {:
   ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
@@ -102,7 +101,7 @@ parametro_formal_ref ::= tipo: t AMPERSAND IDENTIFICADOR: id
 	{: RESULT = (PFref)sem.pfref(t, id); :};
 	
 parametro_formal ::= tipo: t  IDENTIFICADOR: id
-	{: RESULT = (PFref)sem.pfnoref(t, id); :};
+	{: RESULT = (PFnoref)sem.pfnoref(t, id); :};
 
 
 tipo ::= tipo: t CORCHETEA LITENTERO: num CORCHETEC  
