@@ -215,7 +215,6 @@ public class SintaxisAbstractaTiny {
 
         public String iden() {throw new UnsupportedOperationException();}
         public String num() {throw new UnsupportedOperationException();}
-        public String str() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
     }

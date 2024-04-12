@@ -65,18 +65,18 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Dec_var var){
         imprime(var.tipo());
-        imprime(iden(var.iden().str()));
+        imprime(iden(var.iden()));
     }
 
     private void imprime(Dec_tipo tipo){
         System.out.println("<type>");
         imprime(tipo.tipo());
-        imprime(iden(tipo.iden().str()));
+        imprime(iden(tipo.iden()));
     }
 
     private void imprime(Dec_proc proc){
         System.out.println("<proc>");
-        imprime(iden(proc.iden().str()));
+        imprime(iden(proc.iden()));
         System.out.println("(");
         imprime(proc.pf());
         System.out.println(")");
@@ -125,12 +125,12 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     private void imprime(PFref pform){
         imprime(pform.t());
         System.out.println("&");
-        imprime(iden(pform.id().str()));
+        imprime(iden(pform.id()));
     }
 
     private void imprime(PFnoref pform){
         imprime(pform.t());
-        imprime(iden(pform.id().str()));
+        imprime(iden(pform.id()));
     }
 
     private void imprime(Tipo t){
@@ -141,7 +141,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
             imprime(puntero(t.tipo()));
         }
         else if(claseDe(t, Iden.class)){
-            imprime(iden(t.str()));
+            imprime(iden(t.iden()));
         }
         else if(claseDe(t, Struct.class)){
             imprime(struct(t.lcamp()));
@@ -161,8 +161,8 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     private void imprime(Array array){
         imprime(array.tipo());
         System.out.println("[");
-        imprime(iden(array.iden().str()));
-        System.out.println("]" +"$f:"+array.num().leeFila()+",c:"+array.num().leeCol()+"$");
+        imprime(iden(array.iden()));
+        System.out.println("]" +"$f:"+array.leeFila()+",c:"+array.leeCol()+"$");
     }
 
     private void imprime(Puntero puntero){
@@ -216,7 +216,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Camp camp){
         imprime(camp.tipo());
-        imprime(iden(camp.iden().str()));
+        imprime(iden(camp.iden()));
     }
 
     private void imprime(LIns l){
@@ -336,7 +336,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(Ins_call call){
         System.out.println("<call>");
-        imprime(iden(call.id().str()));
+        imprime(iden(call.id()));
         System.out.println("(");
         imprime(call.pr());
         System.out.println(")");
@@ -542,7 +542,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     private void imprime(AccesoCampo a){
         imprimeOpnd(a.opnd0(), 6);
         System.out.println(". ");
-        imprime(iden(a.iden().str()));
+        imprime(iden(a.iden()));
     }
 
     private void imprime(AccesoPuntero a){
@@ -559,11 +559,11 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
     }
 
     private void imprime(Exp_lit_cadena e){
-        imprime(iden(e.iden().str()));
+        imprime(iden(e.iden()));
     }
 
     private void imprime(Exp_Iden e){
-        imprime(iden(e.iden().str()));
+        imprime(iden(e.iden()));
     }
 
     private void imprime(Exp_lit_BoolTrue e){
