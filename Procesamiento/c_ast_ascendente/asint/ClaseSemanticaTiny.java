@@ -1,6 +1,8 @@
 package c_ast_ascendente.asint;
 
 
+import c_ast_ascendente.UnidadLexica;
+
 public class ClaseSemanticaTiny extends SintaxisAbstractaTiny {
     public ClaseSemanticaTiny() {
         super();
@@ -29,5 +31,8 @@ public class ClaseSemanticaTiny extends SintaxisAbstractaTiny {
             case "not": return not(opnd);
             default: throw new UnsupportedOperationException("Bad op");
         }
+    }
+    public UnidadLexica.StringLocalizado StringLocalizado(String s, int fila, int col) {
+        return new UnidadLexica.StringLocalizado(s, fila, col);
     }
 }
