@@ -15,7 +15,7 @@ public class UnidadLexica extends Symbol {
        }
        public int beginLine() {return beginLine;}
        public int beginColumn() {return beginColumn;}
-       public String toString() {
+       public String image() {
            return image;
        }
    }

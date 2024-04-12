@@ -18,7 +18,7 @@ parser code {:
 init with {: 
    errores = new GestionErroresTiny();
    AnalizadorLexicoTiny alex = (AnalizadorLexicoTiny)getScanner();
-   alex.GestionErroresTiny(errores);
+   fijaGestionErroresTiny(errores);
 :};
 action code {:
   ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
@@ -78,13 +78,13 @@ declaraciones ::= declaracion: dec
 	{: RESULT = sem.una_dec(dec); :};
 
 declaracion ::= tipo: t IDENTIFICADOR: id
-	{: RESULT = (Dec)sem.dec_var(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn),t); :}; 
+	{: RESULT = (Dec)sem.dec_var(id ,t); :}; 
  
 declaracion ::= TYPE tipo: t IDENTIFICADOR: id 
-	{: RESULT = (Dec)sem.dec_tipo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), t); :}; 
+	{: RESULT = (Dec)sem.dec_tipo(id, t); :}; 
 	
 declaracion ::= PROC IDENTIFICADOR: id  PARA parametros_formales_opt: parFopt PARC bloque: bloq
-	{: RESULT = (Dec)sem.dec_proc(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), parFopt, bloq); :}; 
+	{: RESULT = (Dec)sem.dec_proc(id, parFopt, bloq); :}; 
 
 parametros_formales_opt ::= parametros_formales: parFs
 	{: RESULT = sem.si_pforms(parFs); :};
@@ -99,14 +99,14 @@ parametros_formales ::= parametro_formal: parF
 	{: RESULT = sem.un_pform(parF); :};
 	
 parametro_formal_ref ::= tipo: t AMPERSAND IDENTIFICADOR: id
-	{: RESULT = (PFref)sem.pfref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); :};
+	{: RESULT = (PFref)sem.pfref(t, id); :};
 	
 parametro_formal ::= tipo: t  IDENTIFICADOR: id
-	{: RESULT = (PFref)sem.pfnoref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); :};
+	{: RESULT = (PFref)sem.pfnoref(t, id); :};
 
 
 tipo ::= tipo: t CORCHETEA LITENTERO: num CORCHETEC  
-	{: RESULT = (Tipo)sem.array(t, sem.StringLocalizado(num.image, num.beginLine, num.beginColumn)); :};
+	{: RESULT = (Tipo)sem.array(t, num); :};
 	
 tipo ::= tipo1: t 
 	{: RESULT = t; :};
@@ -118,7 +118,7 @@ tipo1 ::= tipo2: t
 	{: RESULT = t; :};
 	
 tipo2 ::= IDENTIFICADOR: id 
-	{: RESULT = (Tipo)sem.iden(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); :}; 
+	{: RESULT = (Tipo)sem.iden(id); :}; 
 
 tipo2 ::= STRUCT LLAVEA campos:camps LLAVEC 
 	{: RESULT = (Tipo)sem.struct(camps); :}; 
@@ -142,7 +142,7 @@ campos ::= campo: camp
 	{: RESULT = sem.un_camp(camp); :};
 
 campo ::= tipo: t IDENTIFICADOR: id 
-	{: RESULT = (Camp)sem.camp(t,sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); :};
+	{: RESULT = (Camp)sem.camp(t,id); :};
  
 instrucciones ::= instrucciones: ins PUNTOYCOMA instruccion: in 
 	{: RESULT = sem.muchas_ins(ins,in); :};
@@ -180,7 +180,7 @@ instruccion ::= DELETE E0:exp
 	{: RESULT = (Ins)sem.ins_delete(exp); :};
 
 instruccion ::= CALL IDENTIFICADOR:id PARA parametros_reales_opt:parRopt PARC
-	{: RESULT = (Ins)sem.ins_call(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), parRopt); :};
+	{: RESULT = (Ins)sem.ins_call(id, parRopt); :};
 
 instruccion ::= bloque:bloq 
 	{: RESULT = (Ins)sem.ins_bloque(bloq); :};
@@ -243,7 +243,7 @@ E6 ::= E6:opn1 CORCHETEA E0:exp CORCHETEC
 	{: RESULT = (Exp)sem.accesoArray(opn1,exp); :};
 
 E6 ::= E6:exp PUNTO IDENTIFICADOR:id
-	{: RESULT = (Exp)sem.accesoCampo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), exp); :};
+	{: RESULT = (Exp)sem.accesoCampo(id, exp); :};
 
 E6 ::= E6:exp CIRCUNFLEJO
 	{: RESULT = (Exp)sem.accesoPuntero(exp); :};
@@ -252,13 +252,13 @@ E6 ::= E7:exp
 	{: RESULT = exp; :};
 
 E7 ::= LITENTERO:num
-	{: RESULT = (Exp)sem.exp_lit_ent(sem.StringLocalizado(num.image, num.beginLine, num.beginColumn)); :};
+	{: RESULT = (Exp)sem.exp_lit_ent(num); :};
 
 E7 ::= LITREAL:num
-	{: RESULT = (Exp)sem.exp_lit_real(sem.StringLocalizado(num.image, num.beginLine, num.beginColumn)); :};
+	{: RESULT = (Exp)sem.exp_lit_real(num); :};
 
 E7 ::= LITCADENA:num
-	{: RESULT = (Exp)sem.exp_lit_cadena(sem.StringLocalizado(num.image, num.beginLine, num.beginColumn)); :};
+	{: RESULT = (Exp)sem.exp_lit_cadena(num); :};
 
 E7 ::= TRUE
 	{: RESULT = (Exp)sem.exp_lit_BoolTrue(); :};
@@ -267,7 +267,7 @@ E7 ::= FALSE
 	{: RESULT = (Exp)sem.exp_lit_BoolFalse(); :};
 
 E7 ::= IDENTIFICADOR:id
-	{: RESULT = (Exp)sem.exp_iden(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); :};
+	{: RESULT = (Exp)sem.exp_iden(id); :};
 
 E7 ::= NULL
 	{: RESULT = (Exp)sem.exp_null(); :};
