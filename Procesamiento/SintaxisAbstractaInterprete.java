@@ -46,6 +46,8 @@ public class SintaxisAbstractaInterprete {
             super();
         }
         public abstract int prioridad();
+        public Exp opnd0() {throw new UnsupportedOperationException();}
+        public Exp opnd1() {throw new UnsupportedOperationException();}
     }
 
 
@@ -216,8 +218,8 @@ public class SintaxisAbstractaInterprete {
     public static abstract class Tipo extends Nodo {
         public Tipo() {}
         public String iden() {throw new UnsupportedOperationException();}
-        public Lit_ent num() {throw new UnsupportedOperationException();}
-
+        public String num() {throw new UnsupportedOperationException();}
+        public String str() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
 
@@ -284,15 +286,15 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Array extends Tipo {
-        private Lit_ent num;
+        private String num;
         private Tipo t;
-        public Array(Lit_ent num, Tipo t) {
+        public Array(String num, Tipo t) {
             super();
             this.t = t;
             this.num = num;
         }
 
-        public Lit_ent num() {return num;}
+        public String num() {return num;}
 
         public Tipo tipo() {return t;}
 
@@ -451,21 +453,21 @@ public class SintaxisAbstractaInterprete {
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
-        private Iden id;
+        private String id;
         private Exp exp;
-        public AccesoCampo(Iden id, Exp exp) {
+        public AccesoCampo(String id, Exp exp) {
             super();
             this.exp = exp;
             this.id = id;
         }
 
-        public Iden id(){return id;}
+        public String id(){return id;}
         public Exp exp(){return exp;}
 
         public void imprime(){
             imprimeOpnd(exp, 6);
             System.out.println(".");
-            id.imprime();
+            System.out.println(id + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
         }
         public int prioridad() {return 6;}
     }
@@ -522,27 +524,27 @@ public class SintaxisAbstractaInterprete {
 
     public static abstract class Pform extends Nodo {
         private Tipo t;
-        private Iden id;
-        public Pform(Tipo t, Iden id) {
+        private String id;
+        public Pform(Tipo t, String id) {
             this.t = t;
             this.id = id;
         }
 
-        public Iden id(){return id;}
+        public String id(){return id;}
         public Tipo t(){return t;}
         
 
     }
     public static class PFref extends Pform {
         private Tipo t;
-        private Iden id;
-        public PFref(Tipo t, Iden id) {
+        private String id;
+        public PFref(Tipo t, String id) {
             super(t,id);
             this.t = t;
             this.id = id;
         }
 
-        public Iden id(){return id;}
+        public String id(){return id;}
         public Tipo t(){return t;}
         public void imprime(){
             t.imprime();
@@ -554,14 +556,14 @@ public class SintaxisAbstractaInterprete {
 
     public static class PFnoref extends Pform {
         private Tipo t;
-        private Iden id;
-        public PFnoref(Tipo t, Iden id) {
+        private String id;
+        public PFnoref(Tipo t, String id) {
             super(t,id);
             this.t = t;
             this.id = id;
         }
 
-        public Iden id(){return id;}
+        public String id(){return id;}
         public Tipo t(){return t;}
         public void imprime(){
             t.imprime();
@@ -634,7 +636,7 @@ public class SintaxisAbstractaInterprete {
         public Dec() {}
         public abstract void imprime();
 
-        public Iden iden() {throw new UnsupportedOperationException();}
+        public String iden() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public PFormOpt pf() {throw new UnsupportedOperationException();}
         public Bloque bq() {throw new UnsupportedOperationException();}
@@ -642,9 +644,9 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Dec_var extends Dec {
-        private Iden id;
+        private String id;
         private Tipo t;
-        public Dec_var(Iden id, Tipo t) {
+        public Dec_var(String id, Tipo t) {
             super();
             this.id = id;
             this.t = t;
@@ -654,14 +656,14 @@ public class SintaxisAbstractaInterprete {
             id.imprime();
             System.out.println(";"); //TODO VER EN TODOS LOS SITIOS DONDE TENGO QUE PONER ESTO
         }
-        public Iden iden() {return id;}
+        public String iden() {return id;}
         public Tipo tipo() {return t;}
     }
     public static class Dec_tipo extends Dec {
-        private Iden id;
+        private String id;
         private Tipo t;
 
-        public Dec_tipo(Iden id, Tipo t) {
+        public Dec_tipo(String id, Tipo t) {
             this.id = id;
             this.t = t;
         }
@@ -671,16 +673,15 @@ public class SintaxisAbstractaInterprete {
             id.imprime();
             System.out.println(";");
         }
-        public Iden iden() {return id;}
+        public String iden() {return id;}
         public Tipo tipo() {return t;}
     }
     public static class Dec_proc extends Dec {
-        private Iden id;
+        private String id;
         private PFormOpt pf;
         private Bloque bq;
 
-        public Dec_proc(Iden id, PFormOpt pf, Bloque bq) {
-            
+        public Dec_proc(String id, PFormOpt pf, Bloque bq) {
             this.id = id;
             this.pf = pf;
             this.bq = bq;
@@ -695,7 +696,7 @@ public class SintaxisAbstractaInterprete {
             bq.imprime();
 
         }
-        public Iden iden() {return id;}
+        public String iden() {return id;}
         public PFormOpt pf() {return pf;}
         public Bloque bq() {return bq;}
 
@@ -800,13 +801,13 @@ public class SintaxisAbstractaInterprete {
     }
     public static class Camp extends Nodo {
         private Tipo t;
-        private Iden id;
-        public Camp(Tipo t, Iden id) {
+        private String id;
+        public Camp(Tipo t, String id) {
             this.t = t;
             this.id = id;
         }
 
-        public Iden iden() {return id;}
+        public String iden() {return id;}
         public Tipo tipo() {return t;}
 
         public void imprime() {
@@ -869,7 +870,7 @@ public class SintaxisAbstractaInterprete {
         public Bloque bloque() {throw new UnsupportedOperationException();}
         public Bloque bloque2() {throw new UnsupportedOperationException();}
         public LPReal pr() {throw new UnsupportedOperationException();}
-        public Iden id() {throw new UnsupportedOperationException();}
+        public String id() {throw new UnsupportedOperationException();}
     }
 
     public static class Ins_asig extends Ins {
@@ -1012,14 +1013,14 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Ins_call extends Ins {
-        private Iden id;
+        private String id;
         private LPReal pr;
-        public Ins_call(Iden id, LPReal pr) {
+        public Ins_call(String id, LPReal pr) {
             super();
             this.id = id;
             this.pr = pr;
         }
-        public Iden id() {return id;}
+        public String id() {return id;}
         public LPReal pr() {return pr;}
         public void imprime(){
 
@@ -1252,7 +1253,7 @@ public class SintaxisAbstractaInterprete {
     public AccesoArray accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public AccesoCampo accesoCampo(Iden id, Exp exp) {
+    public AccesoCampo accesoCampo(String id, Exp exp) {
         return new AccesoCampo(id, exp);
     }
     public AccesoPuntero accesoPuntero(Exp exp) {
@@ -1288,7 +1289,7 @@ public class SintaxisAbstractaInterprete {
         return new Struct(lc);
     }
 
-    public Camp camp(Tipo t, Iden id) {
+    public Camp camp(Tipo t, String id) {
         return new Camp(t, id);
     }
 
@@ -1299,10 +1300,10 @@ public class SintaxisAbstractaInterprete {
         return new Muchos_camp(lc,c);
     }
     //yo pondria mismo tipo a PFref y PFnoref
-    public PFref pfref(Tipo t, Iden id) {
+    public PFref pfref(Tipo t, String id) {
         return new PFref(t, id);
     }
-    public PFnoref pfnoref(Tipo t, Iden id) {
+    public PFnoref pfnoref(Tipo t, String id) {
         return new PFnoref(t, id);
     }
     public PFormOpt si_pforms(LPForm lpf){
@@ -1358,7 +1359,7 @@ public class SintaxisAbstractaInterprete {
     public Ins ins_delete(Exp e){
         return new Ins_delete(e);
     }
-    public Ins ins_call(Iden id, LPReal lpr){
+    public Ins ins_call(String id, LPReal lpr){
         return new Ins_call(id, lpr);
     }
 
@@ -1400,15 +1401,17 @@ public class SintaxisAbstractaInterprete {
         return new Una_dec(dec);
     }
     //he añadido los diferentes tipos de declaraciones
-    public Dec dec_var(Iden identificador, Tipo t) {
+    public Dec dec_var(String identificador, Tipo t) {
         return new Dec_var(identificador, t);
     }
-
-    public Dec dec_tipo(Iden identificador, Tipo t) {
+    public Ins ins_bloque(Bloque b){
+        return new Ins_bloque(b);
+    }
+    public Dec dec_tipo(String identificador, Tipo t) {
         return new Dec_tipo(identificador, t);
     }
 
-    public Dec dec_proc(Iden identificador, PFormOpt pformOpt, Bloque bloq) {
+    public Dec dec_proc(String identificador, PFormOpt pformOpt, Bloque bloq) {
         return new Dec_proc(identificador, pformOpt, bloq);
     }
 
