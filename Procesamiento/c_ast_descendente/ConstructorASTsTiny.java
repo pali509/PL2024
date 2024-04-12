@@ -151,13 +151,13 @@
       case 45:
         t = tipo();
         id = jj_consume_token(identificador);
-      {if (true) return (Dec)sem.dec_var(id.image, t).ponFila(id.beginLine).ponCol(id.beginColumn);}
+      {if (true) return (Dec)sem.dec_var(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), t);}
         break;
       case type:
         a = jj_consume_token(type);
         t = tipo();
         id = jj_consume_token(identificador);
-          {if (true) return (Dec)sem.dec_tipo(id.image,t).ponFila(id.beginLine).ponCol(id.beginColumn);}
+          {if (true) return (Dec)sem.dec_tipo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn),t);}
         break;
       case proc:
         a = jj_consume_token(proc);
@@ -166,7 +166,7 @@
         pform_opt = parametrosFormales_opt();
         jj_consume_token(40);
         bloque = bloque();
-         {if (true) return (Dec)sem.dec_proc(id.image, pform_opt, bloque).ponFila(id.beginLine).ponCol(id.beginColumn);}
+         {if (true) return (Dec)sem.dec_proc(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), pform_opt, bloque);}
         break;
       default:
         jj_la1[3] = jj_gen;
@@ -258,11 +258,11 @@
       case 42:
         jj_consume_token(42);
         id = jj_consume_token(identificador);
-          {if (true) return (Pform)sem.pfref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+          {if (true) return (Pform)sem.pfref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn));}
         break;
       case identificador:
         id = jj_consume_token(identificador);
-         {if (true) return (Pform)sem.pfnoref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+         {if (true) return (Pform)sem.pfnoref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn));}
         break;
       default:
         jj_la1[6] = jj_gen;
@@ -297,7 +297,7 @@
         jj_consume_token(43);
         litEntero = jj_consume_token(literalEntero);
         jj_consume_token(44);
-        t = rtipo((Tipo)sem.array(r, litEntero.image).ponFila(litEntero.beginLine).ponCol(litEntero.beginColumn));
+        t = rtipo((Tipo)sem.array(r, sem.StringLocalizado(litEntero.image, litEntero.beginLine, litEntero.beginColumn)));
            {if (true) return t;}
         break;
       default:
@@ -347,7 +347,7 @@
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case identificador:
         t = jj_consume_token(identificador);
-        {if (true) return (Tipo)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+        {if (true) return (Tipo)sem.iden(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn));}
         break;
       case struct:
         t = jj_consume_token(struct);
@@ -423,7 +423,7 @@
          Tipo t;Token id;
       t = tipo();
       id = jj_consume_token(identificador);
-            {if (true) return (Camp)sem.camp(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+            {if (true) return (Camp)sem.camp(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn));}
     throw new Error("Missing return statement in function");
     } finally {
       trace_return("campo");
@@ -516,7 +516,7 @@
         jj_consume_token(39);
         params_opt = parametrosReales_opt();
         jj_consume_token(40);
-     {if (true) return (Ins)sem.ins_call(id.image, params_opt).ponFila(id.beginLine).ponCol(id.beginColumn);}
+     {if (true) return (Ins)sem.ins_call(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), params_opt);}
         break;
       case 35:
         bloque = bloque();
@@ -877,7 +877,7 @@
       case 52:
         jj_consume_token(52);
         id = jj_consume_token(identificador);
-         {if (true) return  (Exp)sem.accesoCampo( id.image, re6).ponFila(id.beginLine).ponCol(id.beginColumn);}
+         {if (true) return  (Exp)sem.accesoCampo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), re6);}
         break;
       case 45:
         jj_consume_token(45);
@@ -900,11 +900,11 @@
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case literalEntero:
         t = jj_consume_token(literalEntero);
-      {if (true) return (Exp)sem.exp_lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+      {if (true) return (Exp)sem.exp_lit_ent(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn));}
         break;
       case literalReal:
         t = jj_consume_token(literalReal);
-            {if (true) return (Exp)sem.exp_lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+            {if (true) return (Exp)sem.exp_lit_real(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn));}
         break;
       case true_:
         t = jj_consume_token(true_);
@@ -916,11 +916,11 @@
         break;
       case literalCadena:
         t = jj_consume_token(literalCadena);
-            {if (true) return (Exp)sem.exp_lit_cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+            {if (true) return (Exp)sem.exp_lit_cadena(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn));}
         break;
       case identificador:
         t = jj_consume_token(identificador);
-           {if (true) return (Exp)sem.exp_iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn);}
+           {if (true) return (Exp)sem.exp_iden(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn));}
         break;
       case null_:
         t = jj_consume_token(null_);

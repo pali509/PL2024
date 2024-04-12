@@ -101,13 +101,13 @@ PARSER_END(ConstructorASTsTiny)
   {Token id;Token a; Tipo t; PFormOpt pform_opt; Bloque bloque; }
   {
     t = tipo() id = < identificador >
-    { return (Dec)sem.dec_var(id.image, t).ponFila(id.beginLine).ponCol(id.beginColumn);}
+    { return (Dec)sem.dec_var(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), t);}
   	|
   	a = < type > t = tipo() id = < identificador >
-  	{ return (Dec)sem.dec_tipo(id.image,t).ponFila(id.beginLine).ponCol(id.beginColumn);}
+  	{ return (Dec)sem.dec_tipo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn),t);}
  	|
  	a = < proc > id = < identificador > "(" pform_opt = parametrosFormales_opt() ")" bloque = bloque()
- 	{return (Dec)sem.dec_proc(id.image, pform_opt, bloque).ponFila(id.beginLine).ponCol(id.beginColumn);} }
+ 	{return (Dec)sem.dec_proc(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), pform_opt, bloque);} }
     
 
   PFormOpt parametrosFormales_opt():
@@ -141,10 +141,10 @@ PARSER_END(ConstructorASTsTiny)
   {Token id; }
   {
 	"&" id = <identificador >
-	{ return (Pform)sem.pfref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);}
+	{ return (Pform)sem.pfref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn));}
 	|
 	id = < identificador >
-	{return (Pform)sem.pfnoref(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn);} }
+	{return (Pform)sem.pfnoref(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn));} }
     
   Tipo tipo():
   	{Tipo t1; Tipo t;}
@@ -155,7 +155,7 @@ PARSER_END(ConstructorASTsTiny)
   Tipo rtipo(Tipo r):
   	{Token litEntero; Tipo t;}
   	{
-  	  "[" litEntero = < literalEntero > "]" t = rtipo((Tipo)sem.array(r, litEntero.image).ponFila(litEntero.beginLine).ponCol(litEntero.beginColumn))
+  	  "[" litEntero = < literalEntero > "]" t = rtipo((Tipo)sem.array(r, sem.StringLocalizado(litEntero.image, litEntero.beginLine, litEntero.beginColumn)))
   	  {return t; }
  		|
  	  {return r;} }
@@ -175,7 +175,7 @@ PARSER_END(ConstructorASTsTiny)
    { Token t; LCamp campos; }
     {
       t = < identificador >
-      { return (Tipo)sem.iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+      { return (Tipo)sem.iden(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn)); }
     |
       t = < struct > "{" campos = lista_campos() "}"
       { return (Tipo)sem.struct(campos); }
@@ -210,7 +210,7 @@ PARSER_END(ConstructorASTsTiny)
 	{Tipo t;Token id;}
 	{
 	  t = tipo() id = < identificador >
-	  { return (Camp)sem.camp(t, id.image).ponFila(id.beginLine).ponCol(id.beginColumn); } }
+	  { return (Camp)sem.camp(t, sem.StringLocalizado(id.image, id.beginLine, id.beginColumn)); } }
 
   LIns lista_ins():
     { LIns ins; Ins in; }
@@ -255,7 +255,7 @@ PARSER_END(ConstructorASTsTiny)
    { return sem.ins_delete(e0); }
      |
    t = < call > id = < identificador > "(" params_opt = parametrosReales_opt() ")"
-   { return (Ins)sem.ins_call(id.image, params_opt).ponFila(id.beginLine).ponCol(id.beginColumn); }
+   { return (Ins)sem.ins_call(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), params_opt); }
  	|
  	bloque = bloque()
  	{
@@ -406,7 +406,7 @@ PARSER_END(ConstructorASTsTiny)
 	{return (Exp)sem.accesoArray(re6, e0); }
 	|
 	"." id = < identificador > 
-	{return  (Exp)sem.accesoCampo( id.image, re6).ponFila(id.beginLine).ponCol(id.beginColumn);}
+	{return  (Exp)sem.accesoCampo(sem.StringLocalizado(id.image, id.beginLine, id.beginColumn), re6);}
 	|
 	"^"
 	{return (Exp)sem.accesoPuntero(re6); }
@@ -418,10 +418,10 @@ PARSER_END(ConstructorASTsTiny)
   {Token t; Exp e0; }
   {
     t = <literalEntero>
-    { return (Exp)sem.exp_lit_ent(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+    { return (Exp)sem.exp_lit_ent(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn)); }
  	 |
  	 t = < literalReal >
- 	  { return (Exp)sem.exp_lit_real(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+ 	  { return (Exp)sem.exp_lit_real(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn)); }
 	 |
 	 t = <true_ >
 	  { return (Exp)sem.exp_lit_BoolTrue(); }
@@ -430,10 +430,10 @@ PARSER_END(ConstructorASTsTiny)
 	  { return (Exp)sem.exp_lit_BoolFalse(); } 
   	 |
   	 t = < literalCadena >
-  	  { return (Exp)sem.exp_lit_cadena(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+  	  { return (Exp)sem.exp_lit_cadena(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn)); }
   	 |
   	 t = < identificador >
-  	 { return (Exp)sem.exp_iden(t.image).ponFila(t.beginLine).ponCol(t.beginColumn); }
+  	 { return (Exp)sem.exp_iden(sem.StringLocalizado(t.image, t.beginLine, t.beginColumn)); }
   	 |
   	 t = < null_ >
   	  { return (Exp)sem.exp_null(); }
