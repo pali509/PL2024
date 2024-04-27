@@ -1,17 +1,17 @@
 
 
 import asint.ProcesamientoDef;
+import asint.SintaxisAbstractaTiny.*;
 
-import asint.SintaxisAbstractaTiny;
 
-public class ImpresionVisitante extends SintaxisAbstractaTiny {
-    private static void imprimeOpnd(Exp opnd, int np) {
+public class ImpresionVisitante extends ProcesamientoDef {
+    private void imprimeOpnd(Exp opnd, int np) {
         if(opnd.prioridad() < np) {System.out.print("(");};
-        opnd.imprime();
+        opnd.procesa(this);
         if(opnd.prioridad() < np) {System.out.print(")");};        
     }
 
-    private static void imprimeExpBin(ExpBin expb,Exp opnd0, String op, Exp opnd1, int np0, int np1) {
+    private void imprimeExpBin(ExpBin expb,Exp opnd0, String op, Exp opnd1, int np0, int np1) {
         imprimeOpnd(opnd0,np0);
         System.out.println(" "+op+" $f:"+ expb.leeFila()+",c:"+ expb.leeCol()+"$");
         imprimeOpnd(opnd1,np1);
@@ -120,6 +120,9 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     }
 
     // 3. Tipo
+    public Tipo iden(StringLocalizado id) {
+        return new Iden(id);
+    }
     public void imprime(Lit_ent lit_ent) {
         System.out.println("<int>");
     }
@@ -136,19 +139,19 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println(iden.str() +"$f:"+iden.leeFila()+",c:"+iden.leeCol()+"$");
     }
     public void imprime(Array array) {
-        array.tipo().imprime(this);
+        array.tipo().procesa(this);
         System.out.print("[");
-        array.iden().imprime(this);
+        iden(array.num()).procesa(this);
         System.out.println("] $f:" + array.leeFila() + ",c:" + array.leeCol() + "$");
     }
     public void imprime(Puntero puntero) {
-        puntero.tipo().imprime(this);
+        puntero.tipo().procesa(this);
         System.out.println("^");
     }
     public void imprime(Struct struct) {
         System.out.println("<struct>");
         System.out.println("{");
-        struct.lcamp().imprime(this);
+        struct.lcamp().procesa(this);
         System.out.println("}");
     }
 
@@ -170,21 +173,21 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println("<null>");
     }
     public void imprime(Exp_lit_cadena exp_lit_cadena) {
-        exp_lit_cadena.iden().imprime(this);
+        iden(exp_lit_cadena.iden()).procesa(this);
     }
     public void imprime(Exp_Iden exp_Iden) {
-        exp_Iden.iden().imprime(this);
+        iden(exp_Iden.iden()).procesa(this);
     }
     public void imprime(AccesoArray accesoArray) {
         imprimeOpnd(accesoArray.opnd0(), 6);
         System.out.println("["+ "$f:"+accesoArray.leeFila()+",c:"+accesoArray.leeCol()+"$");
-        accesoArray.opnd1().imprime(this);
+        accesoArray.opnd1().procesa(this);
         System.out.println("]");
     }
     public void imprime(AccesoCampo accesoCampo) {
         imprimeOpnd(accesoCampo.opnd0(), 6);
         System.out.println(".");
-        accesoCampo.iden().imprime(this);
+        iden(accesoCampo.iden()).procesa(this);
     }
     public void imprime(AccesoPuntero accesoPuntero) {
         imprimeOpnd(accesoPuntero.opnd0(), 6);
@@ -195,19 +198,19 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     // 5. Pform
     public void imprime(PFref pfref) {
-        pfref.t().imprime(this);
+        pfref.t().procesa(this);
         System.out.println("&");
-        pfref.id().imprime(this);
+        iden(pfref.id()).procesa(this);
     }
     public void imprime(PFnoref pfnoref) {
-        pfnoref.t().imprime(this);
-        pfnoref.id().imprime(this);
+        pfnoref.t().procesa(this);
+        iden(pfnoref.id()).procesa(this);
     }
 
 
     // 6. PFormOpt
     public void imprime(Si_pforms si_pforms) {
-        si_pforms.pforms().imprime(this);
+        si_pforms.pforms().procesa(this);
     }
     public void imprime(No_pforms no_pforms) {
         // TODO: Se deja vacio
@@ -215,40 +218,40 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     // 7. LPForm
     public void imprime(Un_pform un_pform) {
-        un_pform.pform().imprime(this);
+        un_pform.pform().procesa(this);
     }
     public void imprime(Muchos_pforms muchos_pforms) {
-        muchos_pforms.pforms().imprime(this);
+        muchos_pforms.pforms().procesa(this);
         System.out.println(",");
-        muchos_pforms.pform().imprime(this);
+        muchos_pforms.pform().procesa(this);
     }
 
 
     // 8. Dec
     public void imprime(Dec_var dec_var) {
-        dec_var.tipo().imprime(this);
-        dec_var.iden().imprime(this);
+        dec_var.tipo().procesa(this);
+        iden(dec_var.iden()).procesa(this);
         System.out.println(";");
     }
     public void imprime(Dec_tipo dec_tipo) {
         System.out.println("<type>");
-        dec_tipo.tipo().imprime(this);
-        dec_tipo.iden().imprime(this);
+        dec_tipo.tipo().procesa(this);
+        iden(dec_tipo.iden()).procesa(this);
     }
     public void imprime(Dec_proc dec_proc) {
         System.out.println("<proc>");
-        dec_proc.iden().imprime(this);
+        iden(dec_proc.iden()).procesa(this);
         System.out.println("(");
-        dec_proc.pf().imprime(this);
+        dec_proc.pf().procesa(this);
         System.out.println(")");
-        dec_proc.bq().imprime(this);
+        dec_proc.bq().procesa(this);
     }
 
 
     // 9. LDecsOpt
     public void imprime(Si_decs si_decs) {
         System.out.println("");
-        si_decs.decs().imprime(this);
+        si_decs.decs().procesa(this);
     }
     public void imprime(No_decs no_decs) {
 
@@ -257,100 +260,100 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     // 9. LDecs
     public void imprime(Una_dec una_dec) {
-        una_dec.dec().imprime(this);
+        una_dec.dec().procesa(this);
     }
     public void imprime(Muchas_decs muchas_decs) {
-        muchas_decs.ldecs().imprime(this);
+        muchas_decs.ldecs().procesa(this);
         System.out.println(",");
-        muchas_decs.dec().imprime(this);
+        muchas_decs.dec().procesa(this);
     }
 
 
     // 10. Nodo
     public void imprime(Prog prog) {
-        prog.bq().imprime(this);
+        prog.bq().procesa(this);
         System.out.println("<EOF>");
     }
     public void imprime(Bloque bloque) {
         System.out.println("{");
-        bloque.lds().imprime(this);
-        bloque.lis().imprime(this);
+        bloque.lds().procesa(this);
+        bloque.lis().procesa(this);
         System.out.println("}");
     }
     public void imprime(Camp camp) {
-        camp.tipo().imprime(this);
-        camp.iden().imprime(this);
+        camp.tipo().procesa(this);
+        iden(camp.iden()).procesa(this);
     }
 
 
     // 11. LCamp
     public void imprime(Un_camp un_camp) {
-        un_camp.campo().imprime(this);
+        un_camp.campo().procesa(this);
     }
     public void imprime(Muchos_camp muchos_camp) {
-        muchos_camp.lcs().imprime(this);
+        muchos_camp.lcs().procesa(this);
         System.out.println(",");
-        muchos_camp.campo().imprime(this);
+        muchos_camp.campo().procesa(this);
     }
 
 
     // 12. Ins
     public void imprime(Ins_asig ins_asig) {
         System.out.println("@");
-        ins_asig.e().imprime();
+        ins_asig.e().procesa(this);
         System.out.println(";");
     }
     public void imprime(Ins_if ins_if) {
         System.out.println("<if>");
-        ins_if.e().imprime(this);
-        ins_if.bloque().imprime(this);
+        ins_if.e().procesa(this);
+        ins_if.bloque().procesa(this);
     }
     public void imprime(Ins_if_else ins_if_else) {
         System.out.println("<if>");
-        ins_if_else.e().imprime();
-        ins_if_else.bloque1().imprime(this);
+        ins_if_else.e().procesa(this);
+        ins_if_else.bloque().procesa(this);
         System.out.println("<else>");
-        ins_if_else.bloque2().imprime(this);
+        ins_if_else.bloque2().procesa(this);
     }
     public void imprime(Ins_while ins_while) {
         System.out.println("<while>");
-        ins_while.e().imprime(this);
-        ins_while.bloque().imprime(this);
+        ins_while.e().procesa(this);
+        ins_while.bloque().procesa(this);
     }
     public void imprime(Ins_read ins_read) {
         System.out.println("<read>");
-        ins_read.e().imprime(this);
+        ins_read.e().procesa(this);
     }
     public void imprime(Ins_write ins_write) {
         System.out.println("<write>");
-        ins_write.e().imprime(this);
+        ins_write.e().procesa(this);
     }
     public void imprime(Ins_new ins_new) {
         System.out.println("<new>");
-        ins_new.e().imprime(this);
+        ins_new.e().procesa(this);
     }
     public void imprime(Ins_delete ins_delete) {
         System.out.println("<delete>");
-        ins_delete.e().imprime(this);
+        ins_delete.e().procesa(this);
     }
     public void imprime(Ins_nl ins_nl) {
         System.out.println("<nl>");
     }
     public void imprime(Ins_call ins_call) {
         System.out.println("<call>");
-        ins_call.id().imprime(this);
+        iden(ins_call.id()).procesa(this);
         System.out.println("(");
-        ins_call.pr().imprime(this);
+        ins_call.pr().procesa(this);
         System.out.println(")");
     }
     public void imprime(Ins_bloque ins_bloque) {
-        ins_bloque.bloque().imprime(this);
+        ins_bloque.bloque().procesa(this);
     }
 
 
     // 13. LInsOpt
     public void imprime(Si_Ins si_Ins) {
-        si_Ins.ins().imprime(this);
+        si_Ins.ins().procesa(this);
     }
     public void imprime(No_Ins no_Ins) {
 
@@ -359,28 +362,28 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     
     // 14. LIns
     public void imprime(Una_ins una_ins) {
-        una_ins.ins().imprime(this);
+        una_ins.ins().procesa(this);
     }
     public void imprime(Muchas_ins muchas_ins) {
-        muchas_ins.li().imprime(this);
+        muchas_ins.li().procesa(this);
         System.out.println(";");
-        muchas_ins.ins().imprime(this);
+        muchas_ins.ins().procesa(this);
     }
 
 
     // 15. LPReal
     public void imprime(Si_preal si_preal) {
-        si_preal.lpr().imprime(this);
+        si_preal.lpr().procesa(this);
     }
     public void imprime(No_preal no_preal) {
 
     }
     public void imprime(Un_PReal un_PReal) {
-        un_PReal.e().imprime(this);
+        un_PReal.e().procesa(this);
     }
     public void imprime(Muchos_preal muchos_preal) {
-        muchos_preal.lpr().imprime(this);
+        muchos_preal.lpr().procesa(this);
         System.out.println(",");
-        muchos_preal.e().imprime(this);
+        muchos_preal.e().procesa(this);
     }
 }
