@@ -17,6 +17,11 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         imprimeOpnd(opnd1,np1);
     }
 
+    private void imprimeExpUn(Exp eu, String s, Exp e, int p){
+        System.out.println(s+" $f:"+eu.leeFila()+",c:"+eu.leeCol()+"$");
+        imprimeOpnd(e, p);
+    }
+
     // 1. ExpBin
     public void imprime(Suma suma) {
         Exp opnd0 = suma.opnd0();
@@ -28,7 +33,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         Exp opnd0 = resta.opnd0();
         Exp opnd1 = resta.opnd1();
 
-        imprimeExpBin(resta,opnd0,"-",opnd1,2,3);
+        imprimeExpBin(resta,opnd0,"-",opnd1,3,3);
     }
     public void imprime(Mul mul) {
         Exp opnd0 = mul.opnd0();
@@ -52,7 +57,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         Exp opnd0 = asig.opnd0();
         Exp opnd1 = asig.opnd1();
 
-        imprimeExpBin(asig,opnd0,"=",opnd1,0,1);
+        imprimeExpBin(asig,opnd0,"=",opnd1,1,0);
     }
     public void imprime(Mayor mayor) {
         Exp opnd0 = mayor.opnd0();
@@ -91,8 +96,8 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         imprimeExpBin(desigual,opnd0,"!=",opnd1,1,2);
     }
     public void imprime(And and) {
-        Exp exp1 = And.exp1();
-        Exp exp2 = And.exp2();
+        Exp exp1 = and.opnd0();
+        Exp exp2 = and.opnd1();
 
         imprimeExpBin(and, exp1, "<and>", exp2, 4, 3);
     }
@@ -100,21 +105,18 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         Exp exp1 = or.opnd0();
         Exp exp2 = or.opnd1();
 
-        imprimeExpBin(or, exp1, "<or>", exp2, 4, 3);
+        imprimeExpBin(or, exp1, "<or>", exp2, 4, 4);
     }
 
     // 2. ExpUn
     public void imprime(Neg neg) {
         Exp opnd = neg.opnd0();
-
-        System.out.println("- $f:"+neg.leeFila()+",c:"+neg.leeCol()+"$");
-        imprimeOpnd(opnd, 5);
+        imprimeExpUn(neg, "-", opnd, 5);
     }
     public void imprime(Not not) {
-        Exp opnd = not.opnd();
+        Exp opnd = not.opnd0();
 
-        System.out.println("<not> $f:"+not.leeFila()+",c:"+not.leeCol()+"$");
-        imprimeOpnd(opnd, 5);
+        imprimeExpUn(not, "<not>", opnd, 5);
     }
 
     // 3. Tipo
@@ -130,17 +132,16 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     public void imprime(Lit_string lit_string) {
         System.out.println("<string>");
     }
-    public void imprime(Iden iden) {
+    public void imprime(Iden iden) { // REVISAR
         System.out.println(iden.str() +"$f:"+iden.leeFila()+",c:"+iden.leeCol()+"$");
     }
     public void imprime(Array array) {
         array.tipo().imprime(this);
         System.out.print("[");
-        array.num().imprime(this);
-        System.out.println("] $f:" + array.num().leeFila() + ",c:" + array.num().leeCol() + "$");
+        array.iden().imprime(this);
+        System.out.println("] $f:" + array.leeFila() + ",c:" + array.leeCol() + "$");
     }
     public void imprime(Puntero puntero) {
-        // TODO: Revisar, no se seguro
         puntero.tipo().imprime(this);
         System.out.println("^");
     }
@@ -154,10 +155,10 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
 
     // 4. Exp
     public void imprime(Exp_lit_ent exp_lit_ent) {
-        System.out.println(exp_lit_ent.lex() + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
+        System.out.println("N" + "$f:"+exp_lit_ent.leeFila()+",c:"+exp_lit_ent.leeCol()+"$" );
     }
     public void imprime(Exp_lit_real exp_lit_real) {
-        System.out.println(exp_lit_real.lex() + "$f:"+exp_lit_real.leeFila()+",c:"+exp_lit_real.leeCol()+"$" );
+        System.out.println("R" + "$f:"+exp_lit_real.leeFila()+",c:"+exp_lit_real.leeCol()+"$" );
     }
     public void imprime(Exp_lit_BoolTrue exp_lit_BoolTrue) {
         System.out.println("<true>" + "$f:"+exp_lit_BoolTrue.leeFila()+",c:"+exp_lit_BoolTrue.leeCol()+"$" );
@@ -169,26 +170,26 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         System.out.println("<null>");
     }
     public void imprime(Exp_lit_cadena exp_lit_cadena) {
-        System.out.println(exp_lit_cadena.num() + "$f:"+exp_lit_cadena.leeFila()+",c:"+exp_lit_cadena.leeCol()+"$" );
+        exp_lit_cadena.iden().imprime(this);
     }
     public void imprime(Exp_Iden exp_Iden) {
-        System.out.println(exp_Iden.num() + "$f:"+exp_Iden.leeFila()+",c:"+exp_Iden.leeCol()+"$" );
+        exp_Iden.iden().imprime(this);
     }
     public void imprime(AccesoArray accesoArray) {
-        imprimeOpnd(accesoArray.exp1(), 6);
-        System.out.println("[");
-        accesoArray.exp2().imprime(this);
+        imprimeOpnd(accesoArray.opnd0(), 6);
+        System.out.println("["+ "$f:"+accesoArray.leeFila()+",c:"+accesoArray.leeCol()+"$");
+        accesoArray.opnd1().imprime(this);
         System.out.println("]");
     }
     public void imprime(AccesoCampo accesoCampo) {
-        imprimeOpnd(accesoCampo.exp(), 6);
+        imprimeOpnd(accesoCampo.opnd0(), 6);
         System.out.println(".");
-        accesoCampo.id().imprime(this);
+        accesoCampo.iden().imprime(this);
     }
     public void imprime(AccesoPuntero accesoPuntero) {
-        imprimeOpnd(accesoPuntero.exp(), 6);
-        System.out.println("^");
-        System.out.println(";");
+        imprimeOpnd(accesoPuntero.opnd0(), 6);
+        System.out.println("^ " +"$f:"+accesoPuntero.leeFila()+",c:"+accesoPuntero.leeCol()+"$");
+
     }
 
 
@@ -209,7 +210,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
         si_pforms.pforms().imprime(this);
     }
     public void imprime(No_pforms no_pforms) {
-        // TODO: Se deja vacio?
+        // TODO: Se deja vacio
     }
 
     // 7. LPForm
@@ -232,7 +233,7 @@ public class ImpresionVisitante extends SintaxisAbstractaTiny {
     public void imprime(Dec_tipo dec_tipo) {
         System.out.println("<type>");
         dec_tipo.tipo().imprime(this);
-        dec_tipo.iden.imprime(this);
+        dec_tipo.iden().imprime(this);
     }
     public void imprime(Dec_proc dec_proc) {
         System.out.println("<proc>");
