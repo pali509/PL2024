@@ -16,13 +16,13 @@ public class Main {
                 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
                 c_ast_ascendente.ConstructorASTTiny asint = new c_ast_ascendente.ConstructorASTTiny(alex);
                 Prog prog = (Prog) asint.parse().value;
-                System.out.println(new ImpresionRecursiva().imprime(prog));
+                new ImpresionRecursiva().imprime(prog);
             }
             else if(args[1].equals("vis")) {
                 Reader input = new InputStreamReader(new FileInputStream(args[2]));
                 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
                 c_ast_ascendente.ConstructorASTTiny asint = new c_ast_ascendente.ConstructorASTTiny(alex);
-                Prog prog = (Prog)asint.parse().value;
+                Prog prog = (Prog) asint.parse().value;
                 prog.procesa(new ImpresionVisitante());
             }
             else if(args[1].equals("int")) {
@@ -37,7 +37,7 @@ public class Main {
             if(args[1].equals("rec")) {
                 ConstructorASTsTiny asint = new ConstructorASTsTiny(new FileReader(args[2]));
                 asint.disable_tracing();
-                System.out.println(new ImpresionRecursiva().imprime(asint.analiza()));
+                new ImpresionRecursiva().imprime(asint.analiza());
             }
             else if(args[1].equals("vis")) {
                 ConstructorASTsTiny asint = new ConstructorASTsTiny(new FileReader(args[2]));

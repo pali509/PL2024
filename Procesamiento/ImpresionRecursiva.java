@@ -10,7 +10,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
         if(opnd.prioridad() < np) {System.out.print(")");};        
     }
 
-    private void imprime(Prog prog){
+    protected void imprime(Prog prog){
         imprime(prog.bq());
         System.out.println("<EOF>");
     }
