@@ -1,133 +1,149 @@
-import asint.Procesamiento;
-import asint.SintaxisAbstractaTiny;
-
-public class SintaxisAbstractaInterprete {
-
-    private static void imprimeOpnd(Exp opnd, int np) {
-        if(opnd.prioridad() < np) {System.out.println("(");}
-        opnd.imprime();
-        if(opnd.prioridad() < np) {System.out.println(")");}
-    }
+package asint;
 
 
-    private static void imprimeExpBin(ExpBin expb,Exp opnd0, String op, Exp opnd1, int np0, int np1) {
-        imprimeOpnd(opnd0,np0);
-        System.out.println(" "+op+" $f:"+ expb.leeFila()+",c:"+ expb.leeCol()+"$");
-        imprimeOpnd(opnd1,np1);
-    }
-
-
+public class SintaxisAbstractaTiny {
+    
     public static abstract class Nodo  {
-        public Nodo() {
-            fila=col=-1;
-        }
-        private int fila;
-        private int col;
-        public Nodo ponFila(int fila) {
-            this.fila = fila;
-            return this;
-        }
-        public Nodo ponCol(int col) {
-            this.col = col;
-            return this;
-        }
-        public int leeFila() {
-            return fila;
-        }
-        public int leeCol() {
-            return col;
-        }
-        public abstract void imprime();
+       public Nodo() {
+		   fila=col=-1;
+       }   
+	   private int fila;
+	   private int col;
+	   public Nodo ponFila(int fila) {
+		    this.fila = fila;
+            return this;			
+	   }
+	   public Nodo ponCol(int col) {
+		    this.col = col;
+            return this;			
+	   }
+	   public int leeFila() {
+		  return fila; 
+	   }
+	   public int leeCol() {
+		  return col; 
+	   }
+           public abstract void procesa(Procesamiento p);
     }
-
+    public static class StringLocalizado {
+        private String image;
+        private int beginLine;
+        private int beginColumn;
+        public StringLocalizado(String s, int fila, int col) {
+            this.image = s;
+            this.beginLine = fila;
+            this.beginColumn = col;
+        }
+        public int beginLine() {return beginLine;}
+        public int beginColumn() {return beginColumn;}
+        public String image() {
+            return image;
+        }
+        public boolean equals(Object o) {
+            return (o == this) || (
+                (o instanceof StringLocalizado) &&
+                (((StringLocalizado)o).image.equals(image)));                
+        }
+        public int hashCode() {
+            return image.hashCode();
+        }
+    }
 
     public static abstract class Exp  extends  Nodo {
         public Exp() {
             super();
-        }
+        }   
         public abstract int prioridad();
+
+       //De recursivo:
+        public StringLocalizado iden() {throw new UnsupportedOperationException();}
+        public StringLocalizado valor() {throw new UnsupportedOperationException();}
+
         public Exp opnd0() {throw new UnsupportedOperationException();}
         public Exp opnd1() {throw new UnsupportedOperationException();}
     }
-
-
-    private static abstract class ExpBin extends Exp {
+   
+    
+    public static abstract class ExpBin extends Exp {
         protected Exp opnd0;
         protected Exp opnd1;
-        public ExpBin(Exp opnd0, Exp opnd1) {
+        public Exp opnd0() {return opnd0;}
+        public Exp opnd1() {return opnd1;}
+        public ExpBin (Exp opnd0, Exp opnd1) {
             super();
             this.opnd0 = opnd0;
             this.opnd1 = opnd1;
         }
     }
 
-    private static abstract class ExpUn extends Exp {
+    //Me la he inventado para tener una que solo tuviera 1 opnd
+    public static abstract class ExpUn extends Exp {
         protected Exp opnd;
-        public Exp opnd() {return opnd;}
+        public Exp opnd0() {return opnd;}
         public ExpUn(Exp opnd) {
             super();
             this.opnd = opnd;
         }
     }
+            
     public static class Suma extends ExpBin {
         public Suma(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-            imprimeExpBin(this,opnd0,"+",opnd1,2,3);
-        }
         public int prioridad() {return 2;}
-
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
     }
     public static class Resta extends ExpBin {
         public Resta(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"-",opnd1,2,3);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public int prioridad() {return 2;}
+       public int prioridad() {return 2;}
 
     }
     public static class Mul extends ExpBin {
         public Mul(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"*",opnd1,4,5);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 4;}
-
     }
     public static class Div extends ExpBin {
         public Div(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"/",opnd1,4,5);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 4;}
 
     }
+
+    //NUEVOS!!
 
     public static class Mod extends ExpBin {
         public Mod(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
         public int prioridad() {return 4;}
 
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"%",opnd1,4,5);
-        }
     }
     public static class Asig extends ExpBin {
         public Asig(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"=",opnd1,0,1);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 0;}
 
@@ -136,18 +152,18 @@ public class SintaxisAbstractaInterprete {
         public Mayor(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,">",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
-  
+
     }
     public static class Menor extends ExpBin {
         public Menor(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"<",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
 
@@ -156,18 +172,18 @@ public class SintaxisAbstractaInterprete {
         public MayorIg(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,">=",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
-       
+
     }
     public static class MenorIg extends ExpBin {
         public MenorIg(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"<=",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
 
@@ -176,8 +192,8 @@ public class SintaxisAbstractaInterprete {
         public Igual(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"==",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
 
@@ -186,19 +202,19 @@ public class SintaxisAbstractaInterprete {
         public Desigual(Exp opnd0, Exp opnd1) {
             super(opnd0,opnd1);
         }
-        public void imprime() {
-           imprimeExpBin(this,opnd0,"!=",opnd1,1,2);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 1;}
+
 
     }
     public static class Neg extends ExpUn {
         public Neg(Exp opnd) {
             super(opnd);
         }
-        public void imprime() {
-            System.out.println("- $f:"+leeFila()+",c:"+leeCol()+"$");
-            imprimeOpnd(opnd(), 5);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 5;}
 
@@ -207,22 +223,22 @@ public class SintaxisAbstractaInterprete {
         public Not(Exp opnd) {
             super(opnd);
         }
-        public void imprime() {
-            System.out.println("<not> $f:"+leeFila()+",c:"+leeCol()+"$");
-            imprimeOpnd(opnd(), 5);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 5;}
 
     }
 
-    public static abstract class Tipo extends Nodo {
+    public static abstract class Tipo extends Nodo{
         public Tipo() {}
-        public String iden() {throw new UnsupportedOperationException();}
-        public Lit_ent num() {throw new UnsupportedOperationException();}
-        public String str() {throw new UnsupportedOperationException();}
+
+        public abstract void procesa(Procesamiento p);
+
+        public StringLocalizado iden() {throw new UnsupportedOperationException();}
+        public StringLocalizado num() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
-
     }
 
     public static class Lit_ent extends Tipo {
@@ -230,22 +246,22 @@ public class SintaxisAbstractaInterprete {
         public Lit_ent() {
             super();
         }
-        public void imprime(){
-            System.out.println("<int>");
-        }
-        
-    }
 
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
+    }
     public static class Lit_real extends Tipo {
 
         public Lit_real() {
             super();
         }
 
-        public void imprime() {
-            System.out.println("<real>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        
+
     }
     public static class Lit_bool extends Tipo {
 
@@ -253,61 +269,52 @@ public class SintaxisAbstractaInterprete {
             super();
         }
 
-        public void imprime() {
-            System.out.println("<bool>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
-
     public static class Lit_string extends Tipo {
 
         public Lit_string() {
             super();
         }
 
-        public void imprime() {
-            System.out.println("<string>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
-
     }
-
     public static class Iden extends Tipo {
-        private String id;
-        public Iden(String id) {
+        private StringLocalizado id;
+        public Iden(StringLocalizado id) {
             super();
             this.id = id;
         }
-        public String iden() {return id;}
 
-        public void imprime() {
-            System.out.println(id +"$f:"+leeFila()+",c:"+leeCol()+"$");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-    }
 
+        public StringLocalizado str() {return id;}
+
+    }
     public static class Array extends Tipo {
-        private Lit_ent num;
+        private StringLocalizado num;
         private Tipo t;
-        public Array(Lit_ent num, Tipo t) {
+        public Array(StringLocalizado image, Tipo t) {
             super();
             this.t = t;
-            this.num = num;
+            this.num = image;
         }
 
-        public Lit_ent num() {return num;}
+        public StringLocalizado num() {return num;}
 
         public Tipo tipo() {return t;}
-
-
-        public void imprime() {
-            this.t.imprime();
-            System.out.println("[");
-            this.num.imprime();
-            System.out.println("]" +"$f:"+this.num.leeFila()+",c:"+this.num.leeCol()+"$");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-
     }
-
     public static class Puntero extends Tipo {
 
         private Tipo t;
@@ -318,13 +325,11 @@ public class SintaxisAbstractaInterprete {
         }
 
         public Tipo tipo() {return t;}
-
-        public void imprime() {
-            t.imprime();
-            System.out.println("^");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-    }
 
+    }
     public static class Struct extends Tipo {
 
         private LCamp lc;
@@ -334,48 +339,46 @@ public class SintaxisAbstractaInterprete {
 
         }
         public LCamp lcamp() {return lc;}
-
-        public void imprime(){
-
-            System.out.println("<struct>");
-            System.out.println("{");
-            lc.imprime();
-            System.out.println("}");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
+
     }
 
     public static class Exp_lit_ent extends Exp {
-        private String num;
-        public Exp_lit_ent(String num) {
+        private StringLocalizado lex;
+        public Exp_lit_ent(StringLocalizado lex) {
             super();
-            this.num = num;
+            this.lex = lex;
         }
-        public void imprime() {
-            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        public StringLocalizado valor(){return lex;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 7;}
-    
+
     }
 
     public static class Exp_lit_real extends Exp {
-        private String num;
-        public Exp_lit_real(String num) {
+        private StringLocalizado lex;
+        public Exp_lit_real(StringLocalizado lex) {
             super();
-            this.num = num;
+            this.lex = lex;
         }
-        public void imprime() {
-            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        public StringLocalizado valor(){return lex;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
+
         public int prioridad() {return 7;}
 
     }
-
     public static class Exp_lit_BoolTrue extends Exp {
         public Exp_lit_BoolTrue() {
             super();
         }
-        public void imprime() {
-            System.out.println("<true>" + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
         public int prioridad() {return 7;}
@@ -385,8 +388,8 @@ public class SintaxisAbstractaInterprete {
         public Exp_null() {
             super();
         }
-        public void imprime(){
-            System.out.println("<null>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
         public int prioridad() {return 7;}
@@ -396,8 +399,8 @@ public class SintaxisAbstractaInterprete {
         public Exp_lit_BoolFalse() {
             super();
         }
-        public void imprime(){
-            System.out.println("<false>" + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
         public int prioridad() {return 7;}
@@ -405,31 +408,33 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Exp_lit_cadena extends Exp {
-        private String num;
-        public Exp_lit_cadena(String num) {
+        private StringLocalizado num;
+        public Exp_lit_cadena(StringLocalizado num) {
             super();
             this.num = num;
         }
-        public void imprime(){
-            System.out.println(num + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$" );
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public String num(){return num;}
+        public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
 
     }
     public static class Exp_Iden extends Exp {
-        private String id;
-        public Exp_Iden(String id) {
-            super();
-            this.id = id;
-        }
-        public void imprime() {
-            System.out.println(id + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
-        }
-        public int prioridad() {return 7;}
-        
-    }
 
+        private StringLocalizado num;
+        public Exp_Iden(StringLocalizado num) {
+            super();
+            this.num = num;
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+
+        public StringLocalizado valor(){return num;}
+        public int prioridad() {return 7;}
+
+    }
 
     public static class AccesoArray extends Exp {
         private Exp exp1;
@@ -439,16 +444,11 @@ public class SintaxisAbstractaInterprete {
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
-        public void imprime(){
-
-            imprimeOpnd(exp1, 6);
-            System.out.println("[ " + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
-            exp2.imprime();
-            System.out.println("]");
-
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
+        public Exp opnd0(){return exp1;}
+        public Exp opnd1(){return exp2;}
         public int prioridad() {return 6;}
     }
     public static class AccesoCampo extends Exp {
@@ -460,13 +460,10 @@ public class SintaxisAbstractaInterprete {
             this.id = id;
         }
 
-        public StringLocalizado id(){return id;}
-        public Exp exp(){return exp;}
-
-        public void imprime(){
-            imprimeOpnd(exp, 6);
-            System.out.println(".");
-            id.imprime();
+        public StringLocalizado iden(){return id;}
+        public Exp opnd0(){return exp;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public int prioridad() {return 6;}
     }
@@ -477,11 +474,10 @@ public class SintaxisAbstractaInterprete {
             super();
             this.exp = exp;
         }
-        public void imprime(){
-            imprimeOpnd(exp, 6);
-            System.out.println("^ " + "$f:"+this.leeFila()+",c:"+this.leeCol()+"$");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public Exp exp(){return exp;}
+        public Exp opnd0(){return exp;}
         public int prioridad() {return 6;}
 
     }
@@ -494,31 +490,23 @@ public class SintaxisAbstractaInterprete {
             this.exp1 = exp1;
             this.exp2 = exp2;
         }
-        public void imprime(){
-            imprimeExpBin(this, exp1, "<and>", exp2, 4, 3);
-
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
+        public Exp opnd0(){return exp1;}
+        public Exp opnd1(){return exp2;}
         public int prioridad() {return 3;}
 
     }
 
     public static class Or extends ExpBin {
-        private Exp exp1;
-        private Exp exp2;
         public Or(Exp exp1, Exp exp2) {
             super(exp1,exp2);
-            this.exp1 = exp1;
-            this.exp2 = exp2;
         }
-        public void imprime(){
-            imprimeExpBin(this, exp1, "<and>", exp2, 4, 3);
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public Exp exp1(){return exp1;}
-        public Exp exp2(){return exp2;}
         public int prioridad() {return 3;}
-
     }
 
     public static abstract class Pform extends Nodo {
@@ -531,7 +519,7 @@ public class SintaxisAbstractaInterprete {
 
         public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
-        
+        public abstract void procesa(Procesamiento p);
 
     }
     public static class PFref extends Pform {
@@ -542,13 +530,10 @@ public class SintaxisAbstractaInterprete {
             this.t = t;
             this.id = id;
         }
-
         public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
-        public void imprime(){
-            t.imprime();
-            System.out.println("&");
-            id.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -561,17 +546,17 @@ public class SintaxisAbstractaInterprete {
             this.t = t;
             this.id = id;
         }
-
         public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
-        public void imprime(){
-            t.imprime();
-            id.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
 
-    public static abstract class PFormOpt extends Nodo {
+    public static abstract class PFormOpt extends Nodo{
         public PFormOpt() {}
+        public abstract void procesa(Procesamiento p);
+
         public LPForm pforms() {throw new UnsupportedOperationException();}
     }
     public static class Si_pforms extends PFormOpt {
@@ -580,8 +565,8 @@ public class SintaxisAbstractaInterprete {
             super();
             this.pforms = pforms;
         }
-        public void imprime(){
-            pforms.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public LPForm pforms() {return pforms;}
 
@@ -591,24 +576,28 @@ public class SintaxisAbstractaInterprete {
             super();
         }
 
-        public void imprime(){
-            //Se deja vacio?
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
-    public static abstract class LPForm extends Nodo {
+
+    public static abstract class LPForm extends Nodo{
         public LPForm() {}
+
+        public abstract void procesa(Procesamiento p);
 
         public Pform pform() {throw new UnsupportedOperationException();}
         public LPForm pforms() {throw new UnsupportedOperationException();}
     }
+
     public static class Un_pform extends LPForm {
         private Pform pform;
         public Un_pform(Pform pform) {
             super();
             this.pform = pform;
         }
-        public void imprime(){
-            pform.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public Pform pform() {return pform;}
     }
@@ -623,36 +612,34 @@ public class SintaxisAbstractaInterprete {
         }
         public Pform pform() {return pform;}
         public LPForm pforms() {return pforms;}
-        public void imprime(){
-            pforms.imprime();
-            System.out.println(",");
-            pform.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
+
+
 
     public static abstract class Dec extends Nodo {
 
         public Dec() {}
-        public abstract void imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
 
         public StringLocalizado iden() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public PFormOpt pf() {throw new UnsupportedOperationException();}
         public Bloque bq() {throw new UnsupportedOperationException();}
-      
     }
-
     public static class Dec_var extends Dec {
         private StringLocalizado id;
         private Tipo t;
-        public Dec_var(StringLocalizado id, Tipo t) {
-            super();
-            this.id = id;
+        public Dec_var(StringLocalizado identificador, Tipo t) {
+            this.id = identificador;
             this.t = t;
         }
-        public void imprime(){
-            t.imprime();
-            id.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
@@ -665,10 +652,8 @@ public class SintaxisAbstractaInterprete {
             this.id = id;
             this.t = t;
         }
-        public void imprime(){
-            System.out.println("<type>");
-            t.imprime();
-            id.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
@@ -679,27 +664,27 @@ public class SintaxisAbstractaInterprete {
         private Bloque bq;
 
         public Dec_proc(StringLocalizado id, PFormOpt pf, Bloque bq) {
-
             this.id = id;
             this.pf = pf;
             this.bq = bq;
         }
-        public void imprime(){
-
-            System.out.println("<proc>");
-            id.imprime();
-            System.out.println("(");
-            pf.imprime();
-            System.out.println(")");
-            bq.imprime();
-
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public StringLocalizado iden() {return id;}
         public PFormOpt pf() {return pf;}
         public Bloque bq() {return bq;}
 
     }
-    public static abstract class LDecsOpt extends Nodo {
+
+    public static abstract class LDecs extends Nodo{
+        public LDecs() {
+            super();
+        }
+        public LDecs ldecs() {throw new UnsupportedOperationException();}
+        public Dec dec() {throw new UnsupportedOperationException();}
+    }
+    public static abstract class LDecsOpt extends Nodo{
         public LDecsOpt() {
             super();
         }
@@ -707,50 +692,25 @@ public class SintaxisAbstractaInterprete {
     }
 
     public static class Si_decs extends LDecsOpt {
-        private LDecs decs;
-        public Si_decs(LDecs decs) {
-            super();
-            this.decs = decs;
+       private LDecs decs; 
+       public Si_decs(LDecs decs) {
+          super();
+          this.decs = decs;
+       }   
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public void imprime() {
-            decs.imprime();
-            System.out.println("&&");
-        }
-   
+        public LDecs decs() {return decs;}
 
     }
     public static class No_decs extends LDecsOpt {
-        public No_decs() {
-            super();
-        }
-  
-        public void imprime() {
-            //skip
-        }
-    }
+       public No_decs() {
+          super();
+       }   
 
-    public static abstract class LDecs extends Nodo {
-        public LDecs() {
-            super();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-        public Dec dec() {throw new UnsupportedOperationException();}
-        public LDecs ldecs() {throw new UnsupportedOperationException();}
-    }
-
-    public static class Muchas_decs extends LDecs {
-        private LDecs decs;
-        private Dec dec;
-        public Muchas_decs(LDecs decs, Dec dec) {
-            super();
-            this.dec = dec;
-            this.decs = decs;
-        }
-        public void imprime() {
-            decs.imprime();
-            System.out.println(";");
-            dec.imprime();
-        }
-   
     }
 
     public static class Una_dec extends LDecs {
@@ -759,29 +719,46 @@ public class SintaxisAbstractaInterprete {
             super();
             this.dec = dec;
         }
-        public void imprime() {
-            dec.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+        public Dec dec() {return dec;}
+
+    }
+
+    public static class Muchas_decs extends LDecs {
+       private LDecs decs;
+       private Dec dec;
+       public Muchas_decs(LDecs decs, Dec dec) {
+          super();
+          this.dec = dec;
+          this.decs = decs;
+       }
+       public Dec dec() {return dec;}
+       public LDecs ldecs() {return decs;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
 
-    public static class ProgInt extends Nodo {
-        private Bloque bq;
 
-        public ProgInt(Bloque bq) {
-            super();
-            this.bq = bq;
-        }
+
+    public static class Prog extends Nodo {
+	   private Bloque bq;
+
+       public Prog(Bloque bq) {
+		   super();
+		   this.bq = bq;
+       }   
         public Bloque bq() {return bq;}
-        public void imprime() {
-            bq.imprime();
-            System.out.println("<EOF>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
-       
-    }
 
-    public static class Bloque extends Nodo {
-        private  LDecsOpt lds;
+    }
+    public static class Bloque extends Nodo{
+        private LDecsOpt lds;
         private LInsOpt lis;
         public Bloque(LDecsOpt lds, LInsOpt lis) {
             this.lds = lds;
@@ -790,40 +767,34 @@ public class SintaxisAbstractaInterprete {
 
         public LDecsOpt lds() {return lds;}
         public LInsOpt lis() {return lis;}
-        public void imprime(){
-            System.out.println("{");
-            lds.imprime();
-            lis.imprime();
-            System.out.println("}");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
-    public static class Camp extends Nodo {
+    public static  class Camp extends Nodo{
         private Tipo t;
         private StringLocalizado id;
         public Camp(Tipo t, StringLocalizado id) {
             this.t = t;
             this.id = id;
         }
-
+        public void procesa(Procesamiento p){
+            p.procesa(this);
+        }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
 
-        public void imprime() {
-            t.imprime();
-            id.imprime();
-        }
     }
 
-    public static abstract class LCamp extends Nodo {
+    public static abstract class LCamp extends Nodo{
         public LCamp() {}
-        public abstract void imprime();
+        public abstract void procesa(Procesamiento p);
 
         public Camp campo() {throw new UnsupportedOperationException();}
         public LCamp lcs() {throw new UnsupportedOperationException();}
-
     }
 
-    public static class Un_camp extends LCamp {
+    public static class Un_camp extends LCamp{
         private Camp campo;
 
         public Un_camp(Camp campo) {
@@ -832,8 +803,8 @@ public class SintaxisAbstractaInterprete {
 
         public Camp campo() {return campo;}
 
-        public void imprime(){
-            campo.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -854,20 +825,19 @@ public class SintaxisAbstractaInterprete {
             return lcs;
         }
 
-        public void imprime(){
-            lcs.imprime();
-            System.out.println(",");
-            campo.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
-    public static abstract class Ins extends Nodo {
+    public static abstract class Ins extends Nodo{
         public Ins() {}
-        public abstract void imprime();
+        public abstract void procesa(Procesamiento p);
+
         public Exp e() {throw new UnsupportedOperationException();}
         public Bloque bloque() {throw new UnsupportedOperationException();}
         public Bloque bloque2() {throw new UnsupportedOperationException();}
-        public LPReal pr() {throw new UnsupportedOperationException();}
+        public LPRealOpt pr() {throw new UnsupportedOperationException();}
         public StringLocalizado id() {throw new UnsupportedOperationException();}
     }
 
@@ -878,9 +848,8 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){
-            System.out.println("@");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -895,10 +864,8 @@ public class SintaxisAbstractaInterprete {
         }
         public Exp e() {return e;}
         public Bloque bloque(){return bq;}
-        public void imprime(){
-            System.out.println("<if>");
-            e.imprime();
-            bq.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -914,14 +881,10 @@ public class SintaxisAbstractaInterprete {
             this.bq2 = bq2;
         }
         public Exp e() {return e;}
-        public Bloque bloque1(){return bq1;}
+        public Bloque bloque(){return bq1;}
         public Bloque bloque2(){return bq2;}
-        public void imprime(){
-            System.out.println("<if>");
-            e.imprime();
-            bq1.imprime();
-            System.out.println("<else>");
-            bq2.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -936,10 +899,8 @@ public class SintaxisAbstractaInterprete {
         }
         public Exp e() {return e;}
         public Bloque bloque(){return bq;}
-        public void imprime(){
-            System.out.println("<while>");
-            e.imprime();
-            bq.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -951,9 +912,8 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){
-            System.out.println("<read>");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -965,9 +925,8 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){
-            System.out.println("<write>");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -979,9 +938,8 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){
-            System.out.println("<new>");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -993,40 +951,34 @@ public class SintaxisAbstractaInterprete {
             this.e = e;
         }
         public Exp e() {return e;}
-        public void imprime(){
-            System.out.println("<delete>");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
+    
     public static class Ins_nl extends Ins {
         public Ins_nl() {
             super();
         }
-        public void imprime(){
-            System.out.println("<nl>");
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
 
     public static class Ins_call extends Ins {
         private StringLocalizado id;
-        private LPReal pr;
-        public Ins_call(StringLocalizado id, LPReal pr) {
+        private LPRealOpt pr;
+        public Ins_call(StringLocalizado id, LPRealOpt pr) {
             super();
             this.id = id;
             this.pr = pr;
         }
         public StringLocalizado id() {return id;}
-        public LPReal pr() {return pr;}
-        public void imprime(){
-
-            System.out.println("<call>");
-            id.imprime();
-            System.out.println("(");
-            pr.imprime();
-            System.out.println(")");
-
+        public LPRealOpt pr() {return pr;}
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -1038,46 +990,50 @@ public class SintaxisAbstractaInterprete {
             this.bq = bq;
         }
         public Bloque bloque(){return bq;}
-        public void imprime(){
-            bq.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
 
-    public static abstract class LIns extends Nodo {
+    public static abstract class LIns extends Nodo{
         public LIns() {}
-        public abstract void imprime();
+        public abstract void procesa(Procesamiento p);
+
         public Ins ins() {throw new UnsupportedOperationException();}
         public LIns li() {throw new UnsupportedOperationException();}
     }
-    public static abstract class LInsOpt extends Nodo {
+
+    public static abstract class LInsOpt extends Nodo{
         public LInsOpt() {}
+        public abstract void procesa(Procesamiento p);
         public LIns ins() {throw new UnsupportedOperationException();}
     }
-    public static class Si_Ins extends LInsOpt {
+
+    public static class Si_Ins extends LInsOpt{
         private LIns ins;
         public Si_Ins(LIns ins){
             super();
             this.ins = ins;
         }
-        public void imprime(){
-            ins.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public LIns ins() {return ins;}
 
     }
 
-    public static class No_Ins extends LInsOpt {
+    public static class No_Ins extends LInsOpt{
         public No_Ins() {
             super();
-        }
+        }   
 
-        public void imprime(){
-            //skip
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
 
-    public static class Una_ins extends LIns {
+    public static class Una_ins extends LIns{
         private Ins ins;
 
         public Una_ins(Ins ins) {
@@ -1086,8 +1042,8 @@ public class SintaxisAbstractaInterprete {
 
         public Ins ins() {return ins;}
 
-        public void imprime(){
-            ins.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
@@ -1103,49 +1059,58 @@ public class SintaxisAbstractaInterprete {
 
         public Ins ins() {return ins;}
         public LIns li() {return li;}
-        public void imprime(){
-            li.imprime();
-            System.out.println(";");
-            ins.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
     }
 
-    public static abstract class LPReal extends Nodo {
-        public abstract void imprime();
+    public static abstract class LPReal extends Nodo{
+        public LPReal() {}
+        public abstract void procesa(Procesamiento p);
+        public Exp e() {throw new UnsupportedOperationException();}
+        public LPReal lpr() {throw new UnsupportedOperationException();}
     }
 
-    public static class Si_preal extends LPReal {
+    public static abstract class LPRealOpt extends Nodo{
+        public LPRealOpt() {}
+        public abstract void procesa(Procesamiento p);
+        public LPReal lpr() {throw new UnsupportedOperationException();}
+    }
+
+    public static class Si_preal extends LPRealOpt {
         private LPReal lpr;
         public Si_preal(LPReal lpr) {
             super();
             this.lpr = lpr;
         }
-        public void imprime(){
-            lpr.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public LPReal lpr() {return lpr;}
 
 
     }
-    public static class No_preal extends LPReal {
+    
+    public static class No_preal extends LPRealOpt {
         public No_preal() {
             super();
         }
 
-        public void imprime(){
-            //skip
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
     }
-    public static class Un_PReal extends LPReal {
+    
+    public static class Un_PReal extends LPReal{
         private Exp e;
 
         public Un_PReal(Exp e) {
             this.e = e;
         }
 
-        public void imprime(){
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
         public Exp e() {return e;}
 
@@ -1162,43 +1127,15 @@ public class SintaxisAbstractaInterprete {
 
         public LPReal lpr() {return lpr;}
         public Exp e() {return e;}
-        public void imprime(){
-            lpr.imprime();
-            System.out.println(",");
-            e.imprime();
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
         }
 
-    }
-    public static class StringLocalizado {
-        private String s;
-        private int fila;
-        private int col;
-        public StringLocalizado(String s, int fila, int col) {
-            this.s = s;
-            this.fila = fila;
-            this.col = col;
-        }
-        public int fila() {return fila;}
-        public int col() {return col;}
-        public String toString() {
-            return s;
-        }
-        public boolean equals(Object o) {
-            return (o == this) || (
-                    (o instanceof StringLocalizado) &&
-                            (((StringLocalizado)o).s.equals(s)));
-        }
-        public int hashCode() {
-            return s.hashCode();
-        }
-        public String imprime(){
-            return s +  "$f:"+ fila +",c:"+col+"$";
-        }
     }
 
     // Constructoras
-    public ProgInt prog(Bloque bq) {
-        return new ProgInt(bq);
+    public Prog prog(Bloque bq) {
+        return new Prog(bq);
     }
     public Bloque bloque(LDecsOpt ld, LInsOpt li){
         return new Bloque(ld,li);
@@ -1218,7 +1155,6 @@ public class SintaxisAbstractaInterprete {
 
     //NUEVOS!!
 
-    public StringLocalizado stringLocalizado(String s, int fila, int col){return new StringLocalizado(s, fila, col);}
     public Exp mod(Exp opnd0, Exp opnd1) {
         return new Mod(opnd0,opnd1);
     }
@@ -1250,10 +1186,10 @@ public class SintaxisAbstractaInterprete {
         return new Not(opnd);
     }
 
-    public Exp Exp_lit_BoolTrue() {
+    public Exp exp_lit_BoolTrue() {
         return new Exp_lit_BoolTrue();
     }
-    public Exp Exp_lit_BoolFalse() {
+    public Exp exp_lit_BoolFalse() {
         return new Exp_lit_BoolFalse();
     }
 
@@ -1265,21 +1201,21 @@ public class SintaxisAbstractaInterprete {
         return new Lit_string();
     }
 
-    public Exp exp_iden(String id) {
+    public Exp exp_iden(StringLocalizado id) {
         return new Exp_Iden(id);
     }
 
-    public Exp exp_lit_cadena(String id) {
+    public Exp exp_lit_cadena(StringLocalizado id) {
         return new Exp_lit_cadena(id);
     }
 
-    public AccesoArray accesoArray(Exp exp1, Exp exp2) {
+    public Exp accesoArray(Exp exp1, Exp exp2) {
         return new AccesoArray(exp1,exp2);
     }
-    public AccesoCampo accesoCampo(StringLocalizado id, Exp exp) {
+    public Exp accesoCampo(StringLocalizado id, Exp exp) {
         return new AccesoCampo(id, exp);
     }
-    public AccesoPuntero accesoPuntero(Exp exp) {
+    public Exp accesoPuntero(Exp exp) {
         return new AccesoPuntero(exp);
     }
 
@@ -1290,7 +1226,7 @@ public class SintaxisAbstractaInterprete {
         return new Or(exp1,exp2);
     }
 
-    public Tipo iden(String id) {
+    public Tipo iden(StringLocalizado id) {
         return new Iden(id);
     }
     public Tipo lit_ent() {
@@ -1302,8 +1238,8 @@ public class SintaxisAbstractaInterprete {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, Lit_ent num) {
-        return new Array(num,t);
+    public Tipo array(Tipo t, StringLocalizado image) {
+        return new Array(image,t);
     }
     public Tipo puntero(Tipo t) {
         return new Puntero(t);
@@ -1322,7 +1258,7 @@ public class SintaxisAbstractaInterprete {
     public LCamp muchos_camp(LCamp lc, Camp c) {
         return new Muchos_camp(lc,c);
     }
-    //yo pondria mismo tipo a PFref y PFnoref
+	//yo pondria mismo tipo a PFref y PFnoref
     public PFref pfref(Tipo t, StringLocalizado id) {
         return new PFref(t, id);
     }
@@ -1382,15 +1318,18 @@ public class SintaxisAbstractaInterprete {
     public Ins ins_delete(Exp e){
         return new Ins_delete(e);
     }
-    public Ins ins_call(StringLocalizado id, LPReal lpr){
-        return new Ins_call(id, lpr);
+    public Ins ins_call(StringLocalizado id, LPRealOpt params_opt){
+        return new Ins_call(id, params_opt);
+    }
+    public Ins ins_bloque(Bloque b){
+        return new Ins_bloque(b);
     }
 
 
-    public LPReal si_preal(LPReal lpr){
+    public LPRealOpt si_preal(LPReal lpr){
         return new Si_preal(lpr);
     }
-    public LPReal no_preal(){
+    public LPRealOpt no_preal(){
         return new No_preal();
     }
     public LPReal un_preal(Exp e){
@@ -1401,16 +1340,16 @@ public class SintaxisAbstractaInterprete {
     }
 
     //estos ya no son nuevos (lo he puesto asi para que vayan todos juntitos)
-    public Exp exp_lit_ent(String st) {
+    public Exp exp_lit_ent(StringLocalizado st) {
         return new Exp_lit_ent(st);
     }
-    public Exp exp_lit_real(String st) {
+    public Exp exp_lit_real(StringLocalizado st) {
         return new Exp_lit_real(st);
     }
-    public Exp exp_StringLocalizado(String num) {
+    public Exp exp_Iden(StringLocalizado num) {
         return new Exp_Iden(num);
     }
-    //yo pondria LDecsOpt como tipo en la la si_decs y no_decs?? nose
+
     public LDecsOpt si_decs(LDecs decs) {
         return new Si_decs(decs);
     }
@@ -1423,17 +1362,18 @@ public class SintaxisAbstractaInterprete {
     public LDecs una_dec(Dec dec) {
         return new Una_dec(dec);
     }
-    //he añadido los diferentes tipos de declaraciones
+
     public Dec dec_var(StringLocalizado identificador, Tipo t) {
-        return new Dec_var(identificador, t);
+    	return new Dec_var(identificador, t);
     }
-
+    
     public Dec dec_tipo(StringLocalizado identificador, Tipo t) {
-        return new Dec_tipo(identificador, t);
+    	return new Dec_tipo(identificador, t);
+    }
+    
+    public Dec dec_proc(StringLocalizado identificador, PFormOpt pformOpt, Bloque bloq) {
+    	return new Dec_proc(identificador, pformOpt, bloq);
     }
 
-    public Dec dec_proc(StringLocalizado identificador, PFormOpt pformOpt, Bloque bloq) {
-        return new Dec_proc(identificador, pformOpt, bloq);
-    }
 
 }
