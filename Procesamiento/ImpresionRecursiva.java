@@ -23,7 +23,7 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(LDecsOpt l){
         if(claseDe(l, Si_decs.class)){
-            imprime(si_decs(l.decs()));
+            imprime(l.decs());
         }
         else imprime(no_decs());
     }
@@ -33,10 +33,6 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
             imprime(muchas_decs(l.ldecs(), l.dec()));
         }
         else imprime(una_dec(l.dec()));
-    }
-
-    private void imprime(Si_decs sidecs){
-        imprime(sidecs.decs());
     }
 
     private void imprime(No_decs nodecs){
@@ -85,13 +81,9 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(PFormOpt p){
         if(claseDe(p, Si_pforms.class)){
-            imprime(si_pforms(p.pforms()));
+            imprime(p.pforms());
         }
         else imprime(no_pforms());
-    }
-
-    private void imprime(Si_pforms sipform){
-        imprime(sipform.pforms());
     }
 
     private void imprime(No_pforms nopform){
@@ -228,13 +220,9 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(LInsOpt l){
         if(claseDe(l, Si_Ins.class)){
-            imprime(si_ins(l.ins()));
+            imprime(l.ins());
         }
         else imprime(no_ins());
-    }
-
-    private void imprime(Si_Ins s){
-        imprime(s.ins());
     }
 
     private void imprime(No_Ins n){
@@ -348,13 +336,9 @@ public class ImpresionRecursiva extends SintaxisAbstractaTiny {
 
     private void imprime(LPRealOpt l){
         if(claseDe(l, Si_preal.class)){
-            imprime(si_preal(l.lpr()));
+            imprime(l.lpr());
         }
         else imprime(no_preal());
-    }
-
-    private void imprime(Si_preal preal){
-        imprime(preal.lpr());
     }
 
     private void imprime(No_preal no){
