@@ -2,7 +2,7 @@
         package c_ast_descendente;
         import asint.SintaxisAbstractaTiny.*;
         import asint.ClaseSemanticaTiny;
-        import asint.SintaxisAbstractaTiny.StringLocalizado;
+        import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
         public class ConstructorASTsTiny implements ConstructorASTsTinyConstants {
            private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
@@ -772,8 +772,7 @@
         break;
       default:
         jj_la1[20] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
+          {if (true) return e4;}
       }
     throw new Error("Missing return statement in function");
     } finally {

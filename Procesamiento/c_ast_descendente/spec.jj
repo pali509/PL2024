@@ -6,7 +6,7 @@ PARSER_BEGIN(ConstructorASTsTiny)
 	package c_ast_descendente;
 	import asint.SintaxisAbstractaTiny.*;
 	import asint.ClaseSemanticaTiny;
-	import asint.SintaxisAbstractaTiny.StringLocalizado;
+	import c_ast_ascendente.UnidadLexica.StringLocalizado;
 	
 	public class ConstructorASTsTiny {
 	   private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();   
@@ -353,7 +353,7 @@ PARSER_END(ConstructorASTsTiny)
   Exp e3():
   {Exp e3, e4;}
   {
-    e4 = e4() e3 =  and_or(e4)
+    e4 = e4() e3 = and_or(e4)
 	{return e3;} }
 
   Exp and_or(Exp e4):
@@ -363,7 +363,9 @@ PARSER_END(ConstructorASTsTiny)
     { return sem.and(e4,e3); }
   |
     t= < or > e41 = e4()
-    { return sem.or(e4, e41); } }
+    { return sem.or(e4, e41); }
+  |
+  	{ return e4; }}
 	
     
 

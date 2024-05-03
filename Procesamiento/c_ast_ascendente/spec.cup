@@ -3,6 +3,7 @@ package c_ast_ascendente;
 import java_cup.runtime.*;
 import asint.ClaseSemanticaTiny;
 import asint.SintaxisAbstractaTiny.*;
+import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 
 scan with {: 

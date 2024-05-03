@@ -2,7 +2,7 @@
 package c_ast_descendente;
 import asint.SintaxisAbstractaTiny.*;
 import asint.ClaseSemanticaTiny;
-import asint.SintaxisAbstractaTiny.StringLocalizado;
+import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
 /** Token Manager. */
 public class ConstructorASTsTinyTokenManager implements ConstructorASTsTinyConstants
