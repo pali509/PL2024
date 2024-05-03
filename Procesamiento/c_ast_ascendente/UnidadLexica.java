@@ -14,12 +14,13 @@ public class UnidadLexica extends Symbol {
            this.beginLine = fila;
            this.beginColumn = col;
        }
-       public int beginLine() {return beginLine;}
-       public int beginColumn() {return beginColumn;}
-       public String image() {
+       public int fila() {return beginLine;}
+       public int col() {return beginColumn;}
+       public String str() {
            return image;
        }
-   }
+
+    }
    public UnidadLexica(int fila, int columna, int clase, String lexema) {
      super(clase, new StringLocalizado(lexema,fila,columna));  
    }
