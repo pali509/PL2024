@@ -236,7 +236,7 @@ public class SintaxisAbstractaTiny {
         public abstract void procesa(Procesamiento p);
 
         public StringLocalizado iden() {throw new UnsupportedOperationException();}
-        public StringLocalizado num() {throw new UnsupportedOperationException();}
+        public int num() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
     }
@@ -300,15 +300,15 @@ public class SintaxisAbstractaTiny {
 
     }
     public static class Array extends Tipo {
-        private StringLocalizado num;
+        private int num;
         private Tipo t;
-        public Array(StringLocalizado image, Tipo t) {
+        public Array(int image, Tipo t) {
             super();
             this.t = t;
             this.num = image;
         }
 
-        public StringLocalizado num() {return num;}
+        public int num() {return num;}
 
         public Tipo tipo() {return t;}
         public void procesa(Procesamiento p) {
@@ -622,9 +622,7 @@ public class SintaxisAbstractaTiny {
     public static abstract class Dec extends Nodo {
 
         public Dec() {}
-        public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
+        public abstract void procesa(Procesamiento p);
 
         public StringLocalizado iden() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
@@ -1238,7 +1236,7 @@ public class SintaxisAbstractaTiny {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, StringLocalizado image) {
+    public Tipo array(Tipo t, int image) {
         return new Array(image,t);
     }
     public Tipo puntero(Tipo t) {

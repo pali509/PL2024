@@ -3,7 +3,7 @@ package asint;
 import asint.SintaxisAbstractaTiny.*;
 
 public interface Procesamiento {
-    void procesa(Dec dec);
+
     void procesa(Muchas_decs decs);
     void procesa(Una_dec decs);
     void procesa(Si_decs decs);

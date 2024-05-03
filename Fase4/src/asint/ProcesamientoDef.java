@@ -4,7 +4,7 @@ import asint.SintaxisAbstractaTiny.*;
 
 
 public class ProcesamientoDef implements Procesamiento {
-    public void procesa(Dec dec) {}
+
     public void procesa(Muchas_decs decs) {}
     public void procesa(Una_dec decs) {}
     public void procesa(Si_decs decs) {}
@@ -55,10 +55,6 @@ public class ProcesamientoDef implements Procesamiento {
     }
 
     public void procesa(PFnoref pform) {
-
-    }
-
-    public void procesa(Pform pform) {
 
     }
 
