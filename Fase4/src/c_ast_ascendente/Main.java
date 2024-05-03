@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import asint.ConstructorASTTiny;
 
 public class Main {
    public static void main(String[] args) throws Exception {
