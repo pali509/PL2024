@@ -1,5 +1,6 @@
 package c_ast_ascendente;
 
+import asint.SintaxisAbstractaTiny.StringLocalizado;
 import java_cup.runtime.Symbol;
 
 public class UnidadLexica extends Symbol {
@@ -22,8 +23,16 @@ public class UnidadLexica extends Symbol {
    public UnidadLexica(int fila, int columna, int clase, String lexema) {
      super(clase, new StringLocalizado(lexema,fila,columna));  
    }
+   
    public int clase () {return sym;}
    public int fila() {return ((StringLocalizado)value).fila();}
    public int columna() {return ((StringLocalizado)value).col();}
    public String lexema() {return ((StringLocalizado)value).str();}
+
+   public StringLocalizado StringLocalizado(String s, int fila, int col) {
+	   return new StringLocalizado(s, fila, col);
+   }
+   
+   
+   
 }
