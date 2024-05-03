@@ -8,6 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="javacc" level="application" />
-    <orderEntry type="library" name="cup" level="application" />
+    <orderEntry type="library" name="cup1" level="application" />
   </component>
 </module>

@@ -2,7 +2,6 @@
         package c_ast_descendente;
         import asint.SintaxisAbstractaTiny.*;
         import asint.ClaseSemanticaTiny;
-        import c_ast_ascendente.UnidadLexica.StringLocalizado;
 
         public class ConstructorASTsTiny implements ConstructorASTsTinyConstants {
            private ClaseSemanticaTiny sem = new ClaseSemanticaTiny();
