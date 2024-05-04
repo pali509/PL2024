@@ -25,6 +25,7 @@ public class SintaxisAbstractaTiny {
 	   }
            public abstract void procesa(Procesamiento p);
     }
+
     public static class StringLocalizado {
         private String image;
         private int beginLine;
@@ -61,12 +62,15 @@ public class SintaxisAbstractaTiny {
 
         public Exp opnd0() {throw new UnsupportedOperationException();}
         public Exp opnd1() {throw new UnsupportedOperationException();}
+        //Probablemente este mal pero si lo pongo abstract me rayan las expresiones de acceso
+        public Tipo tipo(){throw new UnsupportedOperationException();}
     }
    
     
     public static abstract class ExpBin extends Exp {
         protected Exp opnd0;
         protected Exp opnd1;
+        private Tipo tipo;
         public Exp opnd0() {return opnd0;}
         public Exp opnd1() {return opnd1;}
         public ExpBin (Exp opnd0, Exp opnd1) {
@@ -74,16 +78,19 @@ public class SintaxisAbstractaTiny {
             this.opnd0 = opnd0;
             this.opnd1 = opnd1;
         }
+        public Tipo tipo(){return tipo;}
     }
 
     //Me la he inventado para tener una que solo tuviera 1 opnd
     public static abstract class ExpUn extends Exp {
         protected Exp opnd;
+        private Tipo tipo;
         public Exp opnd0() {return opnd;}
         public ExpUn(Exp opnd) {
             super();
             this.opnd = opnd;
         }
+        public Tipo tipo(){return tipo;}
     }
             
     public static class Suma extends ExpBin {
@@ -239,6 +246,22 @@ public class SintaxisAbstractaTiny {
         public int num() {throw new UnsupportedOperationException();}
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public LCamp lcamp() {throw new UnsupportedOperationException();}
+
+        public Boolean es_iden() { return false;}
+
+        public Boolean es_int() {return false;}
+
+        public Boolean es_real() {return false;}
+
+        public Boolean es_bool() {return false;}
+
+        public Boolean es_string() {return false;}
+
+        public Boolean es_array() {return false;}
+
+        public Boolean es_struct() {return false;}
+
+        public Boolean es_puntero() {return false;}
     }
 
     public static class Lit_ent extends Tipo {
@@ -250,6 +273,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_int() {return true;}
 
     }
     public static class Lit_real extends Tipo {
@@ -261,6 +285,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_real() {return true;}
 
     }
     public static class Lit_bool extends Tipo {
@@ -272,6 +297,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_bool() {return true;}
 
     }
     public static class Lit_string extends Tipo {
@@ -283,6 +309,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_string() {return true;}
 
     }
     public static class Iden extends Tipo {
@@ -298,6 +325,10 @@ public class SintaxisAbstractaTiny {
 
         public StringLocalizado str() {return id;}
 
+        @Override
+        public Boolean es_iden() {
+            return true;
+        }
     }
     public static class Array extends Tipo {
         private int num;
@@ -314,6 +345,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_array() {return true;}
     }
     public static class Puntero extends Tipo {
 
@@ -329,6 +361,10 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
+        @Override
+        public Boolean es_puntero() {
+            return true;
+        }
     }
     public static class Struct extends Tipo {
 
@@ -342,6 +378,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_struct() {return true;}
 
     }
 
@@ -356,7 +393,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Lit_ent();}
     }
 
     public static class Exp_lit_real extends Exp {
@@ -371,7 +408,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Lit_real();}
     }
     public static class Exp_lit_BoolTrue extends Exp {
         public Exp_lit_BoolTrue() {
@@ -382,7 +419,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Lit_bool();}
     }
     public static class Exp_null extends Exp {
         public Exp_null() {
@@ -393,6 +430,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
+        public Tipo tipo(){return null;} //TODO TIPO NULL
 
     }
     public static class Exp_lit_BoolFalse extends Exp {
@@ -404,7 +442,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Lit_bool();}
     }
 
     public static class Exp_lit_cadena extends Exp {
@@ -418,7 +456,7 @@ public class SintaxisAbstractaTiny {
         }
         public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Lit_string();}
     }
     public static class Exp_Iden extends Exp {
 
@@ -433,7 +471,7 @@ public class SintaxisAbstractaTiny {
 
         public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
-
+        public Tipo tipo(){return new Iden(num);}
     }
 
     public static class AccesoArray extends Exp {
@@ -790,6 +828,9 @@ public class SintaxisAbstractaTiny {
 
         public Camp campo() {throw new UnsupportedOperationException();}
         public LCamp lcs() {throw new UnsupportedOperationException();}
+
+        public Boolean es_un_campo() { return false;}
+        public Boolean es_muchos_campos() { return false;}
     }
 
     public static class Un_camp extends LCamp{
@@ -804,6 +845,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_un_campo() { return true;}
 
     }
 
@@ -826,6 +868,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_muchos_campos() { return true;}
 
     }
     public static abstract class Ins extends Nodo{
