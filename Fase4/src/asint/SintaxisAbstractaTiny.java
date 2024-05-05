@@ -8,7 +8,7 @@ public class SintaxisAbstractaTiny {
 		   fila=col=-1;
        }
 
-       private Boolean tipo;
+       private Tipo tipo;
 	   private int fila;
 	   private int col;
 	   public Nodo ponFila(int fila) {
@@ -25,7 +25,8 @@ public class SintaxisAbstractaTiny {
 	   public int leeCol() {
 		  return col; 
 	   }
-        private Boolean tipo(){return tipo;}
+        public Tipo tipo(){return tipo;}
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
            public abstract void procesa(Procesamiento p);
     }
 

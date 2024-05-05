@@ -243,7 +243,7 @@ public class Etiquetado extends ProcesamientoDef {
         etq++;
         String t0 = m.opnd0().tipo().iden().toString();
         String t1 = m.opnd1().tipo().iden().toString();
-        if ((t0.equals("int") && t1.equals("int")))) {
+        if ((t0.equals("int") && t1.equals("int"))) {
             if (esDesignador(m.opnd0())) {
                 etq++;
             }
@@ -382,7 +382,7 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Not no){
-        no.e().procesa(this);
+        no.opnd0().procesa(this);
         etq++;
         String t0 = no.opnd0().tipo().iden().toString();
         if ((t0.equals("int") || t0.equals("real"))) {

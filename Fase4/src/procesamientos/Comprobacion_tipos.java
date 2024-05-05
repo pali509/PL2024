@@ -34,164 +34,156 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     // set de parejas de T
     private HashSet<Par> st = new HashSet<Par>();
 
-    public boolean ambos_ok(Tipo t1, Tipo t2){
+    public Tipo ambos_ok(Tipo t1, Tipo t2){
         if(t1.t_ok() && t2.t_ok())
-            return true;
-        else return false;
+            return new Ok();
+        else return new Error_();
     }
     public void procesa(Prog prog) {
         prog.bq().procesa(this);
-        if()
-        //lo del ok
+        prog.set_tipo(prog.bq().tipo());
     }
 
     public void procesa(Bloque bloque) {
         bloque.lds().procesa(this);
         bloque.lis().procesa(this);
-        ambos_ok(bloque.lds().decs().dec().tipo(), bloque.lis().ins().ins().e().tipo());
+        bloque.set_tipo(ambos_ok(bloque.lds().decs().dec().tipo(), bloque.lis().ins().ins().e().tipo()));
+        if(refI(prog.bq().tipo()).equals(Ok.class)){
+
+        }
     }
 
     public void procesa(Si_decs decs) {
        decs.decs().procesa(this);
-        //$.tipo = decs.dec.t_ok();
+        decs.set_tipo(decs.decs().tipo());
     }
     public void procesa(No_decs decs) {
-        //$.tipo = ok
+        decs.set_tipo(new Ok());
     }
     public void procesa(Muchas_decs decs) {
         decs.ldecs().procesa(this);
         decs.dec().procesa(this);
-        //ambos_ok()
+        decs.set_tipo(ambos_ok(decs.ldecs().tipo(), decs.dec().tipo()));
     }
 
     public void procesa(Una_dec decs) {
         decs.dec().procesa(this);
-        //$.tipo = decs.dec.t_ok();
+        decs.set_tipo(decs.dec().tipo());
     }
 
     public void procesa(Dec_var dec) {
         dec.tipo().procesa(this);
-        //ok
+        dec.set_tipo(dec.tipo());
     }
 
     public void procesa(Dec_tipo dec) {
         dec.tipo().procesa(this);
+        dec.set_tipo(dec.tipo());
     }
 
     public void procesa(Dec_proc dec) {
         dec.pf().procesa(this);
         dec.bq().procesa(this);
-        //ambos_ok
+        dec.set_tipo(ambos_ok(dec.pf().tipo(), dec.bq().tipo()));
     }
 
     public void procesa(Si_pforms pforms) {
         pforms.pforms().procesa(this);
-        //$.tipo = pforms.t_ok()
+        pforms.set_tipo(pforms.pforms().tipo());
     }
 
     public void procesa(No_pforms pforms) {
-        //ok
+        pforms.set_tipo(new Ok());
     }
 
     public void procesa(Muchos_pforms pforms) {
         pforms.pforms().procesa(this);
         pforms.pform().procesa(this);
-        //ambos_ok
+        pforms.set_tipo(ambos_ok(pforms.pforms().tipo(), pforms.pform().tipo()));
     }
 
     public void procesa(Un_pform pform) {
         pform.pform().procesa(this);
-        //t_ok
+        pform.set_tipo(pform.pform().tipo());
     }
     public void procesa(PFref pform) {
         pform.t().procesa(this);
+        pform.set_tipo(pform.t().tipo());
     }
 
     public void procesa(PFnoref pform) {
         pform.t().procesa(this);
+        pform.set_tipo(pform.t().tipo());
     }
 
 //TIPOS
 
     public void procesa(Lit_ent t) {
-        //ok
+        t.set_tipo(new Ok());
     }
     public void procesa(Lit_real t) {
-        //ok
+        t.set_tipo(new Ok());
     }
 
     public void procesa(Lit_bool t) {
-        //ok
+        t.set_tipo(new Ok());
     }
 
     public void procesa(Lit_string t) {
-        //ok
+        t.set_tipo(new Ok());
     }
     public void procesa(Array t) {
         if(t.num() < 0) {
-            //error
+            t.set_tipo(new Error_());
         }
         else{
             t.tipo().procesa(this);
-            //t_ok
+            t.set_tipo(t.tipo());
         }
     }
 
     public void procesa(Puntero t) {
         t.tipo().procesa(this);
-        //t_ok
+        t.set_tipo(t.tipo());
     }
 
     public void procesa(Struct t) {
         if(hayRepetidos(t.lcamp())){
-            //error
+            t.set_tipo(new Ok());
         }
         else{
             t.lcamp().procesa(this);
-            //t_ok
+            t.set_tipo(t.tipo());
         }
     }
 
     private boolean hayRepetidos(LCamp lcamp) {
-        return true; //TODO
+        return true; //TODO NO SE SACAR LENGTH DE LCAMP
     }
 
     public void procesa(Camp campo) {
         campo.tipo().procesa(this);
+        campo.set_tipo(campo.tipo());
     }
 
     public void procesa(Muchos_camp camps) {
         camps.lcs().procesa(this);
         camps.campo().procesa(this);
-        //ambosok
+        camps.set_tipo(ambos_ok(camps.lcs().tipo(), camps.campo().tipo()));
     }
 
     public void procesa(Un_camp camp) {
         camp.campo().procesa(this);
-        //t_ok()
+        camp.set_tipo(camp.tipo());
     }
     public void procesa(Iden t) {
-        //if vinculo = dec_tipo
-        t.tipo().procesa(this);
-        //t_ok()
-        //else error
-
-        /* Version Oscar:
-        if(ref.vinculo().is_dec_tipo()){
-            if(!tr.contains(ref.id().toString())){
-                tr.add(ref.id().toString());
-                T t = ((Dec_tipo)ref.vinculo()).tipo();
-                t.procesa(this);
-                ref.set_t_ok(t.t_ok());
-            }
-            else {
-                ref.set_t_ok(true);
-            }
-        }else{
-            ref.set_t_ok(false);
-            System.out.println("Error: no se puede hacer referencia a un tipo que no existe" + ". Fila: " + ref.id().fila() + ", col: " + ref.id().col());
+        if(t.vinculo().equals(Dec_tipo.class)) { //asi o con un .es_dec_tipo
+            t.tipo().procesa(this);
+            t.set_tipo(t.tipo());
         }
-         */
+        else
+            t.set_tipo(new Error_());
+
     }
     //INSTRUCCIONES
 
@@ -223,7 +215,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }else if(t0.es_array() && t1.es_array()){
             Array a0 = (Array) t0;
             Array a1 = (Array) t1;
-            if(a0.tam() == a1.tam() && son_compatibles(a0.tipo(), a1.tipo())){
+            if(a0.getTam() == a1.getTam() && son_compatibles(a0.tipo(), a1.tipo())){
                 return true;
             }
         }
@@ -273,46 +265,49 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
     public void procesa(Si_Ins ins) {
         ins.ins().li().procesa(this);
-        //t_ok()
+        ins.set_tipo(ins.ins().tipo());
     }
 
     public void procesa(No_Ins ins) {
-        //ok
+        ins.set_tipo(new Ok());
     }
 
     public void procesa(Una_ins ins) {
         ins.ins().procesa(this);
-        //t_ok()
+        ins.set_tipo(ins.ins().tipo());
     }
 
     public void procesa(Muchas_ins ins) {
         ins.li().procesa(this);
         ins.ins().procesa(this);
-        //ambos_ok
+        ins.set_tipo(ambos_ok(ins.li().tipo(),ins.ins().tipo()));
     }
 
     public void procesa(Ins_asig ins) {
         ins.e().procesa(this);
-        //if(ins.e().t_ok())
-        //t_ok()
-        //else error
+        if(ins.e().tipo().equals(new Ok())){
+            ins.set_tipo(new Ok());
+        }
+        else{
+            ins.set_tipo(new Error_());
+        }
     }
 
     public void procesa(Ins_if ins) {
         ins.e().procesa(this);
         if(refI(ins.e().tipo()).es_bool()){
             ins.bloque().procesa(this);
-            //si ok entonces t_ok = true, else error
-        }
-        /*
-        else{
-            if(it.e().tipo().t_ok()){
-                System.out.println("Error: la expresion " + it.e().toString() + " no es booleana. Fila: "
-                        + it.e().localizador().fila() + ", col: " + it.e().localizador().col());
+            if(ins.bloque().tipo().equals(new Ok())){
+                ins.set_tipo(new Ok());
             }
-            it.set_t_ok(false);
+            else{
+                ins.set_tipo(new Error_());
+            }
         }
-         */
+        else{
+            ins.set_tipo(new Error_());
+        }
+
     }
 
     public void procesa(Ins_if_else ins) {
@@ -320,34 +315,38 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         if(refI(ins.e().tipo()).es_bool()){
             ins.bloque().procesa(this);
             ins.bloque2().procesa(this);
-            //si ok entonces t_ok = true, else error
+           if(ambos_ok(ins.bloque().tipo(), ins.bloque2().tipo()).equals(new Ok())){
+               ins.set_tipo(new Ok());
+           }
+           else
+               ins.set_tipo(new Error_());
         }
-       //else error
+        else
+            ins.set_tipo(new Error_());
     }
 
     public void procesa(Ins_while ins) {
         ins.e().procesa(this);
         if(refI(ins.e().tipo()).es_bool()){
             ins.bloque().procesa(this);
-            //si ok entonces t_ok = true, else error
+            if(ins.bloque().tipo().equals(new Ok()))
+                ins.set_tipo(new Ok());
+            else
+                ins.set_tipo(new Error_());
         }
-        /*
-        else{
-            if(it.e().tipo().t_ok()){
-                System.out.println("Error: la expresion " + it.e().toString() + " no es booleana. Fila: "
-                        + it.e().localizador().fila() + ", col: " + it.e().localizador().col());
-            }
-            it.set_t_ok(false);
-        }
-         */
+        else
+            ins.set_tipo(new Error_());
+
     }
 
     public void procesa(Ins_read ins) {
         ins.e().procesa(this);
         if((refI(ins.e().tipo()).es_int() || refI(ins.e().tipo()).es_real() || refI(ins.e().tipo()).es_string())
-                && es_desig(ins.e())){
-            //si ok entonces t_ok = true, else error
+                && es_desig(ins.e())) {
+            ins.set_tipo(new Ok());
         }
+        else
+            ins.set_tipo(new Error_());
     }
 
 
@@ -355,36 +354,74 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         ins.e().procesa(this);
         if((refI(ins.e().tipo()).es_int() || refI(ins.e().tipo()).es_real() || refI(ins.e().tipo()).es_bool()
                 || refI(ins.e().tipo()).es_string())){
-            //si ok entonces t_ok = true, else error
+            ins.set_tipo(new Ok());
         }
+        else
+            ins.set_tipo(new Error_());
     }
 
     public void procesa(Ins_new ins) {
         ins.e().procesa(this);
         if(refI(ins.e().tipo()).es_puntero()){
-            //si ok entonces t_ok = true, else error
-        }//else error
+            ins.set_tipo(new Ok());
+        }
+        else
+            ins.set_tipo(new Error_());
     }
 
     public void procesa(Ins_delete ins) {
         ins.e().procesa(this);
         if(refI(ins.e().tipo()).es_puntero()){
-            //si ok entonces t_ok = true, else error
-        }//else error
+            ins.set_tipo(new Ok());
+        }
+        else
+            ins.set_tipo(new Error_());
     }
 
     public void procesa(Ins_nl ins) {
-        //ok = true
+        ins.set_tipo(new Ok());
     }
 
 
-    public void procesa(Ins_call ins) {
-        //TODO AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    public void procesa(Ins_call ins) { //TODO yo me mato con el call asi lo digo
+        ins.pr().procesa(this);
+        /*
+        let string.vinculo = dec_proc  dec_proc = dec_proc(id,PForm,_)
+	PRealOpt.tipo = chequeo_params(PForm, PRealOpt)
+	si PRealOpt.tipo = ok:
+		$.tipo = ok
+	si no:
+		$.tipo = error
+
+    chequeo_params(no_PForm, no_PReal): return ok
+
+    chequeo_params(un_PForm, un_PReal):
+        return chequeo_params(E, ParF)
+
+    chequeo_params(muchas_exps(LPReal, Exp), muchos_ParF(LPForm,PForm)):
+    return ambos_ok(chequeo_params(LPReal,LPForm), chequeo_parametro(Exp,PForm))
+
+    chequeo_params(Exp, PForm_no_ref(id, T)):
+    tipado(Exp)
+    si son_compatibles(T, E.tipo):
+    return ok
+    si no:
+    return error
+
+    chequeo_parametro(Exp, PForm_ref(id,T)) =
+    tipado(Exp)
+    si es_desig(Exp) && son_compatibles(T, Exp.tipo)
+    return ok
+    si no:
+    return error
+
+         */
+
     }
 
     public void procesa(Ins_bloque ins) {
         ins.bloque().procesa(this);
-        //si ok entonces ok, else error
+        ins.set_tipo(ins.bloque().tipo());
     }
 
     /* TODO PREGUNTAR SI HACEN FALTA, si lo hacen seria comprobando es_una_ins -> procesa una_ins ...
@@ -398,30 +435,31 @@ public class Comprobacion_tipos extends ProcesamientoDef {
 
     public void procesa(Si_preal lpreal) {
         lpreal.lpr().procesa(this);
-        //$.tipo = lpreal.lpr().t_ok();
+        lpreal.set_tipo(lpreal.lpr().tipo());
     }
 
     public void procesa(No_preal lpreal) {
-        //$.tipo = ok
+        lpreal.set_tipo(new Ok());
     }
 
     public void procesa(Muchos_preal lpreal) {
         lpreal.lpr().procesa(this);
         lpreal.e().procesa(this);
+        lpreal.set_tipo(ambos_ok(lpreal.lpr().tipo(),lpreal.e().tipo()));
     }
 
     public void procesa(Un_PReal exp) {
         exp.e().procesa(this);
+        exp.set_tipo(exp.e().tipo());
     }
 
     public void procesa(Exp_Iden exp) {
-
         if(exp.vinculo().is_dec_var()){
-            exp.set_tipo(((Dec_var)exp.vinculo()).tipo());
+            exp.set_tipo((exp.vinculo()).tipo());
         }else if(exp.vinculo().is_parf_valor()){
-            exp.set_tipo(((PFnoref)exp.vinculo()).tipo());
+            exp.set_tipo((exp.vinculo()).tipo());
         }else if(exp.vinculo().is_parf_ref()){
-            exp.set_tipo(((PFref)exp.vinculo()).tipo());
+            exp.set_tipo((exp.vinculo()).tipo());
         }
     }
 
@@ -559,7 +597,6 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
     }
 
-    //TODO preguntar si seria exp.set_tipo o exp.opnd0.set_tipo
     public void procesa(AccesoPuntero exp) {
         exp.opnd0().procesa(this);
         if(refI(exp.opnd0().tipo()).es_puntero()) {
@@ -575,7 +612,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
 
         if(refI(exp.opnd0().tipo()).es_struct()){
-            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden()));
+            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden())); //TODO
         }
         else{
             exp.set_tipo(new Error_());
