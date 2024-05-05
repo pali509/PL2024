@@ -361,6 +361,7 @@ public class SintaxisAbstractaTiny {
     }
     public static class Iden extends Tipo {
         private StringLocalizado id;
+        private Nodo vinculo;
         public Iden(StringLocalizado id) {
             super();
             this.id = id;
@@ -376,6 +377,13 @@ public class SintaxisAbstractaTiny {
         public Boolean es_iden() {
             return true;
         }
+        public void setVinculo(Nodo v) {
+        	this.vinculo = v;
+        }
+        public Nodo getVinculo() {
+        	return this.vinculo;
+        }
+        
     }
     public static class Array extends Tipo {
         private int num;
