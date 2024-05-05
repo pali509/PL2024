@@ -172,6 +172,7 @@ public class Vinculacion extends ProcesamientoDef{
     public void vincula(Iden i){
         if (ts.contiene2(i.iden())){
             Nodo n = ts.vinculoDe(i.iden());
+            //AQUI
             //Esta funcion hace falta pero no esta en la sintaxis abstracta
             //ref.set_vinculo(n);
         }
@@ -180,213 +181,271 @@ public class Vinculacion extends ProcesamientoDef{
         }
     }
 
-    public void
+    public void vincula(Struct s){
+        s.lcamp().vincula(this);
+    }
 
+    public void vincula(Lit_ent l){
+        //NOOP
+    }
 
-vincula1(struct(LCamp)):
-	vincula1(LCamp)
+    public void vincula(Lit_real l){
+        //NOOP
+    }
 
-vincula1(lit_ent(string)):
-	noop
+    public void vincula(Lit_bool l){
+        //NOOP
+    }
 
-vincula1(lit_real(string)):
-	noop
+    public void vincula(Lit_string l){
+        //NOOP
+    }
 
-vincula1(lit_bool(string)):
-	noop
+    public void vincula(Muchos_camp m){
+        m.lcs().vincula(this);
+        m.campo().vincula(this);
+    }
 
-vincula1(lit_string(string)):
-	noop
+    public void vincula(Un_camp u){
+        u.campo().vincula(this);
+    }
 
-vincula1(muchos_camp(LCamp,  Camp)):
-	vincula1(LCamp)
-	vincula1(Camp)
+    public void vincula(Camp c){
+        c.tipo().vincula(this);
+    }
 
-vincula1(un_camp(Camp)):
-	vincula1(Camp)
+    public void vincula(Si_Ins s){
+        s.ins().vincula(this);
+    }
 
-vincula1(camp(T, Id)):
-	vincula1(T)
+    public void vincula(No_Ins n){
+        //NOOP
+    }
 
-vincula1(Si_ins(LIns)):
-	vincula1(LIns)
+    public void vincula(Muchas_ins m){
+        m.li().vincula(this);
+        m.ins().vincula(this);
+    }
 
-vincula1(no_ins()):
-	noop
+    public void vincula(Una_ins u){
+        u.ins().vincula(this);
+    }
 
-vincula1(muchas_ins(LIns, Ins)):
-	vincula1(LIns)
-	vincula1(Ins)
+    public void vincula(Ins_asig i){
+        i.e().vincula(this);
+    }
 
-vincula1(una_ins(Ins)):
-	vincula1(Ins)
+    public void vincula(Ins_if i){
+        i.e().vincula(this);
+        i.bloque().vincula(this);
+    }
 
-vincula1(ins_asig(Exp)):
-	vincula1(Exp)
+    public void vincula(Ins_if_else i){
+        i.e().vincula(this);
+        i.bloque().vincula(this);
+        i.bloque2().vincula(this);
+    }
 
-vincula1(ins_if(Exp, Bloq)):
-	vincula1(Exp)
-	vincula(Bloq)
+    public void vincula(Ins_while i){
+        i.e().vincula(this);
+        i.bloque().vincula(this);
+    }
 
-vincula1(ins_if_else(Exp, Bloq, Bloq)):
-	vincula1(Exp)
-	vincula(Bloq)
-	vincula(Bloq)
+    public void vincula(Ins_read i){
+        i.e().vincula(this);
+    }
 
-vincula1(ins_while(Exp, Bloq)):
-	vincula1(Exp)
-	vincula(Bloq)
+    public void vincula(Ins_write i){
+        i.e().vincula(this);
+    }
 
-vincula1(ins_read(Exp)):
-	vincula1(Exp)
+    public void vincula(Ins_nl i){
+        //NOOP
+    }
 
-vincula1(ins_write(Exp)):
-	vincula1(Exp)
+    public void vincula(Ins_new i){
+        i.e().vincula(this);
+    }
 
-vincula1(ins_nl()):
-	noop
+    public void vincula(Ins_delete i){
+        i.e().vincula(this);
+    }
 
-vincula1(ins_new(Exp)):
-	vincula1(Exp)
+    public void vincula(Ins_call i){
+        i.id().vincula(this);
+        i.pr().vincula(this);
+    }
 
-vincula1(ins_delete(Exp)):
-	vincula1(Exp)
+    public void vincula(Ins_bloque i){
+        i.bloque().vincula(this);
+    }
 
-vincula1(ins_call(Iden, PRealOpt)):
-	vincula1(Iden)
-	vincula1(PRealOpt)
+    public void vincula(Si_preal s){
+        s.lpr().vincula(this);
+    }
 
-vincula1(ins_bloque(Bloq)):
-	vincula(Bloq)
+    public void vincula(No_preal n){
+        //NOOP
+    }
 
-vincula1(si_preal(LPReal)):
-	vincula1(LPreal)
+    public void vincula(Muchos_preal m){
+        m.lpr().vincula(this);
+        m.e().vincula(this);
+    }
 
-vincula1(no_preal()):
-	noop
+    public void vincula(Un_PReal u){
+        u.e().vincula(this);
+    }
 
-vincula1(muchos_preal(LPReal, Exp)):
-	vincula1(LPReal)
-	vincula1(Exp)
+    public void vincula(Asig a){
+        a.opnd0().vincula(this);
+        a.opnd1().vincula(this);
+    }
 
-vincula1(un_preal(Exp)):
-	vincula1(Exp)
+    public void vincula(Mayor m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(asig(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Menor m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(mayor(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(MayorIg m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(menor(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(MenorIg m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(mayorIgual(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Igual i){
+        i.opnd0().vincula(this);
+        i.opnd1().vincula(this);
+    }
 
-vincula1(menorIgual(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Desigual d){
+        d.opnd0().vincula(this);
+        d.opnd1().vincula(this);
+    }
 
-vincula1(igual(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Suma s){
+        s.opnd0().vincula(this);
+        s.opnd1().vincula(this);
+    }
 
-vincula1(desigual(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Resta r){
+        r.opnd0().vincula(this);
+        r.opnd1().vincula(this);
+    }
 
-vincula1(suma(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(And a){
+        a.opnd0().vincula(this);
+        a.opnd1().vincula(this);
+    }
 
-vincula1(resta(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Or o){
+        o.opnd0().vincula(this);
+        o.opnd1().vincula(this);
+    }
 
-vincula1(and(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Mul m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(or(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Div d){
+        d.opnd0().vincula(this);
+        d.opnd1().vincula(this);
+    }
 
-vincula1(mul(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Mod m){
+        m.opnd0().vincula(this);
+        m.opnd1().vincula(this);
+    }
 
-vincula1(div(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Neg n){
+        n.opnd0().vincula(this);
+    }
 
-vincula1(mod(Exp0, Exp1)):
-	vincula1(Exp0)
-	vincula1(Exp1)
+    public void vincula(Not n){
+        n.opnd0().vincula(this);
+    }
 
-vincula1(neg(Exp)):
-	vincula1(Exp)
-	
-vincula1(not(Exp)):
-	vincula1(Exp)
+    public void vincula(AccesoArray a){
+        a.opnd0().vincula(this);
+        a.opnd1().vincula(this);
+    }
 
-vincula1(acceso_array(Exp0, Exp1)):
-	vincula1(Exp0)
-vincula1(Exp1)
+    public void vincula(AccesoCampo a){
+        a.opnd0().vincula(this);
+    }
 
-vincula1(acceso_campo(Exp, id)):
-	vincula1(Exp)
+    public void vincula(AccesoPuntero a){
+        a.opnd0().vincula(this);
+    }
 
-vincula1(acceso_puntero(Exp)):
-	vincula1(Exp)
+    public void vincula(Exp_lit_ent e){
+        //NOOP
+    }
 
-vincula1(exp_litEntero(N)):
-	noop
+    public void vincula(Exp_lit_real e){
+        //NOOP
+    }
 
-vincula1(exp_litReal(R)):
-	noop
+    public void vincula(Exp_lit_cadena e){
+        //NOOP
+    }
 
-vincula1(exp_litCadena(Id)):
-	noop
+    public void vincula(Exp_Iden e){
+        if (ts.contiene2(e.iden())){
+            Nodo n = ts.vinculoDe(i.iden());
+            //AQUI
+            //Esta funcion hace falta pero no esta en la sintaxis abstracta
+            //ref.set_vinculo(n);
+        }
+        else{
+            throw new RuntimeException("Identificador no declarado");
+        }
+    }
 
-vincula1(exp_Identificador(id)):
-	if contiene(ts,id) then 	
-		$.vinculo = vinculoDe(ts,id)
-	else
-		error
-	end if
+    public void vincula(Exp_lit_BoolTrue e){
+        //NOOP
+    }
 
-vincula1(exp_litBoolTrue()):
-	noop
+    public void vincula(Exp_lit_BoolFalse e){
+        //NOOP
+    }
 
-vincula1(exp_litBoolFalse()):
-	noop
-
-vincula1(exp_null()):
-	noop
-
+    public void vincula(Exp_null e){
+        //NOOP
+    }
 
     private class Vinculacion2 extends ProcesamientoDef{
     
-        recolectaDecs2(si_decs(LDecs)):
-	recolectaDecs2(LDecs)
+        public void recolectaDecs(Si_decs s){
+            s.decs().recolectaDecs(vin);
+        }
 
-    recolectaDecs2(no_decs()):
-	noop
+        public void recolectaDecs(No_decs n){
+            //NOOP
+        }
 
-recolectaDecs2(muchas_decs(LDecs, Dec)):
-	recolectaDecs2(LDecs)
-	recolectaDec2(Dec)
+        public void recolectaDecs(Muchas_decs m){
+            m.ldecs().recolectaDecs(vin);
+            m.dec().recolectaDec(vin);
+        }
 
-    recolectaDecs2(una_dec(Dec)):
-	recolectaDec2(Dec)
+        public void recolectaDecs(Una_dec u){
+            u.dec().recolectaDec(vin)
+        }
 
-    recolectaDec2(dec_var(T, id)):
-	vincula2(T)
+        public void recolectaDec(Dec_var d){
+            d.tipo().vincula(vin);
+        }
 
     recolectaDec2(dec_tipo(T, id)):
 	vincula2(T)
