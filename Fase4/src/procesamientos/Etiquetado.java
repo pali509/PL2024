@@ -391,11 +391,7 @@ public class Etiquetado extends ProcesamientoDef {
             }
         }
     }
-
-    public void procesa(Exp_parent exp){
-        exp.e().procesa(this);
-    }
-
+    
     public void procesa(Lit_bool l){
         //NOOP
     }
