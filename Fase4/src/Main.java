@@ -11,7 +11,7 @@ import java.io.Reader;
 public class Main {
     public static void main(String[] args) throws Exception {
         if(args[1].equals("asc")) { // Constructor ascendente
-                Reader input = new InputStreamReader(new FileInputStream(args[2]));
+                Reader input = new InputStreamReader(new FileInputStream(args[0]));
                 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
                 c_ast_ascendente.ConstructorASTTiny asint = new c_ast_ascendente.ConstructorASTTiny(alex);
                 Prog prog = (Prog) asint.parse().value;
