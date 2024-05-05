@@ -391,7 +391,7 @@ public class Etiquetado extends ProcesamientoDef {
             }
         }
     }
-    
+
     public void procesa(Lit_bool l){
         //NOOP
     }
@@ -411,4 +411,14 @@ public class Etiquetado extends ProcesamientoDef {
     public void procesa(Iden i){
         //NOOP
     }
+    public void procesa(Struct s){
+        s.lcamp().procesa(this);
+    }
+    public void procesa(Array a){
+        a.tipo().procesa(this);
+    }
+    public void procesa(Puntero p) {
+
+    }
+
 }
