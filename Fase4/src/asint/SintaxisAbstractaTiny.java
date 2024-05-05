@@ -750,6 +750,7 @@ public class SintaxisAbstractaTiny {
         public Tipo tipo() {throw new UnsupportedOperationException();}
         public PFormOpt pf() {throw new UnsupportedOperationException();}
         public Bloque bq() {throw new UnsupportedOperationException();}
+        public Boolean es_dec_proc(){return false;}
     }
     public static class Dec_var extends Dec {
         private StringLocalizado id;
@@ -822,7 +823,7 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
-
+        public Boolean es_dec_proc(){return true;}
     }
 
     public static abstract class LDecs extends Nodo{
@@ -837,6 +838,10 @@ public class SintaxisAbstractaTiny {
             super();
         }
         public LDecs decs() {throw new UnsupportedOperationException();}
+        public Boolean es_si_decs(){return false;}
+        public Boolean es_no_decs(){return false;}
+        public Boolean es_una_dec(){return false;}
+        public Boolean es_muchas_decs(){return false;}
     }
 
     public static class Si_decs extends LDecsOpt {
@@ -849,7 +854,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public LDecs decs() {return decs;}
-
+        public Boolean es_si_decs(){return true;}
     }
     public static class No_decs extends LDecsOpt {
        public No_decs() {
@@ -859,6 +864,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_no_decs(){return true;}
     }
 
     public static class Una_dec extends LDecs {
@@ -871,7 +877,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Dec dec() {return dec;}
-
+        public Boolean es_una_dec(){return true;}
     }
 
     public static class Muchas_decs extends LDecs {
@@ -887,7 +893,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-
+        public Boolean es_muchas_decs(){return true;}
     }
 
 
@@ -922,6 +928,7 @@ public class SintaxisAbstractaTiny {
     public static  class Camp extends Nodo{
         private Tipo t;
         private StringLocalizado id;
+        private int desplazamiento;
         public Camp(Tipo t, StringLocalizado id) {
             this.t = t;
             this.id = id;
@@ -931,6 +938,12 @@ public class SintaxisAbstractaTiny {
         }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
+        public void set_desp(int i) {
+            this.desplazamiento = i;
+        }
+        public int get_desp() {
+            return this.desplazamiento;
+        }
 
     }
 
