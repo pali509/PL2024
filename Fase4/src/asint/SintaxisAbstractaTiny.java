@@ -6,7 +6,9 @@ public class SintaxisAbstractaTiny {
     public static abstract class Nodo  {
        public Nodo() {
 		   fila=col=-1;
-       }   
+       }
+
+       private Boolean tipo;
 	   private int fila;
 	   private int col;
 	   public Nodo ponFila(int fila) {
@@ -23,6 +25,7 @@ public class SintaxisAbstractaTiny {
 	   public int leeCol() {
 		  return col; 
 	   }
+        private Boolean tipo(){return tipo;}
            public abstract void procesa(Procesamiento p);
     }
 
@@ -62,8 +65,9 @@ public class SintaxisAbstractaTiny {
 
         public Exp opnd0() {throw new UnsupportedOperationException();}
         public Exp opnd1() {throw new UnsupportedOperationException();}
-        //Probablemente este mal pero si lo pongo abstract me rayan las expresiones de acceso
-        public Tipo tipo(){throw new UnsupportedOperationException();}
+
+        public abstract Tipo tipo();
+        public void set_tipo(Tipo t){};
     }
    
     
@@ -79,6 +83,7 @@ public class SintaxisAbstractaTiny {
             this.opnd1 = opnd1;
         }
         public Tipo tipo(){return tipo;}
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
     }
 
     //Me la he inventado para tener una que solo tuviera 1 opnd
@@ -91,6 +96,7 @@ public class SintaxisAbstractaTiny {
             this.opnd = opnd;
         }
         public Tipo tipo(){return tipo;}
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
     }
             
     public static class Suma extends ExpBin {
@@ -262,6 +268,36 @@ public class SintaxisAbstractaTiny {
         public Boolean es_struct() {return false;}
 
         public Boolean es_puntero() {return false;}
+        public Boolean t_ok() {return false;}
+
+        public Boolean is_null() {return false;}
+    }
+    public static class Ok extends Tipo{
+        public Ok() {
+            super();
+        }
+        public Boolean t_ok() {return true;}
+        public void procesa(Procesamiento p) {}
+    }
+
+    public static class Error_ extends Tipo{
+        public Error_() {
+            super();
+        }
+        public Boolean t_ok() {return false;}
+        public void procesa(Procesamiento p) {}
+    }
+
+    public static class Null_T extends Tipo{
+        public Null_T() {
+            super();
+        }
+        public Boolean is_null() {return true;}
+
+        public void procesa(Procesamiento p) {}
+        public Boolean equals(Tipo t) {
+            return t.is_null();
+        }
     }
 
     public static class Lit_ent extends Tipo {
@@ -430,7 +466,7 @@ public class SintaxisAbstractaTiny {
         }
 
         public int prioridad() {return 7;}
-        public Tipo tipo(){return null;} //TODO TIPO NULL
+        public Tipo tipo(){return new Null_T();}
 
     }
     public static class Exp_lit_BoolFalse extends Exp {
@@ -459,7 +495,7 @@ public class SintaxisAbstractaTiny {
         public Tipo tipo(){return new Lit_string();}
     }
     public static class Exp_Iden extends Exp {
-
+        private Tipo tipo;
         private StringLocalizado num;
         public Exp_Iden(StringLocalizado num) {
             super();
@@ -471,10 +507,12 @@ public class SintaxisAbstractaTiny {
 
         public StringLocalizado valor(){return num;}
         public int prioridad() {return 7;}
-        public Tipo tipo(){return new Iden(num);}
+        public Tipo tipo(){return tipo;}
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
     }
 
     public static class AccesoArray extends Exp {
+        private Tipo tipo;
         private Exp exp1;
         private Exp exp2;
         public AccesoArray(Exp exp1, Exp exp2) {
@@ -487,9 +525,17 @@ public class SintaxisAbstractaTiny {
         }
         public Exp opnd0(){return exp1;}
         public Exp opnd1(){return exp2;}
+
+        public Tipo tipo() {
+            return tipo;
+        }
+
         public int prioridad() {return 6;}
+
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
     }
     public static class AccesoCampo extends Exp {
+        private Tipo tipo;
         private StringLocalizado id;
         private Exp exp;
         public AccesoCampo(StringLocalizado id, Exp exp) {
@@ -504,9 +550,14 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public int prioridad() {return 6;}
+        public Tipo tipo() {
+            return tipo;
+        }
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
     }
 
     public static class AccesoPuntero extends Exp {
+        private Tipo tipo;
         private Exp exp;
         public AccesoPuntero(Exp exp) {
             super();
@@ -517,6 +568,11 @@ public class SintaxisAbstractaTiny {
         }
         public Exp opnd0(){return exp;}
         public int prioridad() {return 6;}
+
+        public Tipo tipo() {
+            return tipo;
+        }
+        public void set_tipo(Tipo tipo) {this.tipo = tipo;}
 
     }
 

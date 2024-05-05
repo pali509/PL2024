@@ -30,23 +30,25 @@ class Par {
 }
 public class Comprobacion_tipos extends ProcesamientoDef {
     private HashSet<String> tn = new HashSet<String>();
-    private HashSet<String> tr = new HashSet<String>();
+    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN
     // set de parejas de T
     private HashSet<Par> st = new HashSet<Par>();
 
     public boolean ambos_ok(Tipo t1, Tipo t2){
-        return true;
+        if(t1.t_ok() && t2.t_ok())
+            return true;
+        else return false;
     }
     public void procesa(Prog prog) {
         prog.bq().procesa(this);
-
+        if()
         //lo del ok
     }
 
     public void procesa(Bloque bloque) {
         bloque.lds().procesa(this);
         bloque.lis().procesa(this);
-        //bloque.ok = ambos_ok ()
+        ambos_ok(bloque.lds().decs().dec().tipo(), bloque.lis().ins().ins().e().tipo());
     }
 
     public void procesa(Si_decs decs) {
@@ -413,21 +415,17 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
     public void procesa(Exp_Iden exp) {
-       /*
+
         if(exp.vinculo().is_dec_var()){
-            exp.set_tipo(((Dec_var)i.vinculo()).tipo());
+            exp.set_tipo(((Dec_var)exp.vinculo()).tipo());
         }else if(exp.vinculo().is_parf_valor()){
-            exp.set_tipo(((ParF_valor)i.vinculo()).tipo());
+            exp.set_tipo(((PFnoref)exp.vinculo()).tipo());
         }else if(exp.vinculo().is_parf_ref()){
-            exp.set_tipo(((ParF_ref)i.vinculo()).tipo());
-        }else{
-            System.out.println("Error: el identificador " + i.toString() + " no esta declarado en este ambito. Fila: "
-                    + i.localizador().fila() + ", col: " + i.localizador().col());
-            i.set_tipo(new Error_());
+            exp.set_tipo(((PFref)exp.vinculo()).tipo());
         }
     }
-        */
-}
+
+
 /*
     //TODO PREGUNTARLE A LUCIA SI ESTO DEBERIA DE PONERLO AQUI
     public void procesa(Exp_lit_ent exp) {
@@ -450,57 +448,210 @@ public class Comprobacion_tipos extends ProcesamientoDef {
 
     }
 
-    public void procesa(Exp_null exp) {
 
-    }
 */
+    public void procesa(Exp_null exp) {
+        exp.set_tipo(new Null_T());
+    }
+    public void procesa(Mayor exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
 
-    public void procesa(Mayor exp) {}
+    public void procesa(Menor exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    public void procesa(MayorIg exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
 
-    public void procesa(Menor exp) {}
-    public void procesa(MayorIg exp) {}
+    public void procesa(MenorIg exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    private Tipo tipo_relacional(Tipo t0, Tipo t1){
+        if((refI(t0).es_int() || refI(t0).es_real()) && (refI(t1).es_int() || refI(t1).es_real())){
+            return new Lit_bool();
+        }else if(refI(t0).es_bool() && refI(t1).es_bool()){
+            return new Lit_bool();
+        }else if(refI(t0).es_string() && refI(t1).es_string()){
+            return new Lit_bool();
+        }else{
+            return new Error_();
+        }
+    }
 
-    public void procesa(MenorIg exp) {}
+    public void procesa(Igual exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional2(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
 
-    public void procesa(Igual exp) {}
+    public void procesa(Desigual exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_relacional2(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    private Tipo tipo_relacional2(Tipo t0, Tipo t1){
+        if((refI(t0).es_int() || refI(t0).es_real()) && (refI(t1).es_int() || refI(t1).es_real())){
+            return new Lit_bool();
+        }else if(refI(t0).es_bool() && refI(t1).es_bool()){
+            return new Lit_bool();
+        }else if(refI(t0).es_string() && refI(t1).es_string()){
+            return new Lit_bool();
+        }else if(refI(t0).es_puntero() && refI(t1).es_puntero()){
+            return new Lit_bool();
+        }else if((refI(t0).is_null() && refI(t1).es_puntero()) || (refI(t0).es_puntero() && refI(t1).is_null())){
+            return new Lit_bool();
+        }else if(refI(t0).is_null() && refI(t1).is_null()){
+            return new Lit_bool();
+        }else{
+            return new Error_();
+        }
+    }
 
-    public void procesa(Desigual exp) {}
-
-    
-    public void procesa(Suma exp) {}
-    public void procesa(Resta exp) {}
-    public void procesa(Mul exp) {}
-    public void procesa(Div exp) {}
+    public void procesa(Suma exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    public void procesa(Resta exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    public void procesa(Mul exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    public void procesa(Div exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
+    private Tipo tipo_binat(Tipo t0, Tipo t1){
+        if(refI(t0).es_int() && refI(t1).es_int()){
+            return new Lit_ent();
+        }else if((refI(t0).es_int() || refI(t0).es_real()) && (refI(t1).es_int() || refI(t1).es_real())){
+            return new Lit_real();
+        }else{
+            return new Error_();
+        }
+    }
 
 
 
     public void procesa(AccesoArray exp) {
-
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        if(refI(exp.opnd0().tipo()).es_array() && (refI(exp.opnd1().tipo()).es_int())) {
+            exp.set_tipo(exp.opnd0().tipo());
+        }
+        else{
+            exp.set_tipo(new Error_());
+        }
     }
 
+    //TODO preguntar si seria exp.set_tipo o exp.opnd0.set_tipo
     public void procesa(AccesoPuntero exp) {
+        exp.opnd0().procesa(this);
+        if(refI(exp.opnd0().tipo()).es_puntero()) {
+            exp.set_tipo(exp.opnd0().tipo());
+        }
+        else{
+            exp.set_tipo(new Error_());
+        }
 
     }
 
     public void procesa(AccesoCampo exp) {
+        exp.opnd0().procesa(this);
 
+        if(refI(exp.opnd0().tipo()).es_struct()){
+            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden()));
+        }
+        else{
+            exp.set_tipo(new Error_());
+        }
+
+    }
+    private Tipo tipo_de(LCamp lcs, String c){
+        while(lcs.es_muchos_campos()){
+            Camp campo = lcs.campo();
+            if(c.equals(campo.iden().toString())){
+                return campo.tipo();
+            }
+            lcs = lcs.lcs();
+        }
+        Camp campo = lcs.campo();
+        if(c.equals(campo.iden().toString())){
+            return campo.tipo();
+        }
+        return new Error_();
     }
 
     public void procesa(And exp) {
-
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
     }
 
     public void procesa(Or exp) {
-
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
     }
 
-    public void procesa(Mod exp) {}
-    public void procesa(Asig exp) {}
+    private Tipo tipo_logico(Tipo t0, Tipo t1){
+        if(refI(t0).es_bool() && refI(t1).es_bool()){
+            return new Lit_bool();
+        }else{
+            return new Error_();
+        }
+    }
+
+    public void procesa(Mod exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        if(refI(exp.opnd0().tipo()).es_int() && refI(exp.opnd1().tipo()).es_int()){
+             exp.set_tipo(new Lit_ent());
+        }else{
+            exp.set_tipo(new Error_());
+        }
+    }
+    public void procesa(Asig exp) {
+        exp.opnd0().procesa(this);
+        exp.opnd1().procesa(this);
+        exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
+    }
 
 
-    public void procesa(Neg exp) {}
+    public void procesa(Neg exp) {
+        exp.opnd0().procesa(this);
+        if (refI(exp.opnd0().tipo()).es_int() || refI(exp.opnd0().tipo()).es_real()) {
+            exp.set_tipo(exp.opnd0().tipo());
+        }
+        else{
+            exp.set_tipo(new Error_());
+        }
+    }
+    public void procesa(Not exp) {
+        exp.opnd0().procesa(this);
+        if (refI(exp.opnd0().tipo()).es_bool()) {
+            exp.set_tipo(exp.opnd0().tipo());
+        }
+        else{
+            exp.set_tipo(new Error_());
+        }
+        }
 
-    public void procesa(Not exp) { }
 
 
 
