@@ -15,6 +15,10 @@ public class Etiquetado extends ProcesamientoDef {
     private Stack<Dec_proc> procs = new Stack<Dec_proc>();
     private int etq;
 
+    private boolean esDesignador(Exp e){
+        return true;
+    }
+
     public void procesa(Prog p){
         etq = 0;
         p.bq().procesa(this);
@@ -156,7 +160,9 @@ public class Etiquetado extends ProcesamientoDef {
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
-        if(a.opnd0().tipo().equals("real") && a.opnd1().tipo().equals("int")) {
+        String t0 = a.opnd0().tipo().iden().toString();
+        String t1 = a.opnd1().tipo().iden().toString();
+        if(t0.equals("real") && t1.equals("int")) {
             if(esDesignador(a.opnd1())) {
                 etq++;
             }
@@ -171,8 +177,8 @@ public class Etiquetado extends ProcesamientoDef {
         s.opnd0().procesa(this);
         s.opnd1().procesa(this);
         etq++;
-        String t0 = s.opnd0().tipo();
-        String t1 = s.opnd1().tipo();
+        String t0 = s.opnd0().tipo().iden().toString();
+        String t1 = s.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
             if (esDesignador(s.opnd0())) {
                 etq++;
@@ -187,8 +193,8 @@ public class Etiquetado extends ProcesamientoDef {
         r.opnd0().procesa(this);
         r.opnd1().procesa(this);
         etq++;
-        String t0 = r.opnd0().tipo();
-        String t1 = r.opnd1().tipo();
+        String t0 = r.opnd0().tipo().iden().toString();
+        String t1 = r.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
             if (esDesignador(r.opnd0())) {
                 etq++;
@@ -203,8 +209,8 @@ public class Etiquetado extends ProcesamientoDef {
         m.opnd0().procesa(this);
         m.opnd1().procesa(this);
         etq++;
-        String t0 = m.opnd0().tipo();
-        String t1 = m.opnd1().tipo();
+        String t0 = m.opnd0().tipo().iden().toString();
+        String t1 = m.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
             if (esDesignador(m.opnd0())) {
                 etq++;
@@ -219,8 +225,8 @@ public class Etiquetado extends ProcesamientoDef {
         d.opnd0().procesa(this);
         d.opnd1().procesa(this);
         etq++;
-        String t0 = d.opnd0().tipo();
-        String t1 = d.opnd1().tipo();
+        String t0 = d.opnd0().tipo().iden().toString();
+        String t1 = d.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
             if (esDesignador(d.opnd0())) {
                 etq++;
@@ -235,8 +241,8 @@ public class Etiquetado extends ProcesamientoDef {
         m.opnd0().procesa(this);
         m.opnd1().procesa(this);
         etq++;
-        String t0 = m.opnd0().tipo();
-        String t1 = m.opnd1().tipo();
+        String t0 = m.opnd0().tipo().iden().toString();
+        String t1 = m.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("int")))) {
             if (esDesignador(m.opnd0())) {
                 etq++;
@@ -251,8 +257,8 @@ public class Etiquetado extends ProcesamientoDef {
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
-        String t0 = a.opnd0().tipo();
-        String t1 = a.opnd1().tipo();
+        String t0 = a.opnd0().tipo().iden().toString();
+        String t1 = a.opnd1().tipo().iden().toString();
         if ((t0.equals("bool") && t1.equals("bool"))) {
             if (esDesignador(a.opnd0())) {
                 etq++;
@@ -267,8 +273,8 @@ public class Etiquetado extends ProcesamientoDef {
         o.opnd0().procesa(this);
         o.opnd1().procesa(this);
         etq++;
-        String t0 = o.opnd0().tipo();
-        String t1 = o.opnd1().tipo();
+        String t0 = o.opnd0().tipo().iden().toString();
+        String t1 = o.opnd1().tipo().iden().toString();
         if ((t0.equals("bool") && t1.equals("bool"))) {
             if (esDesignador(o.opnd0())) {
                 etq++;
@@ -283,8 +289,8 @@ public class Etiquetado extends ProcesamientoDef {
         ma.opnd0().procesa(this);
         ma.opnd1().procesa(this);
         etq++;
-        String t0 = ma.opnd0().tipo();
-        String t1 = ma.opnd1().tipo();
+        String t0 = ma.opnd0().tipo().iden().toString();
+        String t1 = ma.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(ma.opnd0())) {
                 etq++;
@@ -299,8 +305,8 @@ public class Etiquetado extends ProcesamientoDef {
         me.opnd0().procesa(this);
         me.opnd1().procesa(this);
         etq++;
-        String t0 = me.opnd0().tipo();
-        String t1 = me.opnd1().tipo();
+        String t0 = me.opnd0().tipo().iden().toString();
+        String t1 = me.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(me.opnd0())) {
                 etq++;
@@ -315,8 +321,8 @@ public class Etiquetado extends ProcesamientoDef {
         mai.opnd0().procesa(this);
         mai.opnd1().procesa(this);
         etq++;
-        String t0 = mai.opnd0().tipo();
-        String t1 = mai.opnd1().tipo();
+        String t0 = mai.opnd0().tipo().iden().toString();
+        String t1 = mai.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(mai.opnd0())) {
                 etq++;
@@ -331,8 +337,8 @@ public class Etiquetado extends ProcesamientoDef {
         mei.opnd0().procesa(this);
         mei.opnd1().procesa(this);
         etq++;
-        String t0 = mei.opnd0().tipo();
-        String t1 = mei.opnd1().tipo();
+        String t0 = mei.opnd0().tipo().iden().toString();
+        String t1 = mei.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(mei.opnd0())) {
                 etq++;
@@ -347,8 +353,8 @@ public class Etiquetado extends ProcesamientoDef {
         ig.opnd0().procesa(this);
         ig.opnd1().procesa(this);
         etq++;
-        String t0 = ig.opnd0().tipo();
-        String t1 = ig.opnd1().tipo();
+        String t0 = ig.opnd0().tipo().iden().toString();
+        String t1 = ig.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(ig.opnd0())) {
                 etq++;
@@ -363,8 +369,8 @@ public class Etiquetado extends ProcesamientoDef {
         de.opnd0().procesa(this);
         de.opnd1().procesa(this);
         etq++;
-        String t0 = de.opnd0().tipo();
-        String t1 = de.opnd1().tipo();
+        String t0 = de.opnd0().tipo().iden().toString();
+        String t1 = de.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
             if (esDesignador(de.opnd0())) {
                 etq++;
@@ -378,7 +384,7 @@ public class Etiquetado extends ProcesamientoDef {
     public void procesa(Not no){
         no.e().procesa(this);
         etq++;
-        String t0 = no.opnd0().tipo();
+        String t0 = no.opnd0().tipo().iden().toString();
         if ((t0.equals("int") || t0.equals("real"))) {
             if (esDesignador(no.opnd0())) {
                 etq++;
