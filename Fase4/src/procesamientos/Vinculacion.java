@@ -102,7 +102,7 @@ public class Vinculacion extends ProcesamientoDef {
 
     public void procesa(Dec_tipo d){
         d.tipo().procesa(this);
-        if (ts.contiene(d.iden())){
+        if (ts.contiene(d.iden().toString())){
             throw new RuntimeException("Identificador existente");
         }
         else{
