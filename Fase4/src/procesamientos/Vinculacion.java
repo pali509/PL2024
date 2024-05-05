@@ -404,8 +404,8 @@ public class Vinculacion extends ProcesamientoDef {
     }
 
     public void procesa(Exp_Iden e){
-        if (ts.contiene2(e.iden())){
-            Nodo n = ts.vinculoDe(e.iden());
+        if (ts.contiene2(e.iden().toString())){
+            Nodo n = ts.vinculoDe(e.iden().toString());
             //AQUI
             //Esta funcion hace falta pero no esta en la sintaxis abstracta
             //e.set_vinculo(n);
@@ -443,7 +443,7 @@ public class Vinculacion extends ProcesamientoDef {
         }
 
         public void procesa(Una_dec u){
-            u.dec().procesa(vin)
+            u.dec().procesa(vin);
         }
 
         public void procesa(Dec_var d){
@@ -490,8 +490,8 @@ public class Vinculacion extends ProcesamientoDef {
         public void procesa(Puntero p){
             if (p.tipo().es_iden()){
                 Iden t = (Iden)p.tipo();
-                if(ts.contiene2(t.iden())){
-                    t.set_vinculo(ts.vinculoDe(t.iden()));
+                if(ts.contiene2(t.iden().toString())){
+                    t.set_vinculo(ts.vinculoDe(t.iden().toString()));
                 }
                 else{
                     throw new RuntimeException("Tipo no definido");
