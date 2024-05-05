@@ -1,5 +1,6 @@
 package procesamientos;
 
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ class TablaSimbolos {
 
     Stack <HashMap<String,Nodo>> ts = new Stack<HashMap<String,Nodo>>();
     public TablaSimbolos(){
-        ts.add(new HashMap<String,Nodo>();)
+        ts.add(new HashMap<String,Nodo>());
     }
     public TablaSimbolos(TablaSimbolos ts2){
         for (HashMap<String,Nodo> map : ts2.ts){
@@ -34,9 +35,10 @@ class TablaSimbolos {
                 return true;
             }
         }
+        return false;
     }
     
-    public boolean inserta(String id, Nodo dec){
+    public void inserta(String id, Nodo dec){
         ts.peek().put(id, dec);
     }
 
@@ -53,467 +55,488 @@ class TablaSimbolos {
     }
 }
 
-public class Vinculacion extends ProcesamientoDef{
+public class Vinculacion extends ProcesamientoDef {
     private TablaSimbolos ts;
     private Vinculacion2 vin = new Vinculacion2();
 
-    public void vincula(Prog p){
+    public void procesa(Prog p){
         this.ts = new TablaSimbolos();
-        p.bq().vincula(this);
+        p.bq().procesa(this);
     }
 
-    public void vincula(Bloque b){
+    public void procesa(Bloque b){
         TablaSimbolos aux = ts;
         ts = new TablaSimbolos(aux);
-        b.lds().recolectaDecs(this);
-        b.lds().recolectaDecs(vin);
-        b.lis().vincula(this);
+        b.lds().procesa(this);
+        b.lds().procesa(vin);
+        b.lis().procesa(this);
         ts = aux;
     }
 
-    public void recolectaDecs(Si_decs s){
-        s.decs().recolectaDecs(this);
+    public void procesa(Si_decs s){
+        s.decs().procesa(this);
     }
 
-    public void recolectaDecs(No_decs n){
+    public void procesa(No_decs n){
         //NOOP
     }
 
-    public void recolectaDecs(Muchas_decs m){
-        m.ldecs().recolectaDecs(this);
-        m.dec().recolectaDec(this);
+    public void procesa(Muchas_decs m){
+        m.ldecs().procesa(this);
+        m.dec().procesa(this);
     }
 
-    public void recolectaDecs(Una_dec u){
-        u.dec().recolectaDec(this);
+    public void procesa(Una_dec u){
+        u.dec().procesa(this);
     }
 
-    public void recolectaDec(Dec_var d){
-        d.tipo().vincula(this);
+    public void procesa(Dec_var d){
+        d.tipo().procesa(this);
+        if (ts.contiene(d.iden().toString())){
+            throw new RuntimeException("Identificador existente");
+        }
+        else{
+            ts.inserta(d.iden().toString(), d);
+        }
+    }
+
+    public void procesa(Dec_tipo d){
+        d.tipo().procesa(this);
         if (ts.contiene(d.iden())){
             throw new RuntimeException("Identificador existente");
         }
         else{
-            ts.inserta(d.iden(), d);
+            ts.inserta(d.iden().toString(), d);
         }
     }
 
-    public void recolectaDec(Dec_tipo d){
-        d.tipo().vincula(this);
-        if (ts.contiene(d.iden())){
+    public void procesa(Dec_proc d){
+        if (ts.contiene(d.iden().toString())){
             throw new RuntimeException("Identificador existente");
         }
         else{
-            ts.inserta(d.iden(), d);
-        }
-    }
-
-    public void recolectaDec(Dec_proc d){
-        if (ts.contiene(d.iden())){
-            throw new RuntimeException("Identificador existente");
-        }
-        else{
-            ts.inserta(d.iden(), d);
+            ts.inserta(d.iden().toString(), d);
         }
         TablaSimbolos aux = ts;
         ts = new TablaSimbolos(aux);
-        d.pf().recolectaDecs(this);
-        d.bq().vincula(this);
-        ts = aux
+        d.pf().procesa(this);
+        d.pf().procesa(vin);
+        d.bq().procesa(this);
+        ts = aux;
     }
 
-    public void recolectaDecs(Si_pforms s){
-        s.pforms().recolectaDecs(this);
+    public void procesa(Si_pforms s){
+        s.pforms().procesa(this);
     }
 
-    public void recolectaDecs(No_pforms n){
+    public void procesa(No_pforms n){
         //NOOP
     }
 
-    public void recolectaDecs(Muchos_pforms m){
-        m.pforms().recolectaDecs(this);
-        m.pform().recolectaDec(this);
+    public void procesa(Muchos_pforms m){
+        m.pforms().procesa(this);
+        m.pform().procesa(this);
     }
 
-    public void recolectaDecs(Un_pform u){
-        u.pform().recolectaDec(this);
+    public void procesa(Un_pform u){
+        u.pform().procesa(this);
     }
 
-    public void recolectaDec(PFref p){
-        p.t().vincula(this);
-        if (ts.contiene(p.id())){
+    public void procesa(PFref p){
+        p.t().procesa(this);
+        if (ts.contiene(p.id().toString())){
             throw new RuntimeException("Identificador existente");
         }
         else{
-            ts.inserta(p.id(), p);
+            ts.inserta(p.id().toString(), p);
         }
     }
 
-    public void recolectaDec(PFnoref p){
-        p.t().vincula(this);
-        if (ts.contiene(p.id())){
+    public void procesa(PFnoref p){
+        p.t().procesa(this);
+        if (ts.contiene(p.id().toString())){
             throw new RuntimeException("Identificador existente");
         }
         else{
-            ts.inserta(p.id(), p);
+            ts.inserta(p.id().toString(), p);
         }
     }
 
-    public void vincula(Array a){
-        a.tipo().vincula(this);
+    public void procesa(Array a){
+        a.tipo().procesa(this);
     }
 
-    public void vincula(Puntero p){
-        if (p.tipo() != Iden){
-            p.tipo().vincula(this);
+    public void procesa(Puntero p){
+        if (!p.tipo().es_iden()){
+            p.tipo().procesa(this);
         }
     }
 
-    public void vincula(Iden i){
-        if (ts.contiene2(i.iden())){
-            Nodo n = ts.vinculoDe(i.iden());
+    public void procesa(Iden i){
+        if (ts.contiene2(i.iden().toString())){
+            Nodo n = ts.vinculoDe(i.iden().toString());
             //AQUI
             //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //ref.set_vinculo(n);
+            //i.set_vinculo(n);
         }
         else{
             throw new RuntimeException("Tipo inexistente");
         }
     }
 
-    public void vincula(Struct s){
-        s.lcamp().vincula(this);
+    public void procesa(Struct s){
+        s.lcamp().procesa(this);
     }
 
-    public void vincula(Lit_ent l){
+    public void procesa(Lit_ent l){
         //NOOP
     }
 
-    public void vincula(Lit_real l){
+    public void procesa(Lit_real l){
         //NOOP
     }
 
-    public void vincula(Lit_bool l){
+    public void procesa(Lit_bool l){
         //NOOP
     }
 
-    public void vincula(Lit_string l){
+    public void procesa(Lit_string l){
         //NOOP
     }
 
-    public void vincula(Muchos_camp m){
-        m.lcs().vincula(this);
-        m.campo().vincula(this);
+    public void procesa(Muchos_camp m){
+        m.lcs().procesa(this);
+        m.campo().procesa(this);
     }
 
-    public void vincula(Un_camp u){
-        u.campo().vincula(this);
+    public void procesa(Un_camp u){
+        u.campo().procesa(this);
     }
 
-    public void vincula(Camp c){
-        c.tipo().vincula(this);
+    public void procesa(Camp c){
+        c.tipo().procesa(this);
     }
 
-    public void vincula(Si_Ins s){
-        s.ins().vincula(this);
+    public void procesa(Si_Ins s){
+        s.ins().procesa(this);
     }
 
-    public void vincula(No_Ins n){
+    public void procesa(No_Ins n){
         //NOOP
     }
 
-    public void vincula(Muchas_ins m){
-        m.li().vincula(this);
-        m.ins().vincula(this);
+    public void procesa(Muchas_ins m){
+        m.li().procesa(this);
+        m.ins().procesa(this);
     }
 
-    public void vincula(Una_ins u){
-        u.ins().vincula(this);
+    public void procesa(Una_ins u){
+        u.ins().procesa(this);
     }
 
-    public void vincula(Ins_asig i){
-        i.e().vincula(this);
+    public void procesa(Ins_asig i){
+        i.e().procesa(this);
     }
 
-    public void vincula(Ins_if i){
-        i.e().vincula(this);
-        i.bloque().vincula(this);
+    public void procesa(Ins_if i){
+        i.e().procesa(this);
+        i.bloque().procesa(this);
     }
 
-    public void vincula(Ins_if_else i){
-        i.e().vincula(this);
-        i.bloque().vincula(this);
-        i.bloque2().vincula(this);
+    public void procesa(Ins_if_else i){
+        i.e().procesa(this);
+        i.bloque().procesa(this);
+        i.bloque2().procesa(this);
     }
 
-    public void vincula(Ins_while i){
-        i.e().vincula(this);
-        i.bloque().vincula(this);
+    public void procesa(Ins_while i){
+        i.e().procesa(this);
+        i.bloque().procesa(this);
     }
 
-    public void vincula(Ins_read i){
-        i.e().vincula(this);
+    public void procesa(Ins_read i){
+        i.e().procesa(this);
     }
 
-    public void vincula(Ins_write i){
-        i.e().vincula(this);
+    public void procesa(Ins_write i){
+        i.e().procesa(this);
     }
 
-    public void vincula(Ins_nl i){
+    public void procesa(Ins_nl i){
         //NOOP
     }
 
-    public void vincula(Ins_new i){
-        i.e().vincula(this);
+    public void procesa(Ins_new i){
+        i.e().procesa(this);
     }
 
-    public void vincula(Ins_delete i){
-        i.e().vincula(this);
+    public void procesa(Ins_delete i){
+        i.e().procesa(this);
     }
 
-    public void vincula(Ins_call i){
-        i.id().vincula(this);
-        i.pr().vincula(this);
+    public void procesa(Ins_call i){
+        i.id().procesa(this);
+        i.pr().procesa(this);
     }
 
-    public void vincula(Ins_bloque i){
-        i.bloque().vincula(this);
+    public void procesa(Ins_bloque i){
+        i.bloque().procesa(this);
     }
 
-    public void vincula(Si_preal s){
-        s.lpr().vincula(this);
+    public void procesa(Si_preal s){
+        s.lpr().procesa(this);
     }
 
-    public void vincula(No_preal n){
+    public void procesa(No_preal n){
         //NOOP
     }
 
-    public void vincula(Muchos_preal m){
-        m.lpr().vincula(this);
-        m.e().vincula(this);
+    public void procesa(Muchos_preal m){
+        m.lpr().procesa(this);
+        m.e().procesa(this);
     }
 
-    public void vincula(Un_PReal u){
-        u.e().vincula(this);
+    public void procesa(Un_PReal u){
+        u.e().procesa(this);
     }
 
-    public void vincula(Asig a){
-        a.opnd0().vincula(this);
-        a.opnd1().vincula(this);
+    public void procesa(Asig a){
+        a.opnd0().procesa(this);
+        a.opnd1().procesa(this);
     }
 
-    public void vincula(Mayor m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(Mayor m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(Menor m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(Menor m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(MayorIg m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(MayorIg m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(MenorIg m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(MenorIg m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(Igual i){
-        i.opnd0().vincula(this);
-        i.opnd1().vincula(this);
+    public void procesa(Igual i){
+        i.opnd0().procesa(this);
+        i.opnd1().procesa(this);
     }
 
-    public void vincula(Desigual d){
-        d.opnd0().vincula(this);
-        d.opnd1().vincula(this);
+    public void procesa(Desigual d){
+        d.opnd0().procesa(this);
+        d.opnd1().procesa(this);
     }
 
-    public void vincula(Suma s){
-        s.opnd0().vincula(this);
-        s.opnd1().vincula(this);
+    public void procesa(Suma s){
+        s.opnd0().procesa(this);
+        s.opnd1().procesa(this);
     }
 
-    public void vincula(Resta r){
-        r.opnd0().vincula(this);
-        r.opnd1().vincula(this);
+    public void procesa(Resta r){
+        r.opnd0().procesa(this);
+        r.opnd1().procesa(this);
     }
 
-    public void vincula(And a){
-        a.opnd0().vincula(this);
-        a.opnd1().vincula(this);
+    public void procesa(And a){
+        a.opnd0().procesa(this);
+        a.opnd1().procesa(this);
     }
 
-    public void vincula(Or o){
-        o.opnd0().vincula(this);
-        o.opnd1().vincula(this);
+    public void procesa(Or o){
+        o.opnd0().procesa(this);
+        o.opnd1().procesa(this);
     }
 
-    public void vincula(Mul m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(Mul m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(Div d){
-        d.opnd0().vincula(this);
-        d.opnd1().vincula(this);
+    public void procesa(Div d){
+        d.opnd0().procesa(this);
+        d.opnd1().procesa(this);
     }
 
-    public void vincula(Mod m){
-        m.opnd0().vincula(this);
-        m.opnd1().vincula(this);
+    public void procesa(Mod m){
+        m.opnd0().procesa(this);
+        m.opnd1().procesa(this);
     }
 
-    public void vincula(Neg n){
-        n.opnd0().vincula(this);
+    public void procesa(Neg n){
+        n.opnd0().procesa(this);
     }
 
-    public void vincula(Not n){
-        n.opnd0().vincula(this);
+    public void procesa(Not n){
+        n.opnd0().procesa(this);
     }
 
-    public void vincula(AccesoArray a){
-        a.opnd0().vincula(this);
-        a.opnd1().vincula(this);
+    public void procesa(AccesoArray a){
+        a.opnd0().procesa(this);
+        a.opnd1().procesa(this);
     }
 
-    public void vincula(AccesoCampo a){
-        a.opnd0().vincula(this);
+    public void procesa(AccesoCampo a){
+        a.opnd0().procesa(this);
     }
 
-    public void vincula(AccesoPuntero a){
-        a.opnd0().vincula(this);
+    public void procesa(AccesoPuntero a){
+        a.opnd0().procesa(this);
     }
 
-    public void vincula(Exp_lit_ent e){
+    public void procesa(Exp_lit_ent e){
         //NOOP
     }
 
-    public void vincula(Exp_lit_real e){
+    public void procesa(Exp_lit_real e){
         //NOOP
     }
 
-    public void vincula(Exp_lit_cadena e){
+    public void procesa(Exp_lit_cadena e){
         //NOOP
     }
 
-    public void vincula(Exp_Iden e){
+    public void procesa(Exp_Iden e){
         if (ts.contiene2(e.iden())){
-            Nodo n = ts.vinculoDe(i.iden());
+            Nodo n = ts.vinculoDe(e.iden());
             //AQUI
             //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //ref.set_vinculo(n);
+            //e.set_vinculo(n);
         }
         else{
             throw new RuntimeException("Identificador no declarado");
         }
     }
 
-    public void vincula(Exp_lit_BoolTrue e){
+    public void procesa(Exp_lit_BoolTrue e){
         //NOOP
     }
 
-    public void vincula(Exp_lit_BoolFalse e){
+    public void procesa(Exp_lit_BoolFalse e){
         //NOOP
     }
 
-    public void vincula(Exp_null e){
+    public void procesa(Exp_null e){
         //NOOP
     }
 
     private class Vinculacion2 extends ProcesamientoDef{
     
-        public void recolectaDecs(Si_decs s){
-            s.decs().recolectaDecs(vin);
+        public void procesa(Si_decs s){
+            s.decs().procesa(vin);
         }
 
-        public void recolectaDecs(No_decs n){
+        public void procesa(No_decs n){
             //NOOP
         }
 
-        public void recolectaDecs(Muchas_decs m){
-            m.ldecs().recolectaDecs(vin);
-            m.dec().recolectaDec(vin);
+        public void procesa(Muchas_decs m){
+            m.ldecs().procesa(vin);
+            m.dec().procesa(vin);
         }
 
-        public void recolectaDecs(Una_dec u){
-            u.dec().recolectaDec(vin)
+        public void procesa(Una_dec u){
+            u.dec().procesa(vin)
         }
 
-        public void recolectaDec(Dec_var d){
-            d.tipo().vincula(vin);
+        public void procesa(Dec_var d){
+            d.tipo().procesa(vin);
         }
 
-    recolectaDec2(dec_tipo(T, id)):
-	vincula2(T)
+        public void procesa(Dec_tipo d){
+            d.tipo().procesa(vin);
+        }
 
-    recolectaDec2(dec_proc(id, PFormOpt, Bloq)):
-    recolectaDecs2(PFormOpt)
+        public void procesa(Dec_proc d){
+            //NOOP
+        }
+
+        public void procesa(Si_pforms s){
+            s.pforms().procesa(vin);
+        }
+
+        public void procesa(No_pforms n){
+            //NOOP
+        }
+
+        public void procesa(Muchos_pforms m){
+            m.pforms().procesa(vin);
+            m.pform().procesa(vin);
+        }
+
+        public void procesa(Un_pform u){
+            u.pform().procesa(vin);
+        }
+
+        public void procesa(PFref p){
+            p.t().procesa(vin);
+        }
+
+        public void procesa(PFnoref p){
+            p.t().procesa(vin);
+        }
+
+        public void procesa(Array a){
+            a.tipo().procesa(vin);
+        }
+
+        public void procesa(Puntero p){
+            if (p.tipo().es_iden()){
+                Iden t = (Iden)p.tipo();
+                if(ts.contiene2(t.iden())){
+                    t.set_vinculo(ts.vinculoDe(t.iden()));
+                }
+                else{
+                    throw new RuntimeException("Tipo no definido");
+                }
+            }
+            else{
+                p.tipo().procesa(vin);
+            }
+        }
+
+        public void procesa(Iden i){
+            //NOOP
+        }
+
+        public void procesa(Struct s){
+            s.lcamp().procesa(vin);
+        }
+
+        public void procesa(Lit_ent l){
+            //NOOP
+        }
+
+        public void procesa(Lit_real l){
+            //NOOP
+        }
+
+        public void procesa(Lit_bool l){
+            //NOOP
+        }
+
+        public void procesa(Lit_string l){
+            //NOOP
+        }
+
+        public void procesa(Muchos_camp m){
+            m.lcs().procesa(vin);
+            m.campo().procesa(vin);
+        }
+
+        public void procesa(Un_camp u){
+            u.campo().procesa(vin);
+        }
+
+        public void procesa(Camp c){
+            c.tipo().procesa(vin);
+        }
     }
-
-    recolectaDecs2(si_pform(LPForm)):
-	recolectaDecs2(LPForm)
-
-    recolectaDecs2(no_pform()):
-noop
-
-recolectaDecs2(muchas_pforms(LPForm, PForm)):
-	recolectaDecs2(LPForm)
-	recolectaDec2(PForm)
-
-    recolectaDecs2(una_pform(PForm)):
-	recolectaDec2(PForm)
-
-    recolectaDec2(pform_ref(T,id)):
-	vincula2(T)
-
-    recolectaDec2(pform_no_ref(T,id)):
-	vincula2(T)
-
-    vincula2(array(T, dim)):
-	vincula2(T)
-
-    vincula2(puntero(T)):
-if (T =iden(Id)):
-        		T.vinculo = vinculoDe(ts, Id)
-       		 if (T.vinculo = -|):
-            		error
-		end if
-    	else
-       		 vincula2(T)
-	end if
-
-
-    
-vincula2(iden(id)):
-noop
-
-vincula2(struct(LCamp)):
-	vincula2(LCamp)
-
-
-    vincula2(lit_ent(string)):
-	noop
-
-    vincula2(lit_real(string)):
-	noop
-
-    vincula2(lit_bool(string)):
-	noop
-
-    vincula2(lit_string(string)):
-	noop
-
-    vincula2(muchos_camp(LCamp,  Camp)):
-	vincula2(LCamp)
-	vincula2(Camp)
-
-    vincula2(un_camp(Camp)):
-	vincula2(Camp)
-
-    vincula2(camp(T, Id)):
-	vincula2(T)
 }
