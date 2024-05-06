@@ -666,7 +666,13 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Asig exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
-        exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
+	if(es_designador(exp.opnd0()){
+		if(son_compatibles(exp.opnd0().tipo(),exp.opnd1().tipo())
+		   exp.set_tipo(new Ok());
+		else
+			exp.set_tipo(new Error());
+	else
+		exp.set_tipo(new Error());
     }
 
 
