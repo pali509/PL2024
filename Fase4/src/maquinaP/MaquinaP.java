@@ -21,7 +21,8 @@ public class MaquinaP {
     
    private class Valor {
       public int valorInt() {throw new EAccesoIlegitimo();}  
-      public boolean valorBool() {throw new EAccesoIlegitimo();} 
+      public boolean valorBool() {throw new EAccesoIlegitimo();}
+      public int valorReal() {throw new EAccesoIlegitimo();} 
    }
 
    private class ValorInt extends Valor {
@@ -124,7 +125,7 @@ public class MaquinaP {
       public String toString() {return "apila-string("+valor+")";};
    }
 
-   //NO SE SI HAY QUE INCLUIR APILA_DIR Y DESAPILA_DIR, PARECE QUE NO SE USAN
+   //AQUI HAY QUE INCLUIR APILA_DIR Y DESAPILA_DIR
 
    private IApilaind IAPILAIND;
    private class IApilaind implements Instruccion {
@@ -164,7 +165,7 @@ public class MaquinaP {
       }
    }
 
-   //CREO QUE IGUAL HAY QUE ELIMINAR ESTA, NO PARECE QUE SE USE
+   //AQUI CREO QUE IGUAL HAY QUE ELIMINAR ESTA, NO PARECE QUE SE USE
    private class IDesapilad implements Instruccion {
       private int nivel;
       public IDesapilad(int nivel) {
@@ -179,7 +180,6 @@ public class MaquinaP {
       }
    }
 
-   //A PARTIR DE AQUI NO ESTÁ REVISADO
    private ISuma ISUMA;
    private class ISuma implements Instruccion {
       public void ejecuta() {
@@ -188,7 +188,18 @@ public class MaquinaP {
          pilaEvaluacion.push(new ValorInt(opnd1.valorInt()+opnd2.valorInt()));
          pc++;
       } 
-      public String toString() {return "suma";};
+      public String toString() {return "suma int";};
+   }
+
+   private IResta IRESTA;
+   private class IResta implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorInt()-opnd2.valorInt()));
+         pc++;
+      } 
+      public String toString() {return "resta int";};
    }
 
    private IMul IMUL;
@@ -199,8 +210,95 @@ public class MaquinaP {
          pilaEvaluacion.push(new ValorInt(opnd1.valorInt()*opnd2.valorInt()));
          pc++;
       } 
-      public String toString() {return "mul";};
+      public String toString() {return "mul int";};
    }
+
+   private IDiv IDIV;
+   private class IDiv implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorInt()/opnd2.valorInt()));
+         pc++;
+      } 
+      public String toString() {return "div int";};
+   }
+
+   private INeg INEG;
+   private class INeg implements Instruccion {
+      public void ejecuta() {
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(-opnd1.valorInt()));
+         pc++;
+      } 
+      public String toString() {return "neg int";};
+   }
+
+   private IRSuma RSUMA;
+   private class IRSuma implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorReal()+opnd2.valorReal()));
+         pc++;
+      } 
+      public String toString() {return "suma real";};
+   }
+
+   private IRResta RRESTA;
+   private class IRResta implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorReal()-opnd2.valorReal()));
+         pc++;
+      } 
+      public String toString() {return "resta real";};
+   }
+
+   private IRMul RMUL;
+   private class IRMul implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorReal()*opnd2.valorReal()));
+         pc++;
+      } 
+      public String toString() {return "mul real";};
+   }
+
+   private IRDiv RDIV;
+   private class IRDiv implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorReal()/opnd2.valorReal()));
+         pc++;
+      } 
+      public String toString() {return "div real";};
+   }
+
+   private IRNeg RNEG;
+   private class IRNeg implements Instruccion {
+      public void ejecuta() {
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(-opnd1.valorReal()));
+         pc++;
+      } 
+      public String toString() {return "neg real";};
+   }
+
+   private IMod MOD;
+   private class IMod implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop(); 
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorInt(opnd1.valorInt()%opnd2.valorInt()));
+         pc++;
+      } 
+      public String toString() {return "mod";};
+   }
+   //ME HE QUEDADO AQUI, REVISAR SI MOD ES ENTERO
 
    private IAnd IAND;
    private class IAnd implements Instruccion {
@@ -345,9 +443,6 @@ public class MaquinaP {
           return "stop";                 
        }
    }
-   
-   
-   
    
    private Instruccion IIRIND;
    private class IIrind implements Instruccion {
