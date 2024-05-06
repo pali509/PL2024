@@ -58,8 +58,10 @@ class TablaSimbolos {
 public class Vinculacion extends ProcesamientoDef {
     private TablaSimbolos ts;
     private Vinculacion2 vin = new Vinculacion2();
+    private MensajesError men;
 
     public void procesa(Prog p){
+        men = new MensajesError("vinculacion");
         this.ts = new TablaSimbolos();
         p.bq().procesa(this);
     }
@@ -93,7 +95,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_var d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.leeFila(), d.leeCol());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -103,7 +105,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_tipo d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.leeFila(), d.leeCol());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -112,7 +114,7 @@ public class Vinculacion extends ProcesamientoDef {
 
     public void procesa(Dec_proc d){
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.leeFila(), d.leeCol());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -145,7 +147,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(p.leeFila(), p.leeCol());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -155,7 +157,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFnoref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(p.leeFila(), p.leeCol());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -178,7 +180,7 @@ public class Vinculacion extends ProcesamientoDef {
             i.setVinculo(n);
         }
         else{
-            throw new RuntimeException("Tipo inexistente");
+            men.addError(i.leeFila(), i.leeCol());
         }
     }
 
@@ -407,7 +409,7 @@ public class Vinculacion extends ProcesamientoDef {
             e.setVinculo(n);
         }
         else{
-            throw new RuntimeException("Identificador no declarado");
+            men.addError(e.leeFila(), e.leeCol());
         }
     }
 
@@ -490,7 +492,7 @@ public class Vinculacion extends ProcesamientoDef {
                     t.setVinculo(ts.vinculoDe(t.iden().toString()));
                 }
                 else{
-                    throw new RuntimeException("Tipo no definido");
+                    men.addError(p.leeFila(), p.leeCol());
                 }
             }
             else{
