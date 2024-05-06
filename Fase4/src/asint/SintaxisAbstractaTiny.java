@@ -516,6 +516,7 @@ public class SintaxisAbstractaTiny {
     public static class Exp_Iden extends Exp {
         private Tipo tipo;
         private StringLocalizado num;
+        private Nodo vinculo;
         public Exp_Iden(StringLocalizado num) {
             super();
             this.num = num;
@@ -528,6 +529,8 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 7;}
         public Tipo tipo(){return tipo;}
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+        public void setVinculo(Nodo v) {this.vinculo = v;}
+        public Nodo getVinculo() {return this.vinculo;}
     }
 
     public static class AccesoArray extends Exp {
