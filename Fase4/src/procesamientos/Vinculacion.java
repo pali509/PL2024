@@ -64,6 +64,9 @@ public class Vinculacion extends ProcesamientoDef {
         men = new MensajesError("vinculacion");
         this.ts = new TablaSimbolos();
         p.bq().procesa(this);
+        if(men.getHayError()){
+            men.getErrores();
+        }
     }
 
     public void procesa(Bloque b){
@@ -95,7 +98,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_var d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            men.addError(d.leeFila(), d.leeCol());
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -105,7 +108,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_tipo d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            men.addError(d.leeFila(), d.leeCol());
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -114,7 +117,7 @@ public class Vinculacion extends ProcesamientoDef {
 
     public void procesa(Dec_proc d){
         if (ts.contiene(d.iden().toString())){
-            men.addError(d.leeFila(), d.leeCol());
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -147,7 +150,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            men.addError(p.leeFila(), p.leeCol());
+            men.addError(p.id().beginLine(), p.id().beginColumn());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -157,7 +160,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFnoref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            men.addError(p.leeFila(), p.leeCol());
+            men.addError(p.id().beginLine(), p.id().beginColumn());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -180,7 +183,7 @@ public class Vinculacion extends ProcesamientoDef {
             i.setVinculo(n);
         }
         else{
-            men.addError(i.leeFila(), i.leeCol());
+            men.addError(i.iden().beginLine(), i.iden().beginColumn());
         }
     }
 
@@ -409,7 +412,7 @@ public class Vinculacion extends ProcesamientoDef {
             e.setVinculo(n);
         }
         else{
-            men.addError(e.leeFila(), e.leeCol());
+            men.addError(e.iden().beginLine(), e.iden().beginColumn());
         }
     }
 
@@ -492,7 +495,7 @@ public class Vinculacion extends ProcesamientoDef {
                     t.setVinculo(ts.vinculoDe(t.iden().toString()));
                 }
                 else{
-                    men.addError(p.leeFila(), p.leeCol());
+                    men.addError(t.leeFila(), t.leeCol());
                 }
             }
             else{
