@@ -175,9 +175,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Iden i){
         if (ts.contiene2(i.iden().toString())){
             Nodo n = ts.vinculoDe(i.iden().toString());
-            //AQUI
-            //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //i.set_vinculo(n);
+            i.setVinculo(n);
         }
         else{
             throw new RuntimeException("Tipo inexistente");
@@ -406,9 +404,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Exp_Iden e){
         if (ts.contiene2(e.iden().toString())){
             Nodo n = ts.vinculoDe(e.iden().toString());
-            //AQUI
-            //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //e.set_vinculo(n);
+            e.setVinculo(n);
         }
         else{
             throw new RuntimeException("Identificador no declarado");
@@ -491,7 +487,7 @@ public class Vinculacion extends ProcesamientoDef {
             if (p.tipo().es_iden()){
                 Iden t = (Iden)p.tipo();
                 if(ts.contiene2(t.iden().toString())){
-                    t.set_vinculo(ts.vinculoDe(t.iden().toString()));
+                    t.setVinculo(ts.vinculoDe(t.iden().toString()));
                 }
                 else{
                     throw new RuntimeException("Tipo no definido");
