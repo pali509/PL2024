@@ -115,6 +115,7 @@ public interface ConstructorASTsTinyConstants {
     "<literalCadena>",
     "<token of kind 33>",
     "<token of kind 34>",
+    "\"$$\"",
     "\" { \"",
     "\" }\"",
     "\"&&\"",

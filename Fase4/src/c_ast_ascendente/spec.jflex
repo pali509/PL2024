@@ -93,9 +93,10 @@ circunflejo = \^
 
 separador = [ \t\r\b\n]
 comentario = ##[^\n]* 
+eof = \$
 %%
 
-
+{eof} 						{return ops.unidadEof();}
 {literalEntero}            {return ops.unidadEnt();}
 {literalReal}              {return ops.unidadLitReal();}
 {literalCadena}              {return ops.unidadCadena();}
