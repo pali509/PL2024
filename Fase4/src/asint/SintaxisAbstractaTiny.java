@@ -59,7 +59,6 @@ public class SintaxisAbstractaTiny {
             super();
         }   
         public abstract int prioridad();
-
        //De recursivo:
         public StringLocalizado iden() {throw new UnsupportedOperationException();}
         public StringLocalizado valor() {throw new UnsupportedOperationException();}
@@ -69,6 +68,11 @@ public class SintaxisAbstractaTiny {
 
         public abstract Tipo tipo();
         public void set_tipo(Tipo t){};
+        public Boolean es_iden(){return false;}
+        public Boolean es_acceso_array(){return false;}
+        public Boolean es_acceso_puntero(){return false;}
+        public Boolean es_acceso_campo(){return false;}
+
     }
    
     
@@ -531,6 +535,11 @@ public class SintaxisAbstractaTiny {
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
         public void setVinculo(Nodo v) {this.vinculo = v;}
         public Nodo getVinculo() {return this.vinculo;}
+
+        @Override
+        public Boolean es_iden() {
+            return true;
+        }
     }
 
     public static class AccesoArray extends Exp {
@@ -555,6 +564,8 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 6;}
 
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+        public Boolean es_acceso_array(){return true;}
+
     }
     public static class AccesoCampo extends Exp {
         private Tipo tipo;
@@ -576,6 +587,8 @@ public class SintaxisAbstractaTiny {
             return tipo;
         }
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+
+        public Boolean es_acceso_campo(){return true;}
     }
 
     public static class AccesoPuntero extends Exp {
@@ -595,6 +608,9 @@ public class SintaxisAbstractaTiny {
             return tipo;
         }
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+
+        public Boolean es_acceso_puntero(){return true;}
+
 
     }
 

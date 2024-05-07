@@ -24,7 +24,8 @@ public class MaquinaP {
    private class Valor {
       public int valorInt() {throw new EAccesoIlegitimo();}  
       public boolean valorBool() {throw new EAccesoIlegitimo();}
-      public int valorReal() {throw new EAccesoIlegitimo();} 
+      public int valorReal() {throw new EAccesoIlegitimo();}
+       public double valorRealD() {throw new EAccesoIlegitimo();}
    }
 
    private class ValorInt extends Valor {
@@ -54,7 +55,7 @@ public class MaquinaP {
       public ValorReal(double valor) {
          this.valor = valor; 
       }
-      public double valorReal() {return valor;}
+      public double valorRealD() {return valor;}
       public String toString() {
         return String.valueOf(valor);
       }
@@ -459,6 +460,7 @@ public class MaquinaP {
    public Instruccion suma() {return ISUMA;}
    public Instruccion mul() {return IMUL;}
    public Instruccion and() {return IAND;}
+    //public Instruccion or() {return IOR;}
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
    public Instruccion apilad(int nivel) {return new IApilad(nivel);}

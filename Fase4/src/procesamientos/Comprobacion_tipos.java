@@ -30,7 +30,7 @@ class Par {
 }
 public class Comprobacion_tipos extends ProcesamientoDef {
     private HashSet<String> tn = new HashSet<String>();
-    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN
+    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN que coño queria decir yo con esto
     // set de parejas de T
     private HashSet<Par> st = new HashSet<Par>();
 
@@ -48,9 +48,6 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         bloque.lds().procesa(this);
         bloque.lis().procesa(this);
         bloque.set_tipo(ambos_ok(bloque.lds().decs().dec().tipo(), bloque.lis().ins().ins().e().tipo()));
-        if(refI(prog.bq().tipo()).equals(Ok.class)){
-
-        }
     }
 
     public void procesa(Si_decs decs) {
@@ -177,7 +174,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         camp.set_tipo(camp.tipo());
     }
     public void procesa(Iden t) {
-        if(t.vinculo().equals(Dec_tipo.class)) { //asi o con un .es_dec_tipo
+        if(t.getVinculo().equals(Dec_tipo.class)) { //asi o con un .es_dec_tipo
             t.tipo().procesa(this);
             t.set_tipo(t.tipo());
         }
@@ -190,7 +187,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     private Tipo refI(Tipo t){
         while(t.es_iden()){
             Iden r = ((Iden)t);
-            Dec_tipo dec_tipo = (Dec_tipo) r.vinculo();
+            Dec_tipo dec_tipo = (Dec_tipo) r.getVinculo();
             t = dec_tipo.tipo();
         }
         return t;
@@ -253,9 +250,9 @@ public class Comprobacion_tipos extends ProcesamientoDef {
 
     }
 
+    //TODO COMPROBAR
     public boolean es_desig(Exp e){
-        if(e.vinculo() != null && (e.vinculo().is_dec_var() || e.vinculo().is_parf_valor()
-                || e.vinculo().is_parf_ref() || e.vinculo().is_dec_proc())){
+        if(e.es_iden()){
             return true;
         }
         else if(e.prioridad() == 6) { //Prioridad 5 para los accesos.
@@ -289,7 +286,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             ins.set_tipo(new Ok());
         }
         else{
-            ins.set_tipo(new Error_());
+            ins.e().set_tipo(new Error_()); //TODO COMPROBAR
         }
     }
 
@@ -453,19 +450,20 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.set_tipo(exp.e().tipo());
     }
 
+    //TODO COMPROBAR, METO LOS METODOS EN NODO?
     public void procesa(Exp_Iden exp) {
-        if(exp.vinculo().is_dec_var()){
-            exp.set_tipo((exp.vinculo()).tipo());
-        }else if(exp.vinculo().is_parf_valor()){
-            exp.set_tipo((exp.vinculo()).tipo());
-        }else if(exp.vinculo().is_parf_ref()){
-            exp.set_tipo((exp.vinculo()).tipo());
+        if(exp.getVinculo().es_dec_var()){
+            exp.set_tipo((exp.getVinculo().tipo()));
+        }else if(exp.getVinculo().es_parf_noRef()){
+            exp.set_tipo((exp.getVinculo()).tipo());
+        }else if(exp.getVinculo().es_parf_ref()){
+            exp.set_tipo((exp.getVinculo()).tipo());
         }
     }
 
 
 /*
-    //TODO PREGUNTARLE A LUCIA SI ESTO DEBERIA DE PONERLO AQUI
+    //TODO PREGUNTARLE SI ESTO DEBERIA DE PONERLO AQUI
     public void procesa(Exp_lit_ent exp) {
 
     }
@@ -612,7 +610,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
 
         if(refI(exp.opnd0().tipo()).es_struct()){
-            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden())); //TODO
+            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden())); //TODO no se hacer esto
         }
         else{
             exp.set_tipo(new Error_());
@@ -666,13 +664,16 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Asig exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
-	if(es_designador(exp.opnd0()){
-		if(son_compatibles(exp.opnd0().tipo(),exp.opnd1().tipo())
-		   exp.set_tipo(new Ok());
+	if(es_desig(exp.opnd0())){
+		if(son_compatibles(exp.opnd0().tipo(),exp.opnd1().tipo())) {
+                exp.set_tipo(new Ok());
+            }
 		else
-			exp.set_tipo(new Error());
+			exp.set_tipo(new Error_());
+        }
 	else
-		exp.set_tipo(new Error());
+		exp.set_tipo(new Error_());
+
     }
 
 

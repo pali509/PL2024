@@ -35,7 +35,7 @@ public class Gen_cod extends ProcesamientoDef {
             recolecta_procs(dnew);
         }
     }
-    public void recolecta_procs(Si_decs s){ //TODO
+    public void recolecta_procs(Si_decs s){ //TODO como que inconvertable types
         if(s.es_muchas_decs()) {
             Muchas_decs dnew = (Muchas_decs) s;
             recolecta_procs(dnew);
@@ -95,7 +95,7 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
 
-	public void gen_acc_val(Exp e){
+	public void gen_acc_val(Exp e){ //TODO como declaro v?
 		/*
 		gen-acc-val(Exp):
 		si es_designador(Exp):
@@ -389,8 +389,6 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Mod s){
-    	Tipo t0 = refI(s.opnd0().tipo());
-    	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
     		mp.apila_ind();
@@ -400,15 +398,13 @@ public class Gen_cod extends ProcesamientoDef {
     	if(es_desig(s.opnd1())) {
     		mp.apila_ind();
     	}
-    	if(t0.es_int() && t1.es_int()) {
+    	if(s.opnd0().tipo().es_int() && s.opnd1().tipo().es_int()) {
     		mp.mod();
     	}
 
     }
 
     public void procesa(And s){
-    	Tipo t0 = refI(s.opnd0().tipo());
-    	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
     		mp.apila_ind();
@@ -418,14 +414,12 @@ public class Gen_cod extends ProcesamientoDef {
     	if(es_desig(s.opnd1())) {
     		mp.apila_ind();
     	}
-    	if(t0.es_bool() && t1.es_bool()) {
+    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) { //TODO COMPROBAR ESTO
     		mp.and();
     	}
     }
 
     public void procesa(Or s){
-    	Tipo t0 = refI(s.opnd0().tipo());
-    	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
     		mp.apila_ind();
@@ -435,7 +429,7 @@ public class Gen_cod extends ProcesamientoDef {
     	if(es_desig(s.opnd1())) {
     		mp.apila_ind();
     	}
-    	if(t0.es_bool() && t1.es_bool()) {
+    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) {
     		mp.or();
     	}
     }
@@ -695,7 +689,7 @@ public class Gen_cod extends ProcesamientoDef {
 
     public void procesa(Iden i){}
     
-    public void procesa(AccesoCampo s){
+    public void procesa(AccesoCampo s){ //TODO que esta mal de esto?
     	s.opnd0().procesa(this);
     	mp.apila_int(desp(refI(s.opnd0().tipo()).lcamp(), s.iden().toString()));
     	mp.suma_int();
