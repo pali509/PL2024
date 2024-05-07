@@ -1,7 +1,9 @@
 package maquinaP;
 
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Stack;
 
 
@@ -480,7 +482,9 @@ public class MaquinaP {
    private int tamdatos;
    private int tamheap;
    private int ndisplays;
-   public MaquinaP(int tamdatos, int tampila, int tamheap, int ndisplays) {
+   private Scanner input;
+   public MaquinaP(Reader datos2, int tamdatos, int tampila, int tamheap, int ndisplays) {
+	  this.input = new Scanner(datos2);
       this.tamdatos = tamdatos;
       this.tamheap = tamheap;
       this.ndisplays = ndisplays;
@@ -563,3 +567,4 @@ public class MaquinaP {
        m.muestraEstado();
    }
 }
+
