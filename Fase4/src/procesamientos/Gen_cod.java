@@ -706,11 +706,13 @@ public class Gen_cod extends ProcesamientoDef {
     }
     
     private boolean es_desig(Exp e) {
-    	boolean a = false;
-    	if(e.getVinculo() != null) {
-    		a = true;
-    	}
-    	return a;
+		if(e.es_iden()){
+			return true;
+		}
+		else if(e.prioridad() == 6) { //Prioridad 5 para los accesos.
+			return true;
+		}
+		return false;
     }
     
     private int desp(LCamp lcs, String c) {
