@@ -27,7 +27,10 @@ public class SintaxisAbstractaTiny {
 	   }
         public Tipo tipo(){return tipo;}
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
-           public abstract void procesa(Procesamiento p);
+        public abstract void procesa(Procesamiento p);
+        public Boolean es_dec_var(){return false;}
+        public Boolean es_parf_noRef(){return false;}
+        public Boolean es_parf_ref(){return false;}
     }
 
     public static class StringLocalizado {
@@ -59,7 +62,6 @@ public class SintaxisAbstractaTiny {
             super();
         }   
         public abstract int prioridad();
-
        //De recursivo:
         public StringLocalizado iden() {throw new UnsupportedOperationException();}
         public StringLocalizado valor() {throw new UnsupportedOperationException();}
@@ -69,6 +71,11 @@ public class SintaxisAbstractaTiny {
 
         public abstract Tipo tipo();
         public void set_tipo(Tipo t){};
+        public Boolean es_iden(){return false;}
+        public Boolean es_acceso_array(){return false;}
+        public Boolean es_acceso_puntero(){return false;}
+        public Boolean es_acceso_campo(){return false;}
+
     }
    
     
@@ -516,6 +523,7 @@ public class SintaxisAbstractaTiny {
     public static class Exp_Iden extends Exp {
         private Tipo tipo;
         private StringLocalizado num;
+        private Nodo vinculo;
         public Exp_Iden(StringLocalizado num) {
             super();
             this.num = num;
@@ -528,6 +536,13 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 7;}
         public Tipo tipo(){return tipo;}
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+        public void setVinculo(Nodo v) {this.vinculo = v;}
+        public Nodo getVinculo() {return this.vinculo;}
+
+        @Override
+        public Boolean es_iden() {
+            return true;
+        }
     }
 
     public static class AccesoArray extends Exp {
@@ -552,6 +567,8 @@ public class SintaxisAbstractaTiny {
         public int prioridad() {return 6;}
 
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+        public Boolean es_acceso_array(){return true;}
+
     }
     public static class AccesoCampo extends Exp {
         private Tipo tipo;
@@ -573,6 +590,8 @@ public class SintaxisAbstractaTiny {
             return tipo;
         }
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+
+        public Boolean es_acceso_campo(){return true;}
     }
 
     public static class AccesoPuntero extends Exp {
@@ -592,6 +611,9 @@ public class SintaxisAbstractaTiny {
             return tipo;
         }
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
+
+        public Boolean es_acceso_puntero(){return true;}
+
 
     }
 
@@ -657,7 +679,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-
+        public Boolean es_parf_ref(){return true;}
     }
 
     public static class PFnoref extends Pform {
@@ -673,6 +695,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_parf_noRef(){return true;}
     }
 
     public static abstract class PFormOpt extends Nodo{
@@ -770,7 +793,7 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
-		
+        public Boolean es_dec_var(){return true;}
 
     }
     public static class Dec_tipo extends Dec {

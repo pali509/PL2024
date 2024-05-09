@@ -1,6 +1,8 @@
 package procesamientos;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import asint.Procesamiento;
 import asint.ProcesamientoDef;
@@ -30,7 +32,7 @@ class Par {
 }
 public class Comprobacion_tipos extends ProcesamientoDef {
     private HashSet<String> tn = new HashSet<String>();
-    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN
+    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN que queria decir yo con esto
     // set de parejas de T
     private HashSet<Par> st = new HashSet<Par>();
 
@@ -48,13 +50,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         bloque.lds().procesa(this);
         bloque.lis().procesa(this);
         bloque.set_tipo(ambos_ok(bloque.lds().decs().dec().tipo(), bloque.lis().ins().ins().e().tipo()));
-        if(refI(prog.bq().tipo()).equals(Ok.class)){
-
-        }
     }
 
     public void procesa(Si_decs decs) {
-       decs.decs().procesa(this);
+        decs.decs().procesa(this);
         decs.set_tipo(decs.decs().tipo());
     }
     public void procesa(No_decs decs) {
@@ -148,7 +147,8 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
     public void procesa(Struct t) {
-        if(hayRepetidos(t.lcamp())){
+        List<Camp> campos = new ArrayList<Camp>();
+        if(hayRepetidos(t.lcamp(), campos)){
             t.set_tipo(new Ok());
         }
         else{
@@ -157,8 +157,30 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
     }
 
-    private boolean hayRepetidos(LCamp lcamp) {
-        return true; //TODO NO SE SACAR LENGTH DE LCAMP
+    private boolean hayRepetidos(LCamp lcamp, List<Camp> campos) { //TODO COMPROBAR nuevo!
+        if(campos.size()!= 0){
+            for(int i = 0; i < campos.size(); i++){
+                if(lcamp.campo() == campos.get(i))
+                    return false;
+            }
+            if(lcamp.es_muchos_campos()){
+                campos.add(lcamp.campo());
+                return hayRepetidos(lcamp.lcs(), campos);
+            }
+            else{
+                return true;
+            }
+
+        }
+        else{
+            if(lcamp.es_muchos_campos()){
+                campos.add(lcamp.campo());
+                return hayRepetidos(lcamp.lcs(), campos);
+            }
+            else{
+                return true;
+            }
+        }
     }
 
     public void procesa(Camp campo) {
@@ -177,7 +199,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         camp.set_tipo(camp.tipo());
     }
     public void procesa(Iden t) {
-        if(t.vinculo().equals(Dec_tipo.class)) { //asi o con un .es_dec_tipo
+        if(t.getVinculo().equals(Dec_tipo.class)) { //asi o con un .es_dec_tipo
             t.tipo().procesa(this);
             t.set_tipo(t.tipo());
         }
@@ -190,7 +212,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     private Tipo refI(Tipo t){
         while(t.es_iden()){
             Iden r = ((Iden)t);
-            Dec_tipo dec_tipo = (Dec_tipo) r.vinculo();
+            Dec_tipo dec_tipo = (Dec_tipo) r.getVinculo();
             t = dec_tipo.tipo();
         }
         return t;
@@ -254,8 +276,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
     public boolean es_desig(Exp e){
-        if(e.vinculo() != null && (e.vinculo().is_dec_var() || e.vinculo().is_parf_valor()
-                || e.vinculo().is_parf_ref() || e.vinculo().is_dec_proc())){
+        if(e.es_iden()){
             return true;
         }
         else if(e.prioridad() == 6) { //Prioridad 5 para los accesos.
@@ -289,7 +310,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             ins.set_tipo(new Ok());
         }
         else{
-            ins.set_tipo(new Error_());
+            ins.e().set_tipo(new Error_());
         }
     }
 
@@ -315,11 +336,11 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         if(refI(ins.e().tipo()).es_bool()){
             ins.bloque().procesa(this);
             ins.bloque2().procesa(this);
-           if(ambos_ok(ins.bloque().tipo(), ins.bloque2().tipo()).equals(new Ok())){
-               ins.set_tipo(new Ok());
-           }
-           else
-               ins.set_tipo(new Error_());
+            if(ambos_ok(ins.bloque().tipo(), ins.bloque2().tipo()).equals(new Ok())){
+                ins.set_tipo(new Ok());
+            }
+            else
+                ins.set_tipo(new Error_());
         }
         else
             ins.set_tipo(new Error_());
@@ -387,33 +408,33 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         ins.pr().procesa(this);
         /*
         let string.vinculo = dec_proc  dec_proc = dec_proc(id,PForm,_)
-	PRealOpt.tipo = chequeo_params(PForm, PRealOpt)
-	si PRealOpt.tipo = ok:
-		$.tipo = ok
-	si no:
-		$.tipo = error
+        PRealOpt.tipo = chequeo_params(PForm, PRealOpt)
+        si PRealOpt.tipo = ok:
+            $.tipo = ok
+        si no:
+            $.tipo = error
 
-    chequeo_params(no_PForm, no_PReal): return ok
+        chequeo_params(no_PForm, no_PReal): return ok
 
-    chequeo_params(un_PForm, un_PReal):
-        return chequeo_params(E, ParF)
+        chequeo_params(un_PForm, un_PReal):
+            return chequeo_params(E, ParF)
 
-    chequeo_params(muchas_exps(LPReal, Exp), muchos_ParF(LPForm,PForm)):
-    return ambos_ok(chequeo_params(LPReal,LPForm), chequeo_parametro(Exp,PForm))
+        chequeo_params(muchas_exps(LPReal, Exp), muchos_ParF(LPForm,PForm)):
+        return ambos_ok(chequeo_params(LPReal,LPForm), chequeo_parametro(Exp,PForm))
 
-    chequeo_params(Exp, PForm_no_ref(id, T)):
-    tipado(Exp)
-    si son_compatibles(T, E.tipo):
-    return ok
-    si no:
-    return error
+        chequeo_params(Exp, PForm_no_ref(id, T)):
+        tipado(Exp)
+        si son_compatibles(T, E.tipo):
+        return ok
+        si no:
+        return error
 
-    chequeo_parametro(Exp, PForm_ref(id,T)) =
-    tipado(Exp)
-    si es_desig(Exp) && son_compatibles(T, Exp.tipo)
-    return ok
-    si no:
-    return error
+        chequeo_parametro(Exp, PForm_ref(id,T)) =
+        tipado(Exp)
+        si es_desig(Exp) && son_compatibles(T, Exp.tipo)
+        return ok
+        si no:
+        return error
 
          */
 
@@ -424,14 +445,6 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         ins.set_tipo(ins.bloque().tipo());
     }
 
-    /* TODO PREGUNTAR SI HACEN FALTA, si lo hacen seria comprobando es_una_ins -> procesa una_ins ...
-    public void procesa(LInsOpt ins) {
-
-    }
-    public void procesa(LDecsOpt ldecs) {
-
-    }
-    */
 
     public void procesa(Si_preal lpreal) {
         lpreal.lpr().procesa(this);
@@ -454,40 +467,36 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
     public void procesa(Exp_Iden exp) {
-        if(exp.vinculo().is_dec_var()){
-            exp.set_tipo((exp.vinculo()).tipo());
-        }else if(exp.vinculo().is_parf_valor()){
-            exp.set_tipo((exp.vinculo()).tipo());
-        }else if(exp.vinculo().is_parf_ref()){
-            exp.set_tipo((exp.vinculo()).tipo());
+        if(exp.getVinculo().es_dec_var()){
+            exp.set_tipo((exp.getVinculo().tipo()));
+        }else if(exp.getVinculo().es_parf_noRef()){
+            exp.set_tipo((exp.getVinculo()).tipo());
+        }else if(exp.getVinculo().es_parf_ref()){
+            exp.set_tipo((exp.getVinculo()).tipo());
         }
     }
 
-
-/*
-    //TODO PREGUNTARLE A LUCIA SI ESTO DEBERIA DE PONERLO AQUI
+    //TODO COMPROBAR nuevo!
     public void procesa(Exp_lit_ent exp) {
-
+        exp.set_tipo(new Lit_ent());
     }
 
     public void procesa(Exp_lit_real exp) {
-
+        exp.set_tipo(new Lit_real());
     }
 
     public void procesa(Exp_lit_cadena exp) {
-
+        exp.set_tipo(new Lit_string());
     }
 
     public void procesa(Exp_lit_BoolTrue exp) {
-
+        exp.set_tipo(new Lit_bool());
     }
 
     public void procesa(Exp_lit_BoolFalse exp) {
-
+        exp.set_tipo(new Lit_bool());
     }
 
-
-*/
     public void procesa(Exp_null exp) {
         exp.set_tipo(new Null_T());
     }
@@ -612,7 +621,8 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
 
         if(refI(exp.opnd0().tipo()).es_struct()){
-            exp.set_tipo(tipo_de(exp.opnd0(), exp.iden())); //TODO
+            //TODO COMRPOBAR nuevo! (probablemente el toString este mal)
+            exp.set_tipo(tipo_de(refI(exp.opnd0().tipo()).lcamp(), exp.iden().toString()));
         }
         else{
             exp.set_tipo(new Error_());
@@ -658,7 +668,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         if(refI(exp.opnd0().tipo()).es_int() && refI(exp.opnd1().tipo()).es_int()){
-             exp.set_tipo(new Lit_ent());
+            exp.set_tipo(new Lit_ent());
         }else{
             exp.set_tipo(new Error_());
         }
@@ -666,7 +676,16 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Asig exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
-        exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(es_desig(exp.opnd0())){
+            if(son_compatibles(exp.opnd0().tipo(),exp.opnd1().tipo())) {
+                exp.set_tipo(new Ok());
+            }
+            else
+                exp.set_tipo(new Error_());
+        }
+        else
+            exp.set_tipo(new Error_());
+
     }
 
 
@@ -687,7 +706,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         else{
             exp.set_tipo(new Error_());
         }
-        }
+    }
 
 
 

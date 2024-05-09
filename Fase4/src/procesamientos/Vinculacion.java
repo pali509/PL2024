@@ -58,10 +58,15 @@ class TablaSimbolos {
 public class Vinculacion extends ProcesamientoDef {
     private TablaSimbolos ts;
     private Vinculacion2 vin = new Vinculacion2();
+    private MensajesError men;
 
     public void procesa(Prog p){
+        men = new MensajesError("vinculacion");
         this.ts = new TablaSimbolos();
         p.bq().procesa(this);
+        if(men.getHayError()){
+            men.getErrores();
+        }
     }
 
     public void procesa(Bloque b){
@@ -93,7 +98,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_var d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -103,7 +108,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Dec_tipo d){
         d.tipo().procesa(this);
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -112,7 +117,7 @@ public class Vinculacion extends ProcesamientoDef {
 
     public void procesa(Dec_proc d){
         if (ts.contiene(d.iden().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(d.iden().beginLine(), d.iden().beginColumn());
         }
         else{
             ts.inserta(d.iden().toString(), d);
@@ -145,7 +150,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(p.id().beginLine(), p.id().beginColumn());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -155,7 +160,7 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(PFnoref p){
         p.t().procesa(this);
         if (ts.contiene(p.id().toString())){
-            throw new RuntimeException("Identificador existente");
+            men.addError(p.id().beginLine(), p.id().beginColumn());
         }
         else{
             ts.inserta(p.id().toString(), p);
@@ -175,12 +180,10 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Iden i){
         if (ts.contiene2(i.iden().toString())){
             Nodo n = ts.vinculoDe(i.iden().toString());
-            //AQUI
-            //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //i.set_vinculo(n);
+            i.setVinculo(n);
         }
         else{
-            throw new RuntimeException("Tipo inexistente");
+            men.addError(i.iden().beginLine(), i.iden().beginColumn());
         }
     }
 
@@ -406,12 +409,10 @@ public class Vinculacion extends ProcesamientoDef {
     public void procesa(Exp_Iden e){
         if (ts.contiene2(e.iden().toString())){
             Nodo n = ts.vinculoDe(e.iden().toString());
-            //AQUI
-            //Esta funcion hace falta pero no esta en la sintaxis abstracta
-            //e.set_vinculo(n);
+            e.setVinculo(n);
         }
         else{
-            throw new RuntimeException("Identificador no declarado");
+            men.addError(e.iden().beginLine(), e.iden().beginColumn());
         }
     }
 
@@ -491,10 +492,10 @@ public class Vinculacion extends ProcesamientoDef {
             if (p.tipo().es_iden()){
                 Iden t = (Iden)p.tipo();
                 if(ts.contiene2(t.iden().toString())){
-                    t.set_vinculo(ts.vinculoDe(t.iden().toString()));
+                    t.setVinculo(ts.vinculoDe(t.iden().toString()));
                 }
                 else{
-                    throw new RuntimeException("Tipo no definido");
+                    men.addError(t.leeFila(), t.leeCol());
                 }
             }
             else{

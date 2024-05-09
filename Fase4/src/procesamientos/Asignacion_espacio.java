@@ -200,6 +200,7 @@ public class Asignacion_espacio extends ProcesamientoDef{
 		asig_tam(campo.campo().tipo());
 		campo.campo().set_desp(0);
 		return campo.campo().tipo().getTam();
+		//tengo que sumar el valor de max_dir al return??
 
 	}
 	
@@ -214,6 +215,7 @@ public class Asignacion_espacio extends ProcesamientoDef{
 		asig_tam(c.tipo());
 		c.set_desp(desp_actual);
 		return desp_actual + c.tipo().getTam();
+		//tengo que sumar el valor de max_dir al return??
 
 	}
 	
