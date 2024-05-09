@@ -1,21 +1,15 @@
 package procesamientos;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Stack;
 import asint.ProcesamientoDef;
 import asint.SintaxisAbstractaTiny.*;
-
-import java.util.*;
 
 public class Etiquetado extends ProcesamientoDef {
 
     private Stack<Dec_proc> procs = new Stack<Dec_proc>();
     private int etq;
 
-    private boolean esDesignador(Exp e){
+    private boolean es_designador(Exp e){
         return true;
     }
 
@@ -25,8 +19,36 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Bloque b){
-        b.lds().procesa(this);
+        // b.prim = etq;
+        etq++;
+        // b.sig = etq;
+        recolecta_procs(b.lds());
         b.lis().procesa(this);
+        while (!procs.isEmpty()) {
+            Dec_proc proc = procs.pop();
+            proc.procesa(this);
+        }
+    }
+
+    public void recolecta_procs(LDecsOpt d){
+        if(d.es_si_decs()) {
+            Si_decs dnew = (Si_decs) d;
+            recolecta_procs(dnew);
+        }
+        else if(d.es_no_decs()) {
+            No_decs dnew = (No_decs) d;
+            recolecta_procs(dnew);
+        }
+    }
+    public void recolecta_procs(Si_decs s){ //TODO
+        if(s.es_muchas_decs()) {
+            Muchas_decs dnew = (Muchas_decs) s;
+            recolecta_procs(dnew);
+        }
+        else if(s.es_una_dec()) {
+            Una_dec dnew = (Una_dec) s;
+            recolecta_procs(dnew);
+        }
     }
 
     public void procesa(Si_decs s){
@@ -163,11 +185,11 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = a.opnd0().tipo().iden().toString();
         String t1 = a.opnd1().tipo().iden().toString();
         if(t0.equals("real") && t1.equals("int")) {
-            if(esDesignador(a.opnd1())) {
+            if(es_designador(a.opnd1())) {
                 etq++;
             }
         } else {
-            if(esDesignador(a.opnd1())) {
+            if(es_designador(a.opnd1())) {
                 etq++;
             }
         }
@@ -180,10 +202,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = s.opnd0().tipo().iden().toString();
         String t1 = s.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
-            if (esDesignador(s.opnd0())) {
+            if (es_designador(s.opnd0())) {
                 etq++;
             }
-            if (esDesignador(s.opnd1())) {
+            if (es_designador(s.opnd1())) {
                 etq++;
             }
         }
@@ -196,10 +218,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = r.opnd0().tipo().iden().toString();
         String t1 = r.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
-            if (esDesignador(r.opnd0())) {
+            if (es_designador(r.opnd0())) {
                 etq++;
             }
-            if (esDesignador(r.opnd1())) {
+            if (es_designador(r.opnd1())) {
                 etq++;
             }
         }
@@ -212,10 +234,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = m.opnd0().tipo().iden().toString();
         String t1 = m.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
-            if (esDesignador(m.opnd0())) {
+            if (es_designador(m.opnd0())) {
                 etq++;
             }
-            if (esDesignador(m.opnd1())) {
+            if (es_designador(m.opnd1())) {
                 etq++;
             }
         }
@@ -228,10 +250,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = d.opnd0().tipo().iden().toString();
         String t1 = d.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real")) || (t0.equals("real") && t1.equals("int"))) {
-            if (esDesignador(d.opnd0())) {
+            if (es_designador(d.opnd0())) {
                 etq++;
             }
-            if (esDesignador(d.opnd1())) {
+            if (es_designador(d.opnd1())) {
                 etq++;
             }
         }
@@ -244,10 +266,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = m.opnd0().tipo().iden().toString();
         String t1 = m.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("int"))) {
-            if (esDesignador(m.opnd0())) {
+            if (es_designador(m.opnd0())) {
                 etq++;
             }
-            if (esDesignador(m.opnd1())) {
+            if (es_designador(m.opnd1())) {
                 etq++;
             }
         }
@@ -260,10 +282,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = a.opnd0().tipo().iden().toString();
         String t1 = a.opnd1().tipo().iden().toString();
         if ((t0.equals("bool") && t1.equals("bool"))) {
-            if (esDesignador(a.opnd0())) {
+            if (es_designador(a.opnd0())) {
                 etq++;
             }
-            if (esDesignador(a.opnd1())) {
+            if (es_designador(a.opnd1())) {
                 etq++;
             }
         }
@@ -276,10 +298,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = o.opnd0().tipo().iden().toString();
         String t1 = o.opnd1().tipo().iden().toString();
         if ((t0.equals("bool") && t1.equals("bool"))) {
-            if (esDesignador(o.opnd0())) {
+            if (es_designador(o.opnd0())) {
                 etq++;
             }
-            if (esDesignador(o.opnd1())) {
+            if (es_designador(o.opnd1())) {
                 etq++;
             }
         }
@@ -292,10 +314,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = ma.opnd0().tipo().iden().toString();
         String t1 = ma.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(ma.opnd0())) {
+            if (es_designador(ma.opnd0())) {
                 etq++;
             }
-            if (esDesignador(ma.opnd1())) {
+            if (es_designador(ma.opnd1())) {
                 etq++;
             }
         }
@@ -308,10 +330,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = me.opnd0().tipo().iden().toString();
         String t1 = me.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(me.opnd0())) {
+            if (es_designador(me.opnd0())) {
                 etq++;
             }
-            if (esDesignador(me.opnd1())) {
+            if (es_designador(me.opnd1())) {
                 etq++;
             }
         }
@@ -324,10 +346,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = mai.opnd0().tipo().iden().toString();
         String t1 = mai.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(mai.opnd0())) {
+            if (es_designador(mai.opnd0())) {
                 etq++;
             }
-            if (esDesignador(mai.opnd1())) {
+            if (es_designador(mai.opnd1())) {
                 etq++;
             }
         }
@@ -340,10 +362,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = mei.opnd0().tipo().iden().toString();
         String t1 = mei.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(mei.opnd0())) {
+            if (es_designador(mei.opnd0())) {
                 etq++;
             }
-            if (esDesignador(mei.opnd1())) {
+            if (es_designador(mei.opnd1())) {
                 etq++;
             }
         }
@@ -356,10 +378,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = ig.opnd0().tipo().iden().toString();
         String t1 = ig.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(ig.opnd0())) {
+            if (es_designador(ig.opnd0())) {
                 etq++;
             }
-            if (esDesignador(ig.opnd1())) {
+            if (es_designador(ig.opnd1())) {
                 etq++;
             }
         }
@@ -372,10 +394,10 @@ public class Etiquetado extends ProcesamientoDef {
         String t0 = de.opnd0().tipo().iden().toString();
         String t1 = de.opnd1().tipo().iden().toString();
         if ((t0.equals("int") && t1.equals("real"))) {
-            if (esDesignador(de.opnd0())) {
+            if (es_designador(de.opnd0())) {
                 etq++;
             }
-            if (esDesignador(de.opnd1())) {
+            if (es_designador(de.opnd1())) {
                 etq++;
             }
         }
@@ -386,7 +408,7 @@ public class Etiquetado extends ProcesamientoDef {
         etq++;
         String t0 = no.opnd0().tipo().iden().toString();
         if ((t0.equals("int") || t0.equals("real"))) {
-            if (esDesignador(no.opnd0())) {
+            if (es_designador(no.opnd0())) {
                 etq++;
             }
         }
