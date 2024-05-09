@@ -18,46 +18,30 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Bloque b) {
-        recolecta_procs(b.lds());
+		b.lds().procesa(this);
         b.lis().procesa(this);
         while (!procs.isEmpty()) {
             Dec_proc proc = procs.pop();
             proc.procesa(this);
         }
     }
-    public void recolecta_procs(LDecsOpt d){
-        if(d.es_si_decs()) {
-            Si_decs dnew = (Si_decs) d;
-            recolecta_procs(dnew);
-        }
-        else if(d.es_no_decs()) {
-            No_decs dnew = (No_decs) d;
-            recolecta_procs(dnew);
-        }
-    }
-    public void recolecta_procs(Si_decs s){ //TODO como que inconvertable types
-        if(s.es_muchas_decs()) {
-            Muchas_decs dnew = (Muchas_decs) s;
-            recolecta_procs(dnew);
-        }
-        else if(s.es_una_dec()) {
-            Una_dec dnew = (Una_dec) s;
-            recolecta_procs(dnew);
-        }
-    }
-    public void recolecta_procs(No_decs n){
+
+    public void procesa(Si_decs s){
+		s.decs().procesa(this);
+	}
+    public void procesa(No_decs n){
         //NOOP
     }
 
-    public void recolecta_procs(Muchas_decs m){
+    public void procesa(Muchas_decs m){
         m.ldecs().procesa(this);
         m.dec().procesa(this);
     }
 
-    public void recolecta_procs(Una_dec u){
-        recolecta_procs(u.dec());
+    public void procesa(Una_dec u){
+        u.dec().procesa(this);
     }
-    public void recolecta_procs(Dec d){
+    public void procesa(Dec d){
         if(d.es_dec_proc()) {
             Dec_proc dnew = (Dec_proc) d;
 
@@ -73,7 +57,6 @@ public class Gen_cod extends ProcesamientoDef {
         mp.ponInstruccion(mp.desactiva(dec_proc.nivel(), dec_proc.tam_datos()));
         mp.ponInstruccion(mp.ir_Ind());
          */
-        recolecta_procs(dec_proc.bq().lds());
     }
 
 
@@ -95,14 +78,10 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
 
-	public void gen_acc_val(Exp e){ //TODO como declaro v?
-		/*
-		gen-acc-val(Exp):
-		si es_designador(Exp):
-			v = emit fetch(r)
-		sino:
-			v = r
-	 */
+	public void gen_acc_val(Exp e){ //TODO falta la instruccion fetch
+
+		if(es_desig(e))
+			mp.emit(fetch);
 	}
     public void procesa(Ins_asig i){
         i.e().procesa(this);
@@ -119,7 +98,7 @@ public class Gen_cod extends ProcesamientoDef {
     public void procesa(Ins_if_else i){
 		i.e().procesa(this);
 		gen_acc_val(i.e());
-		mp.emit(mp.ir_f(i.sig()));
+		mp.emit(mp.ir_f(i.bloque2().prim()));
 		i.bloque().procesa(this);
 		mp.emit(mp.ir_f(i.sig()));
         i.bloque2().procesa(this);
@@ -145,6 +124,7 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_read i){
+		i.e().procesa(this);
 		Tipo t = refI(i.e().tipo());
 		if(t.es_int()){
 			mp.emit(mp.leer_entrada_int());}
@@ -156,6 +136,7 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_write i){
+		i.e().procesa(this);
 		/*
 		r = gen-cod(Exp)
 		gen-acc-val(Exp)
@@ -168,8 +149,9 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_new i){
+		i.e().procesa(this);
         /*
-        emite store(gen-cod(Exp), emite alloc(ref!(Exp.tipo)))
+        emite store(gen-cod(Exp), emite alloc(ref!(Exp.tipo).tipo().tam))
 
 		dealloc(d, ), si d  -1. Error de ejecución si d = -1
 
@@ -177,6 +159,7 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_delete i){
+		i.e().procesa(this);
         /*
         d = gen-cod(Exp)
 	si d != -1:
@@ -414,7 +397,7 @@ public class Gen_cod extends ProcesamientoDef {
     	if(es_desig(s.opnd1())) {
     		mp.apila_ind();
     	}
-    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) { //TODO COMPROBAR ESTO
+    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) { //TODO COMPROBAR ESTO ?????
     		mp.and();
     	}
     }
@@ -689,7 +672,7 @@ public class Gen_cod extends ProcesamientoDef {
 
     public void procesa(Iden i){}
     
-    public void procesa(AccesoCampo s){ //TODO que esta mal de esto?
+    public void procesa(AccesoCampo s){
     	s.opnd0().procesa(this);
     	mp.apila_int(desp(refI(s.opnd0().tipo()).lcamp(), s.iden().toString()));
     	mp.suma_int();

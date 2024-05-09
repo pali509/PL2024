@@ -27,7 +27,10 @@ public class SintaxisAbstractaTiny {
 	   }
         public Tipo tipo(){return tipo;}
         public void set_tipo(Tipo tipo) {this.tipo = tipo;}
-           public abstract void procesa(Procesamiento p);
+        public abstract void procesa(Procesamiento p);
+        public Boolean es_dec_var(){return false;}
+        public Boolean es_parf_noRef(){return false;}
+        public Boolean es_parf_ref(){return false;}
     }
 
     public static class StringLocalizado {
@@ -676,7 +679,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
-
+        public Boolean es_parf_ref(){return true;}
     }
 
     public static class PFnoref extends Pform {
@@ -692,6 +695,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_parf_noRef(){return true;}
     }
 
     public static abstract class PFormOpt extends Nodo{
@@ -789,7 +793,7 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
-		
+        public Boolean es_dec_var(){return true;}
 
     }
     public static class Dec_tipo extends Dec {
