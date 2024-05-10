@@ -86,12 +86,16 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Ins_call i){
+        i.setPrim(etq);
         i.e().procesa(this);
+        i.setSig(etq);
     }
 
     public void procesa(Ins_while i){
+        i.setPrim(etq);
         i.e().procesa(this);
         i.bloque().procesa(this);
+        i.setSig(etq);
     }
 
     public void procesa(Ins_read i) {
