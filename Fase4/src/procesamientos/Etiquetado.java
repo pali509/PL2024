@@ -413,7 +413,7 @@ public class Etiquetado extends ProcesamientoDef {
     public void procesa (Not no){
         no.opnd0().procesa(this);
         etq++;
-        if (refI(no.opnd0().tipo()).es_int() || refI(no.opnd0().tipo()).es_real() {
+        if (refI(no.opnd0().tipo()).es_int() || refI(no.opnd0().tipo()).es_real()) {
             if (es_desig(no.opnd0())) {
                 etq++;
             }
