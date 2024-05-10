@@ -35,11 +35,6 @@ public class Etiquetado extends ProcesamientoDef {
         u.dec().procesa(this);
     }
 
-    public void procesa(Dec d){
-        if(d.es_dec_proc()) {
-            Dec_proc dnew = (Dec_proc) d;
-        }
-    }
 
     // ETIQUETADO INSTRUCCIONES
     public void procesa(Si_Ins s){
@@ -465,7 +460,7 @@ public class Etiquetado extends ProcesamientoDef {
     private boolean es_desig (Exp e){
         if (e.es_iden()) {
             return true;
-        } else if (e.prioridad() == 6) { //Prioridad 5 para los accesos.
+        } else if (e.prioridad() == 6) { // Prioridad 5 para los accesos.
             return true;
         }
         return false;

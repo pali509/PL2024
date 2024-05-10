@@ -314,6 +314,17 @@ public class MaquinaP {
       public String toString() {return "and";};
    }
 
+    private IOr IOR;
+    private class IOr implements Instruccion {
+        public void ejecuta() {
+            Valor opnd2 = pilaEvaluacion.pop();
+            Valor opnd1 = pilaEvaluacion.pop();
+            pilaEvaluacion.push(new ValorBool(opnd1.valorBool()||opnd2.valorBool()));
+            pc++;
+        }
+        public String toString() {return "or";};
+    }
+
    private class IIrA implements Instruccion {
       private int dir;
       public IIrA(int dir) {
@@ -460,9 +471,12 @@ public class MaquinaP {
    public Instruccion suma() {return ISUMA;}
    public Instruccion mul() {return IMUL;}
    public Instruccion and() {return IAND;}
-    //public Instruccion or() {return IOR;}
+
+    public Instruccion or() {return IOR;}
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
+    public Instruccion apila_real(double val) {return new IApilaReal((val));}
+    public Instruccion apila_string(String val) {return new IApilaString((val));}
    public Instruccion apilad(int nivel) {return new IApilad(nivel);}
    public Instruccion apila_ind() {return IAPILAIND;}
    public Instruccion desapila_ind() {return IDESAPILAIND;}
@@ -477,11 +491,38 @@ public class MaquinaP {
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
    public Instruccion dup() {return IDUP;}
    public Instruccion stop() {return ISTOP;}
+    public Instruccion leer_entrada_int() {
+        return i;
+    }
+
+    public Instruccion leer_entrada_real() {
+
+        return i;
+    }
+
+    public Instruccion leer_entrada_string() {
+
+        return i;
+    }
+
+    public void suma_int(){
+
+    }
+    public void suma_real(){
+
+    }
+
+    public void int2real(){
+
+    }
    public void emit(Instruccion i) {
       codigoP.add(i); 
    }
 
-   private int tamdatos;
+
+
+
+    private int tamdatos;
    private int tamheap;
    private int ndisplays;
    private Scanner input;
@@ -496,6 +537,7 @@ public class MaquinaP {
       this.pc = 0;
       ISUMA = new ISuma();
       IAND = new IAnd();
+      IOR = new IOr();
       IMUL = new IMul();
       IAPILAIND = new IApilaind();
       IDESAPILAIND = new IDesapilaind();
