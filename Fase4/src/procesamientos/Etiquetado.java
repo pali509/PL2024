@@ -6,9 +6,8 @@ import asint.SintaxisAbstractaTiny.*;
 import maquinaP.MaquinaP;
 
 public class Etiquetado extends ProcesamientoDef {
-    private int etq;
+    private int etq = 0;
     public void procesa(Prog p){
-        etq = 0;
         p.bq().procesa(this);
     }
 
@@ -64,6 +63,15 @@ public class Etiquetado extends ProcesamientoDef {
 
     public void procesa(Ins_asig i){
         i.e().procesa(this);
+        Tipo t = refI(i.e().tipo());
+        if (t.es_int() || t.es_real() || t.es_string()) {
+            if(es_desig(i.e()))
+                etq++;
+            etq+=2;
+        }
+        else {
+            etq++;
+        }
     }
 
     public void procesa(Ins_if i){
@@ -71,6 +79,7 @@ public class Etiquetado extends ProcesamientoDef {
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
+        etq++;
         i.bloque().procesa(this);
         i.setSig(etq);
     }
@@ -80,38 +89,45 @@ public class Etiquetado extends ProcesamientoDef {
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
+        etq++;
         i.bloque().procesa(this);
+        etq++;
         i.bloque2().procesa(this);
         i.setSig(etq);
     }
 
     public void procesa(Ins_call i){
-        i.setPrim(etq);
         i.e().procesa(this);
-        i.setSig(etq);
+        if(es_desig(i.e()))
+            etq++;
+        etq++;
     }
 
     public void procesa(Ins_while i){
         i.setPrim(etq);
         i.e().procesa(this);
+        if(es_desig(i.e()))
+            etq++;
+        etq++;
         i.bloque().procesa(this);
+        etq++;
         i.setSig(etq);
     }
 
     public void procesa(Ins_read i) {
-        i.setPrim(etq);
         i.e().procesa(this);
         Tipo t = refI(i.e().tipo());
         if (t.es_int() || t.es_real() || t.es_string()) {
-            etq++;
+            etq+= 2;
         }
         i.setSig(etq);
     }
 
     public void procesa (Ins_write i){
-        i.setPrim(etq);
         i.e().procesa(this);
-        i.setSig(etq);
+        if(es_desig(i.e()))
+            etq++;
+        etq++;
     }
 
     public void procesa (Ins_nl i){
