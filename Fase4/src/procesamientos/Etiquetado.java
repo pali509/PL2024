@@ -6,30 +6,17 @@ import asint.SintaxisAbstractaTiny.*;
 import maquinaP.MaquinaP;
 
 public class Etiquetado extends ProcesamientoDef {
-    private MaquinaP mp;
-
-    public Etiquetado(MaquinaP mp) {
-        this.mp = mp;
-    }
-
-    private Stack<Dec_proc> procs = new Stack<Dec_proc>();
     private int etq;
-
     public void procesa(Prog p){
         etq = 0;
         p.bq().procesa(this);
     }
 
     public void procesa(Bloque b){
-        // b.prim = etq;
+        b.setPrim(etq);
         etq++;
-        // b.sig = etq;
         b.lds().procesa(this);
         b.lis().procesa(this);
-        while (!procs.isEmpty()) {
-            Dec_proc proc = procs.pop();
-            proc.procesa(this);
-        }
     }
 
     public void procesa(Si_decs s){
@@ -52,16 +39,10 @@ public class Etiquetado extends ProcesamientoDef {
     public void procesa(Dec d){
         if(d.es_dec_proc()) {
             Dec_proc dnew = (Dec_proc) d;
-
-            //TODO Es o eso o hacer otro recolecta para hacer mp.emit(apila)
-            procs.push(dnew);
         }
     }
 
-    public void procesa(Dec_proc dec_proc){
-        dec_proc.bq().procesa(this);
-    }
-
+    // ETIQUETADO INSTRUCCIONES
     public void procesa(Si_Ins s){
         s.ins().procesa(this);
     }
@@ -71,10 +52,10 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Muchas_ins m){
-        // b.prim = etq;
+        m.setPrim(etq);
         m.ins().procesa(this);
         m.li().procesa(this);
-        // b.sig = etq;
+        m.setSig(etq);
     }
 
     public void procesa(Una_ins u){
@@ -90,7 +71,6 @@ public class Etiquetado extends ProcesamientoDef {
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
-        mp.emit(mp.ir_f(i.sig()));
         i.bloque().procesa(this);
         i.setSig(etq);
     }
@@ -100,9 +80,7 @@ public class Etiquetado extends ProcesamientoDef {
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
-        mp.emit(mp.ir_f(i.bloque2().prim()));
         i.bloque().procesa(this);
-        mp.emit(mp.ir_f(i.sig()));
         i.bloque2().procesa(this);
         i.setSig(etq);
     }
@@ -203,8 +181,6 @@ public class Etiquetado extends ProcesamientoDef {
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
-        String t0 = a.opnd0().tipo().iden().toString();
-        String t1 = a.opnd1().tipo().iden().toString();
         if(refI(a.opnd1().tipo()).es_int() && refI(a.opnd0().tipo()).es_real()) {
             if (es_desig(a.opnd1())) {
                 etq++;
@@ -473,17 +449,5 @@ public class Etiquetado extends ProcesamientoDef {
             return true;
         }
         return false;
-    }
-
-    private int desp (LCamp lcs, String c){
-        while (lcs.es_muchos_campos()) {
-            Camp campo = lcs.campo();
-            if (c.equals(campo.iden().toString())) {
-                return campo.get_desp();
-            }
-            lcs = lcs.lcs();
-        }
-        Camp campo = lcs.campo();
-        return campo.get_desp();
     }
 }
