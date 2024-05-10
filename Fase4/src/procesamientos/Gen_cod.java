@@ -127,11 +127,11 @@ public class Gen_cod extends ProcesamientoDef {
 		i.e().procesa(this);
 		Tipo t = refI(i.e().tipo());
 		if(t.es_int()){
-			mp.emit(mp.leer_entrada_int());}
+			mp.emit(mp.leer_entrada_int(i.e()));}
 		else if(t.es_real()){
-			mp.emit(mp.leer_entrada_real());}
+			mp.emit(mp.leer_entrada_real(i.e()));}
 		else if(t.es_string()){
-			mp.emit(mp.leer_entrada_string());}
+			mp.emit(mp.leer_entrada_string(i.e()));}
 		mp.emit(mp.store(i.e().procesa(this), t));
     }
 

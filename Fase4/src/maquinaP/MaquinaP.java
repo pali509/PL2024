@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
-
+import asint.SintaxisAbstractaTiny.*;
 
 
 
@@ -236,7 +236,6 @@ public class MaquinaP {
       } 
       public String toString() {return "neg int";};
    }
-
    private IRSuma RSUMA;
    private class IRSuma implements Instruccion {
       public void ejecuta() {
@@ -468,10 +467,10 @@ public class MaquinaP {
        }
    }
 
-   public Instruccion suma() {return ISUMA;}
+    public Instruccion suma_int(){return ISUMA;}
+    public Instruccion suma_real(){return RSUMA;}
    public Instruccion mul() {return IMUL;}
    public Instruccion and() {return IAND;}
-
     public Instruccion or() {return IOR;}
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
@@ -491,26 +490,19 @@ public class MaquinaP {
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
    public Instruccion dup() {return IDUP;}
    public Instruccion stop() {return ISTOP;}
-    public Instruccion leer_entrada_int() {
-        return i;
+    public Instruccion leer_entrada_int(Exp e) {
+        return apila_int(Integer.parseInt(e.valor().toString()));
     }
 
-    public Instruccion leer_entrada_real() {
-
-        return i;
+    public Instruccion leer_entrada_real(Exp e) {
+        return apila_real(Double.parseDouble(e.valor().toString()));
     }
 
-    public Instruccion leer_entrada_string() {
-
-        return i;
+    public Instruccion leer_entrada_string(Exp e) {
+        return apila_string(e.valor().toString());
     }
 
-    public void suma_int(){
 
-    }
-    public void suma_real(){
-
-    }
 
     public void int2real(){
 
@@ -593,7 +585,7 @@ public class MaquinaP {
        m.emit(m.activa(1,1,8));
        m.emit(m.dup());
        m.emit(m.apila_int(0));
-       m.emit(m.suma());
+       m.emit(m.suma_int());
        m.emit(m.apila_int(5));
        m.emit(m.desapila_ind());
        m.emit(m.desapilad(1));
@@ -602,7 +594,7 @@ public class MaquinaP {
        m.emit(m.apila_int(0));
        m.emit(m.apilad(1));
        m.emit(m.apila_int(0));
-       m.emit(m.suma());
+       m.emit(m.suma_int());
        m.emit(m.copia(1));
        m.emit(m.desactiva(1,1));
        m.emit(m.ir_ind());       
