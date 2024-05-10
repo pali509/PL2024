@@ -11,6 +11,10 @@ public class SintaxisAbstractaTiny {
        private Tipo tipo;
 	   private int fila;
 	   private int col;
+
+       private int prim;
+
+       private int sig;
 	   public Nodo ponFila(int fila) {
 		    this.fila = fila;
             return this;			
@@ -19,6 +23,19 @@ public class SintaxisAbstractaTiny {
 		    this.col = col;
             return this;			
 	   }
+
+        public void setPrim(int etq) {
+            this.prim = etq;
+        }
+        public void setSig(int etq) {
+            this.sig = etq;
+        }
+        public int prim(){
+            return this.prim;
+        }
+        public int sig(){
+           return this.sig;
+        }
 	   public int leeFila() {
 		  return fila; 
 	   }

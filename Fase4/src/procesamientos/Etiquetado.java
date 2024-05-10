@@ -86,17 +86,17 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Ins_if i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
-        mp.emit(mp.ir_f(i.sig));
+        mp.emit(mp.ir_f(i.sig()));
         i.bloque().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa(Ins_if_else i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
         if(es_desig(i.e()))
             etq++;
@@ -104,7 +104,7 @@ public class Etiquetado extends ProcesamientoDef {
         i.bloque().procesa(this);
         mp.emit(mp.ir_f(i.sig()));
         i.bloque2().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa(Ins_call i){
@@ -117,20 +117,20 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Ins_read i) {
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
         Tipo t = refI(i.e().tipo());
         if (t.es_int() || t.es_real() || t.es_string()) {
             etq++;
             mp.emit(mp.store(i.e().procesa(this), t));
         }
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa (Ins_write i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa (Ins_nl i){
@@ -138,21 +138,21 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa (Ins_new i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa (Ins_delete i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
 
     public void procesa(Ins_bloque i){
-        i.prim = etq;
+        i.setPrim(etq);
         i.e().procesa(this);
-        i.sig = etq;
+        i.setSig(etq);
     }
     public void procesa (Si_preal s){
         s.lpr().procesa(this);
