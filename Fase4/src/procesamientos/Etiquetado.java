@@ -122,7 +122,6 @@ public class Etiquetado extends ProcesamientoDef {
         Tipo t = refI(i.e().tipo());
         if (t.es_int() || t.es_real() || t.es_string()) {
             etq++;
-            mp.emit(mp.store(i.e().procesa(this), t));
         }
         i.setSig(etq);
     }
@@ -440,14 +439,21 @@ public class Etiquetado extends ProcesamientoDef {
     public void procesa (Iden i){
         //NOOP
     }
-    public void procesa (Struct s){
-        s.lcamp().procesa(this);
-    }
-    public void procesa (Array a){
-        a.tipo().procesa(this);
-    }
-    public void procesa (Puntero p){
 
+    public void procesa(AccesoCampo s){
+        s.opnd0().procesa(this);
+    }
+
+    public void procesa(AccesoArray a){
+        a.opnd0().procesa(this);
+        a.opnd1().procesa(this);
+        if(es_desig(a.opnd1())) {
+            etq++;
+        }
+    }
+
+    public void procesa(AccesoPuntero p) {
+        p.opnd0().procesa(this);
     }
 
     //FUNCIONES AUX PARA EXP
