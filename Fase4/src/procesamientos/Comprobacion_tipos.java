@@ -35,15 +35,21 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN que queria decir yo con esto
     // set de parejas de T
     private HashSet<Par> st = new HashSet<Par>();
-
+    private MensajesError ms;
     public Tipo ambos_ok(Tipo t1, Tipo t2){
         if(t1.t_ok() && t2.t_ok())
             return new Ok();
-        else return new Error_();
+        else {
+            return new Error_();
+        }
     }
     public void procesa(Prog prog) {
+        ms = new MensajesError("tipado");
         prog.bq().procesa(this);
         prog.set_tipo(prog.bq().tipo());
+        if(ms.getHayError()){
+            ms.getErrores();
+        }
     }
 
     public void procesa(Bloque bloque) {
@@ -134,6 +140,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Array t) {
         if(t.num() < 0) {
             t.set_tipo(new Error_());
+            ms.addError(t.leeFila(),t.leeCol());
         }
         else{
             t.tipo().procesa(this);
@@ -203,9 +210,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             t.tipo().procesa(this);
             t.set_tipo(t.tipo());
         }
-        else
+        else {
             t.set_tipo(new Error_());
-
+            ms.addError(t.leeFila(),t.leeCol());
+        }
     }
     //INSTRUCCIONES
 
@@ -311,6 +319,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
         else{
             ins.e().set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
         }
     }
 
@@ -323,10 +332,12 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             }
             else{
                 ins.set_tipo(new Error_());
+                ms.addError(ins.leeFila(),ins.leeCol());
             }
         }
         else{
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
         }
 
     }
@@ -339,11 +350,15 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             if(ambos_ok(ins.bloque().tipo(), ins.bloque2().tipo()).equals(new Ok())){
                 ins.set_tipo(new Ok());
             }
-            else
+            else {
                 ins.set_tipo(new Error_());
+                ms.addError(ins.leeFila(), ins.leeCol());
+            }
         }
-        else
+        else{
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+            }
     }
 
     public void procesa(Ins_while ins) {
@@ -352,11 +367,15 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             ins.bloque().procesa(this);
             if(ins.bloque().tipo().equals(new Ok()))
                 ins.set_tipo(new Ok());
-            else
+            else {
                 ins.set_tipo(new Error_());
+                ms.addError(ins.leeFila(),ins.leeCol());
+            }
         }
-        else
+        else {
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
 
     }
 
@@ -366,8 +385,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
                 && es_desig(ins.e())) {
             ins.set_tipo(new Ok());
         }
-        else
+        else {
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
     }
 
 
@@ -377,8 +398,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
                 || refI(ins.e().tipo()).es_string())){
             ins.set_tipo(new Ok());
         }
-        else
+        else {
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
     }
 
     public void procesa(Ins_new ins) {
@@ -386,8 +409,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         if(refI(ins.e().tipo()).es_puntero()){
             ins.set_tipo(new Ok());
         }
-        else
+        else {
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
     }
 
     public void procesa(Ins_delete ins) {
@@ -395,8 +420,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         if(refI(ins.e().tipo()).es_puntero()){
             ins.set_tipo(new Ok());
         }
-        else
+        else {
             ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
     }
 
     public void procesa(Ins_nl ins) {
@@ -413,7 +440,10 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             $.tipo = ok
         si no:
             $.tipo = error
-
+        else {
+            ins.set_tipo(new Error_());
+            ms.addError(ins.leeFila(),ins.leeCol());
+        }
         chequeo_params(no_PForm, no_PReal): return ok
 
         chequeo_params(un_PForm, un_PReal):
@@ -504,23 +534,35 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
     public void procesa(Menor exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     public void procesa(MayorIg exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
     public void procesa(MenorIg exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     private Tipo tipo_relacional(Tipo t0, Tipo t1){
         if((refI(t0).es_int() || refI(t0).es_real()) && (refI(t1).es_int() || refI(t1).es_real())){
@@ -538,12 +580,18 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional2(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
     public void procesa(Desigual exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_relacional2(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     private Tipo tipo_relacional2(Tipo t0, Tipo t1){
         if((refI(t0).es_int() || refI(t0).es_real()) && (refI(t1).es_int() || refI(t1).es_real())){
@@ -567,21 +615,33 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     public void procesa(Resta exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     public void procesa(Mul exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     public void procesa(Div exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_binat(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     private Tipo tipo_binat(Tipo t0, Tipo t1){
         if(refI(t0).es_int() && refI(t1).es_int()){
@@ -603,6 +663,8 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
         else{
             exp.set_tipo(new Error_());
+            ms.addError(exp.leeFila(),exp.leeCol());
+
         }
     }
 
@@ -613,6 +675,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
         else{
             exp.set_tipo(new Error_());
+            ms.addError(exp.leeFila(),exp.leeCol());
         }
 
     }
@@ -627,7 +690,9 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         else{
             exp.set_tipo(new Error_());
         }
-
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
     private Tipo tipo_de(LCamp lcs, String c){
         while(lcs.es_muchos_campos()){
@@ -648,12 +713,18 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
     public void procesa(Or exp) {
         exp.opnd0().procesa(this);
         exp.opnd1().procesa(this);
         exp.set_tipo(tipo_logico(exp.opnd0().tipo(), exp.opnd1().tipo()));
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
     private Tipo tipo_logico(Tipo t0, Tipo t1){
@@ -671,6 +742,8 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             exp.set_tipo(new Lit_ent());
         }else{
             exp.set_tipo(new Error_());
+            ms.addError(exp.leeFila(),exp.leeCol());
+
         }
     }
     public void procesa(Asig exp) {
@@ -686,6 +759,9 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         else
             exp.set_tipo(new Error_());
 
+        if(exp.tipo().equals(new Error_())){
+            ms.addError(exp.leeFila(),exp.leeCol());
+        }
     }
 
 
@@ -696,6 +772,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
         else{
             exp.set_tipo(new Error_());
+            ms.addError(exp.leeFila(),exp.leeCol());
         }
     }
     public void procesa(Not exp) {
@@ -705,6 +782,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         }
         else{
             exp.set_tipo(new Error_());
+            ms.addError(exp.leeFila(),exp.leeCol());
         }
     }
 

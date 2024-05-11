@@ -33,7 +33,7 @@ public class MensajesError {
 
     public void addError(int f, int c){
         listaFilas.add(f);
-        listaCols.add(f);
+        listaCols.add(c);
     }
 
     public void getErrores(){

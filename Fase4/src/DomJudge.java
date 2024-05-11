@@ -64,7 +64,7 @@ public class DomJudge {
 		 }
 
 		 public static void procesa(Prog p, Reader datos) throws Exception {
-			 //Si hay algun error pprimero hay que llamar a errores.setError("tipado" o "vinculacion" ...)
+			 //Si hay algun error primero hay que llamar a errores.setError("tipado" o "vinculacion" ...)
 			 ///despues llamar a errores.ordenarErrores()
 			 //finalmente errores.getErrores()
 			 MensajesError errores = new MensajesError();
