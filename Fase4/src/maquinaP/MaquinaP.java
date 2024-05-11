@@ -128,7 +128,34 @@ public class MaquinaP {
       public String toString() {return "apila-string("+valor+")";};
    }
 
-   //AQUI HAY QUE INCLUIR APILA_DIR Y DESAPILA_DIR
+    private class IApilaDir implements Instruccion {
+        private int dir;
+        public IApilaDir(int dir) {
+            this.dir = dir;
+        }
+        public void ejecuta() {
+            if (dir >= datos.length) throw new EAccesoFueraDeRango();
+            if (datos[dir] == null)  throw new EAccesoAMemoriaNoInicializada(pc,dir);
+            pilaEvaluacion.push(datos[dir]);
+            pc++;
+        }
+        public String toString() {return "apila-dir("+dir+")";};
+    }
+
+    private class IDesapilaDir implements Instruccion {
+        private int dir;
+        public IDesapilaDir(int dir) {
+            this.dir = dir;
+        }
+        public void ejecuta() {
+            Valor valor = pilaEvaluacion.pop();
+            if (dir >= datos.length) throw new EAccesoFueraDeRango();
+            datos[dir] = valor;
+            pc++;
+        }
+        public String toString() {return "desapila-dir("+dir+")";};
+    }
+
 
    private IApilaind IAPILAIND;
    private class IApilaind implements Instruccion {
