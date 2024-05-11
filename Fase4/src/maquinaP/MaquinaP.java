@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
+
+import javax.lang.model.type.NullType;
+
 import asint.SintaxisAbstractaTiny.*;
 
 
@@ -26,6 +29,7 @@ public class MaquinaP {
       public boolean valorBool() {throw new EAccesoIlegitimo();}
       public double valorReal() {throw new EAccesoIlegitimo();}
       public String valorString() {throw new EAccesoIlegitimo();}
+      public NullType valorNull() {throw new EAccesoIlegitimo();}
    }
 
    private class ValorInt extends Valor {
@@ -69,7 +73,18 @@ public class MaquinaP {
       public String valorString() {return valor;}
    }
 
-   //PUEDE QUE FALTEN VALORPUNTERO Y VALORNULL
+   private class ValorNull extends Valor{
+      private NullType valor;
+      public ValorNull(NullType valor){
+         this.valor = valor;
+      }
+      public NullType valorNull() {return valor;}
+      public String toString(){
+         return String.valueOf(valor);
+      }
+   }
+
+   //PUEDE QUE FALTE VALORPUNTERO
 
    private List<Instruccion> codigoP;
    private Stack<Valor> pilaEvaluacion;
@@ -581,6 +596,27 @@ public class MaquinaP {
          pc++;
       }
       public String toString() {return "igual string";};
+   }
+
+   private IIgualPuntero IIGUALPUNTERO;
+   private class IIgualPuntero implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorInt() == opnd2.valorInt()));
+         pc++;
+      }
+      public String toString(){return "igual puntero";};
+   }
+
+   private IIgualNull IIGUALNULL;
+   private class IIgualNull implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorNull() == opnd2.valorNull()));
+         //AQUI
+      }
    }
 
    private class IIrA implements Instruccion {
