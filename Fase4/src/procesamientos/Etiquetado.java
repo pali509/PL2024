@@ -193,6 +193,7 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa (Asig a){
+        a.setPrim(etq);
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
@@ -205,9 +206,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        a.setSig(etq);
     }
 
     public void procesa (Suma s){
+        s.setPrim(etq);
         s.opnd0().procesa(this);
         s.opnd1().procesa(this);
         etq++;
@@ -220,9 +223,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        s.setSig(etq);
     }
 
     public void procesa (Resta r){
+        r.setPrim(etq);
         r.opnd0().procesa(this);
         r.opnd1().procesa(this);
         etq++;
@@ -235,9 +240,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        r.setSig(etq);
     }
 
     public void procesa (Mul m){
+        m.setPrim(etq);
         m.opnd0().procesa(this);
         m.opnd1().procesa(this);
         etq++;
@@ -250,9 +257,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        m.setSig(etq);
     }
 
     public void procesa (Div d){
+        d.setPrim(etq);
         d.opnd0().procesa(this);
         d.opnd1().procesa(this);
         etq++;
@@ -265,9 +274,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        d.setSig(etq);
     }
 
     public void procesa (Mod m){
+        m.setPrim(etq);
         m.opnd0().procesa(this);
         m.opnd1().procesa(this);
         etq++;
@@ -279,9 +290,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        m.setSig(etq);
     }
 
     public void procesa (And a){
+        a.setPrim(etq);
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
@@ -293,9 +306,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        a.setSig(etq);
     }
 
     public void procesa (Or o){
+        o.setPrim(etq);
         o.opnd0().procesa(this);
         o.opnd1().procesa(this);
         etq++;
@@ -307,9 +322,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        o.setSig(etq);
     }
 
     public void procesa (Mayor ma){
+        ma.setPrim(etq);
         ma.opnd0().procesa(this);
         ma.opnd1().procesa(this);
         etq++;
@@ -322,9 +339,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        ma.setSig(etq);
     }
 
     public void procesa (Menor me){
+        me.setPrim(etq);
         me.opnd0().procesa(this);
         me.opnd1().procesa(this);
         etq++;
@@ -337,9 +356,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        me.setSig(etq);
     }
 
     public void procesa (MayorIg mai){
+        mai.setPrim(etq);
         mai.opnd0().procesa(this);
         mai.opnd1().procesa(this);
         etq++;
@@ -352,9 +373,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        mai.setSig(etq);
     }
 
     public void procesa (MenorIg mei){
+        mei.setPrim(etq);
         mei.opnd0().procesa(this);
         mei.opnd1().procesa(this);
         etq++;
@@ -367,9 +390,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        mei.setSig(etq);
     }
 
     public void procesa (Igual ig){
+        ig.setPrim(etq);
         ig.opnd0().procesa(this);
         ig.opnd1().procesa(this);
         etq++;
@@ -382,9 +407,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        ig.setSig(etq);
     }
 
     public void procesa (Desigual de){
+        de.setPrim(etq);
         de.opnd0().procesa(this);
         de.opnd1().procesa(this);
         etq++;
@@ -399,9 +426,11 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        de.setSig(etq);
     }
 
     public void procesa (Not no){
+        no.setPrim(etq);
         no.opnd0().procesa(this);
         etq++;
         if (refI(no.opnd0().tipo()).es_int() || refI(no.opnd0().tipo()).es_real()) {
@@ -409,6 +438,7 @@ public class Etiquetado extends ProcesamientoDef {
                 etq++;
             }
         }
+        no.setSig(etq);
     }
 
     public void procesa (Lit_bool l){
