@@ -1176,6 +1176,7 @@ public class SintaxisAbstractaTiny {
     public static class Ins_call extends Ins {
         private StringLocalizado id;
         private LPRealOpt pr;
+        private Nodo vinculo;
         public Ins_call(StringLocalizado id, LPRealOpt pr) {
             super();
             this.id = id;
@@ -1183,10 +1184,9 @@ public class SintaxisAbstractaTiny {
         }
         public StringLocalizado id() {return id;}
         public LPRealOpt pr() {return pr;}
-        public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-
+        public void procesa(Procesamiento p) {p.procesa(this);}
+        public void setVinculo(Nodo v) {this.vinculo = v;}
+        public Nodo getVinculo() {return this.vinculo;}
     }
 
     public static class Ins_bloque extends Ins {

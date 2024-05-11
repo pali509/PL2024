@@ -7,7 +7,7 @@ public class MensajesError {
 
     //PROPUESTA DE USO: 
     //en cada procesamiento 1. creo una instancia de esta clase con un booleano que indica si hay errores
-    //                      2. voy añadiendo los errores a la instancia que he creado
+    //                      2. voy aï¿½adiendo los errores a la instancia que he creado
     //                      3. Si el booleano == true --> ordeno a la instancia que imprima y termino la ejecucion
     //                      4. Si el booleano == false --> no imprimo nada y voy al siguiente procesamiento
 
@@ -16,10 +16,11 @@ public class MensajesError {
     private List<Integer> listaCols;
     private String tipo;
 
-    public MensajesError(){
+    public MensajesError(String tipo){
         hayError = false;
         listaFilas = new ArrayList<>();
         listaCols = new ArrayList<>();
+        this.tipo = tipo;
     }
     
     public boolean getHayError(){
