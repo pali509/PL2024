@@ -128,6 +128,7 @@ public class MaquinaP {
       public String toString() {return "apila-string("+valor+")";};
    }
 
+    private IApilaDir IAPILADIR;
     private class IApilaDir implements Instruccion {
         private int dir;
         public IApilaDir(int dir) {
@@ -141,6 +142,8 @@ public class MaquinaP {
         }
         public String toString() {return "apila-dir("+dir+")";};
     }
+
+    private IDesapilaDir IDESAPILADIR;
 
     private class IDesapilaDir implements Instruccion {
         private int dir;
