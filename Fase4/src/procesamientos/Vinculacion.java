@@ -278,7 +278,13 @@ public class Vinculacion extends ProcesamientoDef {
     }
 
     public void procesa(Ins_call i){
-        i.id().procesa(this);
+        if (ts.contiene2(i.id().toString())){
+            Nodo n = ts.vinculoDe(i.id().toString());
+            i.setVinculo(n);
+        }
+        else{
+            men.addError(i.id().beginLine(), i.id().beginColumn());
+        }
         i.pr().procesa(this);
     }
 
