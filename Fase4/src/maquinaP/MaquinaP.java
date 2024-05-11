@@ -615,8 +615,116 @@ public class MaquinaP {
          Valor opnd2 = pilaEvaluacion.pop();
          Valor opnd1 = pilaEvaluacion.pop();
          pilaEvaluacion.push(new ValorBool(opnd1.valorNull() == opnd2.valorNull()));
-         //AQUI
+         pc++;
       }
+      public String toString(){return "igual null";};
+   }
+
+   private IIgualPN IIGUALPN;
+   private class IIgualPN implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool((opnd1.valorNull() == opnd2.valorInt()) ||(opnd1.valorInt() == opnd2.valorNull()));
+         pc++;
+      }
+      public Strint toString(){return "igual puntero null";};
+   }
+
+   private IDesigualInt IDESIGUALINT;
+   private class IDesigualInt implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorInt() != opnd2.valorInt()));
+         pc++;
+      }
+      public String toString() {return "desigual int";};
+   }
+
+   private IDesigualReal IDESIGUALREAL;
+   private class IDesigualReal implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorReal() != opnd2.valorReal()));
+         pc++;
+      }
+      public String toString() {return "desigual real";};
+   }
+
+   private IDesigualBool IDESIGUALBOOL;
+   private class IDesigualBool implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorBool() != opnd2.valorBool()));
+         pc++;
+      }
+      public String toString() {return "desigual bool";};
+   }
+
+   private IDesigualString IDESIGUALSTRING;
+   private class IDesigualString implements Instruccion {
+      public void ejecuta() {
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorString().compareTo(opnd2.valorString())!=0));
+         pc++;
+      }
+      public String toString() {return "desigual string";};
+   }
+
+   private IDesigualPuntero IDESIGUALPUNTERO;
+   private class IDesigualPuntero implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorInt() != opnd2.valorInt()));
+         pc++;
+      }
+      public String toString(){return "desigual puntero";};
+   }
+
+   private IDesigualNull IDESIGUALNULL;
+   private class IDesigualNull implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool(opnd1.valorNull() != opnd2.valorNull()));
+         pc++;
+      }
+      public String toString(){return "desigual null";};
+   }
+
+   private IDesigualPN IDESIGUALPN;
+   private class IDesigualPN implements Instruccion{
+      public void ejecuta(){
+         Valor opnd2 = pilaEvaluacion.pop();
+         Valor opnd1 = pilaEvaluacion.pop();
+         pilaEvaluacion.push(new ValorBool((opnd1.valorNull() != opnd2.valorInt()) ||(opnd1.valorInt() != opnd2.valorNull()));
+         pc++;
+      }
+      public String toString(){return "desigual puntero null";};
+   }
+
+   private class IMueve implements Instruccion {
+      private int tam;
+      public IMueve(int tam) {
+        this.tam = tam;  
+      }
+      public void ejecuta() {
+            int dirOrigen = pilaEvaluacion.pop().valorInt();
+            int dirDestino = pilaEvaluacion.pop().valorInt();
+            if ((dirOrigen + (tam-1)) >= datos.length)
+                throw new EAccesoFueraDeRango();
+            if ((dirDestino + (tam-1)) >= datos.length)
+                throw new EAccesoFueraDeRango();
+            for (int i=0; i < tam; i++) 
+                datos[dirDestino+i] = datos[dirOrigen+i]; 
+            pc++;
+      } 
+      public String toString() {return "mueve("+tam+")";};
    }
 
    private class IIrA implements Instruccion {
@@ -629,6 +737,8 @@ public class MaquinaP {
       } 
       public String toString() {return "ir-a("+dir+")";};
    }
+
+//PUEDE QUE FALTE IR_V PERO NO SE USA EN LA MEMORIA
 
    private class IIrF implements Instruccion {
       private int dir;
@@ -645,25 +755,8 @@ public class MaquinaP {
       } 
       public String toString() {return "ir-f("+dir+")";};
    }
-   
-   private class ICopia implements Instruccion {
-      private int tam;
-      public ICopia(int tam) {
-        this.tam = tam;  
-      }
-      public void ejecuta() {
-            int dirOrigen = pilaEvaluacion.pop().valorInt();
-            int dirDestino = pilaEvaluacion.pop().valorInt();
-            if ((dirOrigen + (tam-1)) >= datos.length)
-                throw new EAccesoFueraDeRango();
-            if ((dirDestino + (tam-1)) >= datos.length)
-                throw new EAccesoFueraDeRango();
-            for (int i=0; i < tam; i++) 
-                datos[dirDestino+i] = datos[dirOrigen+i]; 
-            pc++;
-      } 
-      public String toString() {return "copia("+tam+")";};
-   }
+
+   //PUEDE QUE FALTE IR_IND PERO NO SE USA EN LA MEMORIA
 
    private class IAlloc implements Instruccion {
       private int tam;
@@ -678,19 +771,21 @@ public class MaquinaP {
       public String toString() {return "alloc("+tam+")";};
    }
 
+   //ESTA LA HE CAMBIADO PORQUE NO HACIA LO QUE DECIA LA MEMORIA
    private class IDealloc implements Instruccion {
       private int tam;
-      public IDealloc(int tam) {
+      private int inicio;
+      public IDealloc(int tam, int inicio) {
         this.tam = tam;  
+        this.inicio = inicio;
       }
       public void ejecuta() {
-        int inicio = pilaEvaluacion.pop().valorInt();
         gestorMemoriaDinamica.free(inicio,tam);
         pc++;
       } 
       public String toString() {return "dealloc("+tam+")";};
    }
-   
+   //VOY POR AQUI
    private class IActiva implements Instruccion {
        private int nivel;
        private int tamdatos;
