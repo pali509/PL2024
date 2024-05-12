@@ -620,7 +620,7 @@ public class MaquinaP {
       public void ejecuta(){
          Valor opnd2 = pilaEvaluacion.pop();
          Valor opnd1 = pilaEvaluacion.pop();
-         pilaEvaluacion.push(new ValorBool((opnd1.valorNull() == opnd2.valorInt()) ||(opnd1.valorInt() == opnd2.valorNull()));
+         pilaEvaluacion.push(new ValorBool((opnd2.equals(opnd1.valorNull())) ||(opnd1.equals(opnd2.valorNull()))));
          pc++;
       }
       public String toString(){return "igual puntero null";};
@@ -697,7 +697,7 @@ public class MaquinaP {
       public void ejecuta(){
          Valor opnd2 = pilaEvaluacion.pop();
          Valor opnd1 = pilaEvaluacion.pop();
-         pilaEvaluacion.push(new ValorBool((opnd1.valorNull() != opnd2.valorInt()) ||(opnd1.valorInt() != opnd2.valorNull()));
+         pilaEvaluacion.push(new ValorBool((!opnd2.equals(opnd1.valorNull())) ||!(opnd1.equals(opnd2.valorNull()))));
          pc++;
       }
       public String toString(){return "desigual puntero null";};
@@ -1048,7 +1048,7 @@ public class MaquinaP {
    public Instruccion igual_string() {return IIGUALSTRING;}
    public Instruccion igual_puntero() {return IIGUALPUNTERO;}
    public Instruccion igual_null() {return IIGUALNULL;}
-   public Instruccion igual_pn() {return IIGUALPN;}
+   public Instruccion igual_pn_null() {return IIGUALPN;}
    public Instruccion desigual_int() {return IDESIGUALINT;}
    public Instruccion desigual_real() {return IDESIGUALREAL;}
    public Instruccion desigual_bool() {return IDESIGUALBOOL;}
@@ -1056,6 +1056,7 @@ public class MaquinaP {
    public Instruccion desigual_puntero() {return IDESIGUALPUNTERO;}
    public Instruccion desigual_null() {return IDESIGUALNULL;}
    public Instruccion desigual_pn() {return IDESIGUALPN;}
+   public Instruccion desigual_pn_null() {return IDESIGUALPN;}
    public Instruccion mueve(int n) {return new IMueve(n);}
    public Instruccion ir_a(int dir) {return new IIrA(dir);}
    //Aquí iría ir_v, que no está porque no se usa
@@ -1164,6 +1165,7 @@ public class MaquinaP {
         gestorMemoriaDinamica = new GestorMemoriaDinamica(tamdatos+tampila,(tamdatos+tampila+tamheap)-1);
 
    }
+
    public void ejecuta() {
       while(pc != codigoP.size()) {
           codigoP.get(pc).ejecuta();
