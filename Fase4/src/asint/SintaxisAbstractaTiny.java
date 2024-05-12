@@ -425,15 +425,15 @@ public class SintaxisAbstractaTiny {
         
     }
     public static class Array extends Tipo {
-        private int num;
+        private StringLocalizado num;
         private Tipo t;
-        public Array(int image, Tipo t) {
+        public Array(StringLocalizado image, Tipo t) {
             super();
             this.t = t;
             this.num = image;
         }
 
-        public int num() {return num;}
+        public int num() {return Integer.parseInt(num.image);}
 
         public Tipo tipo() {return t;}
         public void procesa(Procesamiento p) {
@@ -1433,7 +1433,7 @@ public class SintaxisAbstractaTiny {
     public Tipo lit_bool() {
         return new Lit_bool();
     }
-    public Tipo array(Tipo t, int image) {
+    public Tipo array(Tipo t, StringLocalizado image) {
         return new Array(image,t);
     }
     public Tipo puntero(Tipo t) {

@@ -741,7 +741,7 @@ public class MaquinaP {
       public String toString() {return "ir-a("+dir+")";};
    }
 
-//PUEDE QUE FALTE IR_V PERO NO SE USA EN LA MEMORIA
+//PUEDE QUE FALTE IR_V PERO NO SE USA
 
    private class IIrF implements Instruccion {
       private int dir;
@@ -759,8 +759,6 @@ public class MaquinaP {
       public String toString() {return "ir-f("+dir+")";};
    }
 
-   // IR_IND NO SE USA EN LA MEMORIA
-
    private Instruccion IIRIND;
    private class IIrind implements Instruccion {
        public void ejecuta() {
@@ -771,6 +769,7 @@ public class MaquinaP {
        }
    }
 
+   private IAlloc IALLOC;
    private class IAlloc implements Instruccion {
       private int tam;
       public IAlloc(int tam) {
@@ -785,6 +784,7 @@ public class MaquinaP {
    }
 
    //ESTA LA HE CAMBIADO PORQUE NO HACIA LO QUE DECIA LA MEMORIA
+   private IDealloc IDEALLOC;
    private class IDealloc implements Instruccion {
       private int tam;
       private int inicio;
@@ -799,6 +799,7 @@ public class MaquinaP {
       public String toString() {return "dealloc("+tam+")";};
    }
 
+   private IFetch IFETCH;
    private class IFetch implements Instruccion{
       private int d;
       public IFetch(int d){
@@ -1045,7 +1046,7 @@ public class MaquinaP {
    public Instruccion ir_a(int dir) {return new IIrA(dir);}
    public Instruccion ir_f(int dir) {return new IIrF(dir);}
    public Instruccion ir_ind() {return IIRIND;}
-   public Instruccion mueve() {return IMUEVE;}
+   public Instruccion mueve(int n) {return IMUEVE;}
    public Instruccion alloc(int tam) {return new IAlloc(tam);} 
    public Instruccion dealloc(int tam, int inicio) {return new IDealloc(tam, inicio);}
     public Instruccion fetch(int d) {return new IFetch(d);}
