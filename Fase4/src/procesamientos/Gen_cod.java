@@ -107,8 +107,11 @@ public class Gen_cod extends ProcesamientoDef {
 		mp.emit(mp.ir_a(i.prim()));
 	}
     public void procesa(Ins_call i){
-        i.e().procesa(this);
 		mp.emit(mp.activa(i.getVinculo().get_nivel(), i.getVinculo().tipo().getTam(), i.sig()));
+		gen_paso_pf(i., i.pr());
+		mp.emit(mp.ir_a(i.getVinculo().get_dir()));
+
+
 		/*
 		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
 		emit activa($.vinculo.nivel, $.vinculo.tam, $.dir_sig)
