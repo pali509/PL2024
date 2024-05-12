@@ -106,10 +106,10 @@ public class Gen_cod extends ProcesamientoDef {
 		i.bloque().procesa(this);
 		mp.emit(mp.ir_a(i.prim()));
 	}
-    public void procesa(Ins_call i){
+	public void procesa(Ins_call i){
 		i.pr().procesa(this);
 		Dec_proc dec = (Dec_proc) i.getVinculo();
-		gen_pforms(dec, i.pr());
+		gen_pforms(dec);
 
 		/*
 		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
@@ -199,6 +199,7 @@ public class Gen_cod extends ProcesamientoDef {
          */
     }
 
+
     public void procesa(Ins_delete i){
 		try {
 			i.e().procesa(this);
@@ -238,46 +239,49 @@ public class Gen_cod extends ProcesamientoDef {
     
     
     
+    
+    
+    
     //GEN-COD EXPRESIONES
     
     public void procesa(Exp_lit_ent e){
-    	mp.apila_int(Integer.parseInt(e.valor().toString()));
+    	mp.emit(mp.apila_int(Integer.parseInt(e.valor().toString())));
     }
 
     public void procesa(Exp_lit_real e){
-    	mp.apila_real(Double.parseDouble(e.valor().toString()));
+    	mp.emit(mp.apila_real(Double.parseDouble(e.valor().toString())));
     }
 
     public void procesa(Exp_lit_cadena e){
-    	mp.apila_string(e.valor().toString());
+    	mp.emit(mp.apila_string(e.valor().toString()));
     }
 
     public void procesa(Exp_Iden e){
     	
     	if(e.getVinculo().get_nivel() != 0) {
-    		mp.apilad(e.getVinculo().get_nivel());
-    		mp.apila_int(e.getVinculo().get_dir());
-    		mp.suma_int();
+    		mp.emit(mp.apilad(e.getVinculo().get_nivel()));
+    		mp.emit(mp.apila_int(e.getVinculo().get_dir()));
+    		mp.emit(mp.suma_int());
     		if(e.getVinculo().es_parf_ref()){
-    			mp.apila_ind();
+    			mp.emit(mp.apila_ind());
     		}
     	}
     	else{
-    		mp.apila_int(e.getVinculo().get_dir());
+    		mp.emit(mp.apila_int(e.getVinculo().get_dir()));
     	}
     	
     }
 
     public void procesa(Exp_lit_BoolTrue e){
-    	mp.apila_bool(true);
+    	mp.emit(mp.apila_bool(true));
     }
 
     public void procesa(Exp_lit_BoolFalse e){
-    	mp.apila_bool(false);
+    	mp.emit(mp.apila_bool(false));
     }
 
     public void procesa(Exp_null e){
-    	mp.apila_int(-1);
+    	mp.emit(mp.apila_int(-1));
     }
 
     public void procesa(Asig a){
@@ -285,17 +289,17 @@ public class Gen_cod extends ProcesamientoDef {
     	a.opnd1().procesa(this);
     	if(refI(a.opnd1().tipo()).es_int() && refI(a.opnd0().tipo()).es_real()) {
     		if(es_desig(a.opnd1())) {
-    			mp.apila_ind();
+    			mp.emit(mp.apila_ind());
     		}
-    		mp.int2real();
-    		mp.desapila_ind();
+    		mp.emit(mp.int2real());
+    		mp.emit(mp.desapila_ind());
     	}
     	else {
     		if(es_desig(a.opnd1())) {
-    			mp.mueve(refI(a.opnd0().tipo()).getTam());
+    			mp.emit(mp.mueve(refI(a.opnd0().tipo()).getTam()));
     		}
     		else {
-    			mp.desapila_ind();
+    			mp.emit(mp.desapila_ind());
     		}
     	}
     	
@@ -306,23 +310,23 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0.es_int() && t1.es_int()) {
-    		mp.suma_int();
+    		mp.emit(mp.suma_int());
     	}
     	else if(t0.es_real() && t1.es_real()) {
-    		mp.suma_real();
+    		mp.emit(mp.suma_real());
     	}
   
     	
@@ -333,23 +337,23 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0.es_int() && t1.es_int()) {
-    		mp.resta_int();
+    		mp.emit(mp.resta_int());
     	}
     	else if(t0.es_real() && t1.es_real()) {
-    		mp.resta_real();
+    		mp.emit(mp.resta_real());
     	}
     }
 
@@ -358,23 +362,23 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0.es_int() && t1.es_int()) {
-    		mp.mul_int();
+    		mp.emit(mp.mul_int());
     	}
     	else if(t0.es_real() && t1.es_real()) {
-    		mp.mul_real();
+    		mp.emit(mp.mul_real());
     	}
     }
 
@@ -383,70 +387,68 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0.es_int() && t1.es_int()) {
-    		mp.div_int();
+    		mp.emit(mp.div_int());
     	}
     	else if(t0.es_real() && t1.es_real()) {
-    		mp.div_real();
+    		mp.emit(mp.div_real());
     	}
     }
 
     public void procesa(Mod s){
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
 
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
-    	if(s.opnd0().tipo().es_int() && s.opnd1().tipo().es_int()) {
-    		mp.mod();
-    	}
+    	mp.emit(mp.mod());
+    	
 
     }
 
     public void procesa(And s){
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
 
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
-    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) {
-    		mp.and();
-    	}
+    		mp.emit(mp.and());
+    	
     }
 
     public void procesa(Or s){
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
 
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
-    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) {
-    		mp.or();
-    	}
+
+    	mp.emit(mp.or());
+    
     }
     
 
@@ -455,30 +457,30 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.mayor_real();
+    			mp.emit(mp.mayor_real());
     			}
     		else if(t0.es_int()) {
-    			mp.mayor_int();
+    			mp.emit(mp.mayor_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.mayor_bool();
+    			mp.emit(mp.mayor_bool());
     		}
     		else if(t0.es_string()){
-    			mp.mayor_string();
+    			mp.emit(mp.mayor_string());
     		}
     	}
 
@@ -489,30 +491,30 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.menor_real();
+    			mp.emit(mp.menor_real());
     			}
     		else if(t0.es_int()) {
-    			mp.menor_int();
+    			mp.emit(mp.menor_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.menor_bool();
+    			mp.emit(mp.menor_bool());
     		}
     		else if(t0.es_string()){
-    			mp.menor_string();
+    			mp.emit(mp.menor_string());
     		}
     	}
     }
@@ -522,30 +524,30 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.mayorIgual_real();
+    			mp.emit(mp.mayorIgual_real());
     			}
     		else if(t0.es_int()) {
-    			mp.mayorIgual_int();
+    			mp.emit(mp.mayorIgual_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.mayorIgual_bool();
+    			mp.emit(mp.mayorIgual_bool());
     		}
     		else if(t0.es_string()){
-    			mp.mayorIgual_string();
+    			mp.emit(mp.mayorIgual_string());
     		}
     	}
     }
@@ -555,30 +557,30 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.menorIgual_real();
+    			mp.emit(mp.menorIgual_real());
     			}
     		else if(t0.es_int()) {
-    			mp.menorIgual_int();
+    			mp.emit(mp.menorIgual_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.menorIgual_bool();
+    			mp.emit(mp.menorIgual_bool());
     		}
     		else if(t0.es_string()){
-    			mp.menorIgual_string();
+    			mp.emit(mp.menorIgual_string());
     		}
     	}
     }
@@ -588,40 +590,40 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.igual_real();
+    			mp.emit(mp.igual_real());
     			}
     		else if(t0.es_int()) {
-    			mp.igual_int();
+    			mp.emit(mp.igual_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.igual_bool();
+    			mp.emit(mp.igual_bool());
     		}
     		else if(t0.es_string()){
-    			mp.igual_string();
+    			mp.emit(mp.igual_string());
     		}
     		else if(t0.es_puntero()) {
-    			mp.igual_puntero();
+    			mp.emit(mp.igual_puntero());
     		}
     		else if(t0.es_null()) {
-    			mp.igual_null();
+    			mp.emit(mp.igual_null());
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
-    		mp.igual_pn_null();
+    		mp.emit(mp.igual_pn_null());
     	}
     }
 
@@ -630,52 +632,50 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t1 = refI(s.opnd1().tipo());
     	s.opnd0().procesa(this);
     	if(es_desig(s.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int() && t1.es_real()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	s.opnd1().procesa(this);
     	if(es_desig(s.opnd1())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_real() && t1.es_int()) {
-    		mp.int2real();
+    		mp.emit(mp.int2real());
     	}
     	if(t0 == t1) {
     		if(t0.es_real()) {
-    			mp.desigual_real();
+    			mp.emit(mp.desigual_real());
     			}
     		else if(t0.es_int()) {
-    			mp.desigual_int();
+    			mp.emit(mp.desigual_int());
     		}
     		else if(t0.es_bool()) {
-    			mp.desigual_bool();
+    			mp.emit(mp.desigual_bool());
     		}
     		else if(t0.es_string()){
-    			mp.desigual_string();
+    			mp.emit(mp.desigual_string());
     		}
     		else if(t0.es_puntero()) {
-    			mp.desigual_puntero();
+    			mp.emit(mp.desigual_puntero());
     		}
     		else if(t0.es_null()) {
-    			mp.desigual_pn_null();
+    			mp.emit(mp.desigual_pn_null());
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
-    		mp.desigual_pn();
+    		mp.emit(mp.desigual_pn());
     	}
     }
 
     public void procesa(Not n){
-    	Tipo t0 = refI(n.opnd0().tipo());
     	n.opnd0().procesa(this);
     	if(es_desig(n.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
-    	if(t0.es_bool()) {
-    		mp.not();
-    	}
+    	mp.emit(mp.not());
+    	
 
     	
     }
@@ -684,13 +684,13 @@ public class Gen_cod extends ProcesamientoDef {
     	Tipo t0 = refI(n.opnd0().tipo());
     	n.opnd0().procesa(this);
     	if(es_desig(n.opnd0())) {
-    		mp.apila_ind();
+    		mp.emit(mp.apila_ind());
     	}
     	if(t0.es_int()) {
-    		mp.neg_int();
+    		mp.emit(mp.neg_int());
     	}
     	else if(t0.es_real()) {
-    		mp.neg_real();
+    		mp.emit(mp.neg_real());
     	}
     }
 
@@ -706,26 +706,27 @@ public class Gen_cod extends ProcesamientoDef {
     
     public void procesa(AccesoCampo s){
     	s.opnd0().procesa(this);
-    	mp.apila_int(desp(refI(s.opnd0().tipo()).lcamp(), s.iden().toString()));
-    	mp.suma_int();
+    	mp.emit(mp.apila_int(desp(refI(s.opnd0().tipo()).lcamp(), s.iden().toString())));
+    	mp.emit(mp.suma_int());
     }
     public void procesa(AccesoArray a){
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         if(es_desig(a.opnd1())) {
-        	mp.apila_ind();
+        	mp.emit(mp.apila_ind());
         }
-        mp.apila_int(refI(a.opnd0().tipo()).tipo().getTam());
-        mp.mul_int();
-        mp.suma_int();
+        mp.emit(mp.apila_int(refI(a.opnd0().tipo()).tipo().getTam()));
+        mp.emit(mp.mul_int());
+        mp.emit( mp.suma_int());
         
     }
     public void procesa(AccesoPuntero p) {
     	p.opnd0().procesa(this);
-    	mp.apila_ind();
+    	mp.emit(mp.apila_ind());
     }
     
     
+
     
     //FUNCIONES AUX PARA EXP
     private Tipo refI(Tipo t) {
@@ -784,57 +785,27 @@ public class Gen_cod extends ProcesamientoDef {
 		recolecta_procs(ldec.dec());
 	}
 
-	private void gen_pforms(Dec_proc dec, LPRealOpt pr){
-		if(dec.pf().pforms().es_un_pform() && pr.lpr().es_un_preal()) {
+	private void gen_pforms(Dec_proc dec){
+		if(dec.pf().es_no_pform()) {
+			No_pforms pf = (No_pforms) dec.pf();
+		}
+		else if(dec.pf().pforms().es_un_pform()) {
 			Un_pform unpf = (Un_pform) dec.pf().pforms();
-			Un_PReal unpr = (Un_PReal) pr.lpr();
-			gen_pforms(unpf.pform(), unpr.lpr());
+			gen_pforms(unpf.pform());
 		}
-		else if(dec.pf().pforms().es_muchos_pform() && pr.lpr().es_muchos_preal()) {
+		else if(dec.pf().pforms().es_muchos_pform() ) {
 			Muchos_pforms mpf = (Muchos_pforms) dec.pf().pforms();
-			Muchos_preal mpr = (Muchos_preal) pr.lpr();
-			gen_pforms(mpf.pforms(), mpr.lpr());
-			gen_pforms(mpf.pform(), mpr.lpr());
+			gen_pforms(mpf.pforms());
+			gen_pforms(mpf.pform());
 		}
 	}
-	private void gen_pforms(Pform pf, LPReal lpr) {
-		lpr.procesa(this);
-		mp.emit(mp.alloc(lpr.e().tipo().getTam()));
-		if((refI(lpr.e().tipo()).es_int())){
-			if(es_desig(lpr.e())) {
-				mp.emit(mp.fetch(lpr.e().get_dir()));
-			}
-		}
-		else{
-			if(es_desig(lpr.e())) {
-				mp.emit(mp.copia(lpr.e().tipo().getTam()));
-			}
-			else{
-				mp.emit(mp.store_real(lpr.e().get_dir(), Double.parseDouble(lpr.e().valor().toString())));
-			}
-		}
+	private void gen_pforms(Pform pf) {
+
 	}
 
-	private void gen_pforms(LPForm lpf,  LPReal lpr) {
-		gen_pforms(lpf.pforms(), lpr.lpr());
-		gen_pforms(lpf.pform(), lpr.lpr());
+	private void gen_pforms(LPForm lpf) {
+		gen_pforms(lpf.pforms());
+		gen_pforms(lpf.pform());
 	}
-
-	/*
-	EL ENUNCIADO:
-		Para cada parámetro formal con nombre u, si ya existe una variable u, debe
-		salvaguardarse dir(u).
-		o Para cada parámetro formal en modo valor ti ui:
-			▪ dir(ui)  alloc(ti)
-			▪ Evaluar el correspondiente parámetro real Ei. Sea tRi el tipo de Ei y sea ri el
-		resultado de la evaluación:
-		• Si ti es real y tRi es int:
-			o Si Ei es un designador, vi  fetch(ri). Si no, vi  ri
-			o Convertir vi a real. Sea v’i el resultado de dicha conversión
-			o store(dir(ui), v’i)
-		• en otro caso:
-			o Si Ei es un designador, copy(dir(ui), ri, i)
-			o En otro caso, store(dir(ui), ri)
-	 */
 
 }
