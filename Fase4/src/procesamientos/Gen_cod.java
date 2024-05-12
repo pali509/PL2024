@@ -589,7 +589,7 @@ public class Gen_cod extends ProcesamientoDef {
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
-    		mp.igual_raro();
+    		mp.igual_pn();
     	}
     }
 
@@ -631,7 +631,7 @@ public class Gen_cod extends ProcesamientoDef {
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
-    		mp.desigual_raro();
+    		mp.desigual_pn();
     	}
     }
 

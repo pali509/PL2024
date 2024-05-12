@@ -628,7 +628,7 @@ public class MaquinaP {
          pilaEvaluacion.push(new ValorBool((opnd1.valorNull() == opnd2.valorInt()) ||(opnd1.valorInt() == opnd2.valorNull()));
          pc++;
       }
-      public Strint toString(){return "igual puntero null";};
+      public String toString(){return "igual puntero null";};
    }
 
    private IDesigualInt IDESIGUALINT;
@@ -708,6 +708,7 @@ public class MaquinaP {
       public String toString(){return "desigual puntero null";};
    }
 
+   private IMueve IMUEVE;
    private class IMueve implements Instruccion {
       private int tam;
       public IMueve(int tam) {
@@ -823,10 +824,8 @@ public class MaquinaP {
        public String toString() {
           return "desactiva("+nivel+","+tamdatos+")";                 
        }
-
    }
-   
-   
+
    private IDup IDUP;
    private class IDup implements Instruccion {
        public void ejecuta() {
@@ -893,14 +892,14 @@ public class MaquinaP {
    public Instruccion igual_string() {return IIGUALSTRING;}
    public Instruccion igual_null() {return IIGUALNULL;}
    public Instruccion igual_puntero() {return IIGUALPUNTERO;}
-   public Instruccion igual_raro() {return ;}
+   public Instruccion igual_pn() {return IIGUALPN;}
    public Instruccion desigual_int() {return IDESIGUALINT;}
    public Instruccion desigual_real() {return IDESIGUALREAL;}
    public Instruccion desigual_bool() {return IDESIGUALBOOL;}
    public Instruccion desigual_string() {return IDESIGUALSTRING;}
    public Instruccion desigual_null() {return IDESIGUALNULL;}
    public Instruccion desigual_puntero() {return IDESIGUALPUNTERO;}
-   public Instruccion desigual_raro() {return ;}
+   public Instruccion desigual_pn() {return IDESIGUALPN;}
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
    public Instruccion apila_real(double val) {return new IApilaReal((val));}
@@ -912,6 +911,7 @@ public class MaquinaP {
    public Instruccion ir_a(int dir) {return new IIrA(dir);}
    public Instruccion ir_f(int dir) {return new IIrF(dir);}
    public Instruccion ir_ind() {return IIRIND;}
+   public Instruccion mueve() {return IMUEVE;}
    public Instruccion alloc(int tam) {return new IAlloc(tam);} 
    public Instruccion dealloc(int tam) {return new IDealloc(tam);} 
    public Instruccion activa(int nivel,int tam, int dirretorno) {return new IActiva(nivel,tam,dirretorno);}
