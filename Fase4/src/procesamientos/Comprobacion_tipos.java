@@ -53,11 +53,11 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         ms2 = new MensajesError("pre-tipado");
         prog.bq().procesa(this);
         prog.set_tipo(prog.bq().tipo());
-        if(ms.getHayError() ){
-            ms.getErrores();
-        }
-        else if(ms2.getHayError() ){
+        if(ms2.getHayError() ){
             ms2.getErrores();
+        }
+        else if(ms.getHayError()){
+            ms.getErrores();
         }
     }
 
