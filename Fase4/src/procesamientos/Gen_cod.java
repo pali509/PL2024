@@ -170,7 +170,16 @@ public class Gen_cod extends ProcesamientoDef {
     public void procesa(Ins_new i){
 		try {
 			i.e().procesa(this);
-			mp.emit(mp.store(i.e().procesa(this)));
+			Tipo t = refI(i.e().tipo());
+			if(t.es_int()){
+				mp.emit(mp.store_int(i.e().get_dir(), Integer.parseInt(i.e().valor().toString())));
+			}
+			else if(t.es_real()){
+				mp.emit(mp.store_real(i.e().get_dir(), Double.parseDouble(i.e().valor().toString())));
+			}
+			else if(t.es_string()){
+				mp.emit(mp.store_string(i.e().get_dir(), i.e().valor().toString()));
+			}
 			mp.emit(mp.alloc(refI(i.e().tipo()).getTam()));
 			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
 		} catch (Exception e) {
