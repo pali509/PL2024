@@ -24,6 +24,53 @@ public class Gen_cod extends ProcesamientoDef {
             Dec_proc proc = procs.pop();
             proc.procesa(this);
         }
+
+		/*
+		recolecta_procs(DecsOpt)
+		gen-cod(InsOpt)
+		emit stop()
+		mientras(!es_vacia(procs))):
+			sub = cima(sub_pendientes)
+			desapila(sub_pendientes)
+			let sub = dec_proc(Iden,Param,LDecs,Is) in
+			emit desapilad(sub.nivel)
+			recolecta_subs(LDecs)
+			gen-cod(Ins)
+			emit desactiva(sub.nivel,sub.tam)
+			emid ir-ind()
+			end let
+
+
+		sea LDecs de  Bloque(LDecs, LIns)
+		para cada dec_var(Tipo, id) en en LDecs
+		//si existe otra variable id
+			salvaguardamos dir(id)
+			gen-cod(LIns)
+			dealloc(dir(id),Tipo)
+			restaurar dir(id)
+
+		//sino
+		dir(id)
+		alloc()
+		gen-cod(LIns)
+		dealloc(dir(id),)
+
+		 */
+		LDecs de = b.lds().decs();
+		for (Dec d : de.dec()) {
+			if(){
+				// guardar dir
+				b.lis().procesa(this);
+				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
+				// restaurar
+			}
+
+			else {
+				mp.alloc(refI(i.e().tipo()).getTam());
+				i.bloque().lis().procesa(this);
+				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
+			}
+		}
     }
 
     public void procesa(Si_decs s){
@@ -73,9 +120,8 @@ public class Gen_cod extends ProcesamientoDef {
 	}
     public void procesa(Ins_asig i){
         i.e().procesa(this);
-		mp.emit(mp.)
+		mp.emit(mp.desecha());
 
-        //TODO Falta desechar el resultado
     }
 
     public void procesa(Ins_if i){
@@ -204,37 +250,7 @@ public class Gen_cod extends ProcesamientoDef {
          */
     }
 	public void procesa(Ins_bloque i){
-		/*
-		sea LDecs de  Bloque(LDecs, LIns)
-		para cada dec_var(Tipo, id) en en LDecs
-		//si existe otra variable id
-			salvaguardamos dir(id)
-			gen-cod(LIns)
-			dealloc(dir(id),Tipo)
-			restaurar dir(id)
-
-		//sino
-		dir(id)
-		alloc()
-		gen-cod(LIns)
-		dealloc(dir(id),)
-
-		 */
-		LDecs de = i.bloque().lds().decs();
-		for (Dec d : de.dec()) {
-			if(){
-				// guardar dir
-				i.bloque().lis().procesa(this);
-				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
-				// restaurar
-			}
-
-			else {
-				mp.alloc(refI(i.e().tipo()).getTam());
-				i.bloque().lis().procesa(this);
-				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
-			}
-		}
+		i.bloque().procesa(this);
 	}
     public void procesa(Si_preal s){
         s.lpr().procesa(this);
@@ -447,7 +463,7 @@ public class Gen_cod extends ProcesamientoDef {
     	if(es_desig(s.opnd1())) {
     		mp.apila_ind();
     	}
-    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) { //TODO COMPROBAR ESTO ?????
+    	if(s.opnd0().tipo().es_bool() && s.opnd1().tipo().es_bool()) {
     		mp.and();
     	}
     }

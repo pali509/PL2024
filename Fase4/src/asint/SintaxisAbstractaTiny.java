@@ -726,6 +726,8 @@ public class SintaxisAbstractaTiny {
         public abstract void procesa(Procesamiento p);
 
         public LPForm pforms() {throw new UnsupportedOperationException();}
+        public Boolean es_si_pform(){return false;}
+        public Boolean es_no_pform(){return false;}
     }
     public static class Si_pforms extends PFormOpt {
         private LPForm pforms;
@@ -737,6 +739,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public LPForm pforms() {return pforms;}
+        public Boolean es_si_pform(){return true;}
 
     }
     public static class No_pforms extends PFormOpt {
@@ -747,6 +750,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_no_pform(){return true;}
     }
 
     public static abstract class LPForm extends Nodo{
@@ -756,6 +760,8 @@ public class SintaxisAbstractaTiny {
 
         public Pform pform() {throw new UnsupportedOperationException();}
         public LPForm pforms() {throw new UnsupportedOperationException();}
+        public Boolean es_un_pform(){return false;}
+        public Boolean es_muchos_pform(){return false;}
     }
 
     public static class Un_pform extends LPForm {
@@ -768,6 +774,7 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Pform pform() {return pform;}
+        public Boolean es_un_pform(){return true;}
     }
 
     public static class Muchos_pforms extends LPForm {
@@ -1265,12 +1272,20 @@ public class SintaxisAbstractaTiny {
         public abstract void procesa(Procesamiento p);
         public Exp e() {throw new UnsupportedOperationException();}
         public LPReal lpr() {throw new UnsupportedOperationException();}
+
+        public boolean es_un_preal() {
+            return false;
+        }
+        public boolean es_muchos_preal() {
+            return false;
+        }
     }
 
     public static abstract class LPRealOpt extends Nodo{
         public LPRealOpt() {}
         public abstract void procesa(Procesamiento p);
         public LPReal lpr() {throw new UnsupportedOperationException();}
+        public Boolean es_no_preal(){return false;}
     }
 
     public static class Si_preal extends LPRealOpt {
@@ -1295,6 +1310,7 @@ public class SintaxisAbstractaTiny {
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
+        public Boolean es_no_preal(){return true;}
     }
     
     public static class Un_PReal extends LPReal{
@@ -1308,7 +1324,9 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
         public Exp e() {return e;}
-
+        public boolean es_un_preal() {
+            return true;
+        }
     }
 
     public static class Muchos_preal extends LPReal {
@@ -1326,6 +1344,9 @@ public class SintaxisAbstractaTiny {
             p.procesa(this);
         }
 
+        public boolean es_muchos_preal() {
+            return true;
+        }
     }
 
     // Constructoras

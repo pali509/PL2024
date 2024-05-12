@@ -432,12 +432,26 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
 
-    public void procesa(Ins_call ins) { //TODO yo me mato con el call asi lo digo
+    public void procesa(Ins_call ins) {
         ins.pr().procesa(this);
         Dec_proc dec = (Dec_proc) ins.getVinculo();
 
-        ins.pr().set_tipo(chequeo_params(dec.pf(),ins.pr()));
+        if(dec.pf().es_no_pform() && ins.pr().es_no_preal()) {
+            No_pforms pf = (No_pforms) dec.pf();
+            No_preal pr = (No_preal) ins.pr();
+            ins.pr().set_tipo(chequeo_params(pf, pr));
+        }
 
+        else if(dec.pf().pforms().es_un_pform() && ins.pr().lpr().es_un_preal()) {
+            Un_pform pf2 = (Un_pform) dec.pf().pforms();
+            Un_PReal pr2 = (Un_PReal) ins.pr().lpr();
+            ins.pr().set_tipo(chequeo_params(pf2, pr2));
+        }
+        else if(dec.pf().pforms().es_muchos_pform() && ins.pr().lpr().es_muchos_preal()) {
+            Muchos_pforms pf2 = (Muchos_pforms) dec.pf().pforms();
+            Muchos_preal pr2 = (Muchos_preal) ins.pr().lpr();
+            ins.pr().set_tipo(chequeo_params(pf2, pr2));
+        }
         if(ins.pr().tipo().equals(new Ok())){
             ins.set_tipo(new Ok());
         }
