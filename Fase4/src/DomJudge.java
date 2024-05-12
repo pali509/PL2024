@@ -26,8 +26,8 @@ public class DomJudge {
 		 if(constructor == 'a') {
 			 try {
 				 AnalizadorLexicoTiny alex = new AnalizadorLexicoTiny(input);
-				 // en esta fase no necesitamos volcar los distintos tokens leídos: utilizamos
-				 // directamente la clase ConstructorASTTiny, en lugar de su especialización
+				 // en esta fase no necesitamos volcar los distintos tokens leï¿½dos: utilizamos
+				 // directamente la clase ConstructorASTTiny, en lugar de su especializaciï¿½n
 				 // ConstructorASTTinyDJ, e invocamos a parse, en lugar de debug_parse.
 				 ConstructorASTTiny asint = new ConstructorASTTiny(alex);
 				 Prog p = (Prog)asint.parse().value;
@@ -64,16 +64,13 @@ public class DomJudge {
 		 }
 
 		 public static void procesa(Prog p, Reader datos) throws Exception {
-			 //Si hay algun error primero hay que llamar a errores.setError("tipado" o "vinculacion" ...)
-			 ///despues llamar a errores.ordenarErrores()
-			 //finalmente errores.getErrores()
-			 MensajesError errores = new MensajesError();
-			 new Vinculacion(errores).procesa(p);
-			 if(! errores.getHayError()) {
-				 new Comprobacion_tipos(errores).procesa(p);
-			 }
 
-			 if(! errores.getHayError()) {
+			 Vinculacion v = new Vinculacion();
+			 v.procesa(p);
+			 if(!v.getMen()) {
+				Comprobacion_tipos t = new Comprobacion_tipos();
+				t.procesa(p);
+				
 				 new Asignacion_espacio().procesa(p);
 				 new Etiquetado().procesa(p);
 				 MaquinaP m = new MaquinaP(datos,500,5000,5000,10);

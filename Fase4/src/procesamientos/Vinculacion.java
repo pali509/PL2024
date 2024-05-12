@@ -60,6 +60,8 @@ public class Vinculacion extends ProcesamientoDef {
     private Vinculacion2 vin = new Vinculacion2();
     private MensajesError men;
 
+    public boolean getMen(){return men.getHayError();}
+
     public void procesa(Prog p){
         men = new MensajesError("vinculacion");
         this.ts = new TablaSimbolos();
