@@ -111,27 +111,6 @@ public class Gen_cod extends ProcesamientoDef {
 		Dec_proc dec = (Dec_proc) i.getVinculo();
 		gen_pforms(dec, i.pr());
 
-		/*
-		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
-		emit activa($.vinculo.nivel, $.vinculo.tam, $.dir_sig)
-		gen-paso-pf(PFormOpt, PRealOpt)
-		emit ir-a($.vinculo.dir_inic)
-		end let
-		EL ENUNCIADO:
-		Para cada parámetro formal con nombre u, si ya existe una variable u, debe
-		salvaguardarse dir(u).
-		o Para cada parámetro formal en modo valor ti ui:
-			▪ dir(ui)  alloc(ti)
-			▪ Evaluar el correspondiente parámetro real Ei. Sea tRi el tipo de Ei y sea ri el
-		resultado de la evaluación:
-		• Si ti es real y tRi es int:
-			o Si Ei es un designador, vi  fetch(ri). Si no, vi  ri
-			o Convertir vi a real. Sea v’i el resultado de dicha conversión
-			o store(dir(ui), v’i)
-		• en otro caso:
-			o Si Ei es un designador, copy(dir(ui), ri, i)
-			o En otro caso, store(dir(ui), ri)
-		 */
     }
 
     public void procesa(Ins_read i){
