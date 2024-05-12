@@ -73,7 +73,8 @@ public class Gen_cod extends ProcesamientoDef {
 	}
     public void procesa(Ins_asig i){
         i.e().procesa(this);
-		mp.emit(mp.desapila());
+		mp.emit(mp.)
+
         //TODO Falta desechar el resultado
     }
 
@@ -309,7 +310,7 @@ public class Gen_cod extends ProcesamientoDef {
     	}
     	else {
     		if(es_desig(a.opnd1())) {
-    			mp.mueve();
+    			mp.mueve(refI(a.opnd0().tipo()).getTam());
     		}
     		else {
     			mp.desapila_ind();
@@ -638,7 +639,7 @@ public class Gen_cod extends ProcesamientoDef {
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
-    		mp.igual_pn();
+    		mp.igual_pn_null();
     	}
     }
 
@@ -676,7 +677,7 @@ public class Gen_cod extends ProcesamientoDef {
     			mp.desigual_puntero();
     		}
     		else if(t0.es_null()) {
-    			mp.desigual_null();
+    			mp.desigual_pn_null();
     		}
     	}
     	else if(t0.es_puntero() && t1.es_null() || t0.es_null() && t1.es_puntero()) {
@@ -755,11 +756,13 @@ public class Gen_cod extends ProcesamientoDef {
     }
     
     private boolean es_desig(Exp e) {
-		if(e.getVinculo() != null && (e.es_dec_var() || e.es_parf_noRef() || e.es_parf_ref())){
-			return true;
-		}
-		else if(e.prioridad() == 6) { //Prioridad 5 para los accesos.
-			return true;
+		if(e.es_iden()) {
+			Exp_Iden e2 = (Exp_Iden) e;
+			if (e2.getVinculo() != null && (e.es_dec_var() || e.es_parf_noRef() || e.es_parf_ref())) {
+				return true;
+			} else if (e.prioridad() == 5) { //Prioridad 5 para los accesos.
+				return true;
+			}
 		}
 		return false;
     }
