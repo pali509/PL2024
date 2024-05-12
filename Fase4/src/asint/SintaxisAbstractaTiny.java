@@ -11,10 +11,10 @@ public class SintaxisAbstractaTiny {
        private Tipo tipo;
 	   private int fila;
 	   private int col;
-
        private int prim;
-
        private int sig;
+        private int dir;
+        private int nivel;
 	   public Nodo ponFila(int fila) {
 		    this.fila = fila;
             return this;			
@@ -48,6 +48,14 @@ public class SintaxisAbstractaTiny {
         public Boolean es_dec_var(){return false;}
         public Boolean es_parf_noRef(){return false;}
         public Boolean es_parf_ref(){return false;}
+        public void set_dir(int dir) {
+            this.dir = dir;
+        }
+        public void set_nivel(int n) {
+            this.nivel = n;
+        }
+        public int get_dir() {return this.dir;}
+        public int get_nivel() {return this.nivel;}
     }
 
     public static class StringLocalizado {
@@ -664,8 +672,6 @@ public class SintaxisAbstractaTiny {
     public static abstract class Pform extends Nodo {
         private Tipo t;
         private StringLocalizado id;
-        private int dir;
-        private int nivel;
         public Pform(Tipo t, StringLocalizado id) {
             this.t = t;
             this.id = id;
@@ -674,16 +680,6 @@ public class SintaxisAbstractaTiny {
         public StringLocalizado id(){return id;}
         public Tipo t(){return t;}
         public abstract void procesa(Procesamiento p);
-
-		public void set_dir(int dir) {
-			this.dir = dir;
-		}
-		public void set_nivel(int n) {
-			this.nivel = n;
-		}
-
-        public int get_dir() {return this.dir;}
-        public int get_nivel() {return this.nivel;}
 
     }
     public static class PFref extends Pform {
@@ -798,8 +794,6 @@ public class SintaxisAbstractaTiny {
     public static class Dec_var extends Dec {
         private StringLocalizado id;
         private Tipo t;
-        private int dir;
-        private int nivel;
         public Dec_var(StringLocalizado identificador, Tipo t) {
             this.id = identificador;
             this.t = t;
@@ -809,12 +803,6 @@ public class SintaxisAbstractaTiny {
         }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
-		public void set_dir(int dir) {
-			this.dir = dir;}
-		public void set_nivel(int nivel) {
-			this.nivel = nivel;}
-        public int get_dir() {return this.dir;}
-        public int get_nivel() {return this.nivel;}
 
         public Boolean es_dec_var(){return true;}
 
@@ -822,8 +810,6 @@ public class SintaxisAbstractaTiny {
     public static class Dec_tipo extends Dec {
         private StringLocalizado id;
         private Tipo t;
-        private int dir;
-        private int nivel;
 
         public Dec_tipo(StringLocalizado id, Tipo t) {
             this.id = id;
@@ -834,13 +820,6 @@ public class SintaxisAbstractaTiny {
         }
         public StringLocalizado iden() {return id;}
         public Tipo tipo() {return t;}
-        
-		public void set_dir(int dir) {
-			this.dir = dir;}
-		public void set_nivel(int nivel) {
-			this.nivel = nivel;}
-        public int get_dir() {return this.dir;}
-        public int get_nivel() {return this.nivel;}
 
     }
     public static class Dec_proc extends Dec {
@@ -848,8 +827,6 @@ public class SintaxisAbstractaTiny {
         private PFormOpt pf;
         private Bloque bq;
         private int tam;
-        private int nivel;
-        private int dir;
 
         public Dec_proc(StringLocalizado id, PFormOpt pf, Bloque bq) {
             this.id = id;
@@ -868,13 +845,6 @@ public class SintaxisAbstractaTiny {
 		public int getTam() {
 			return this.tam;
 		}
-		public void set_dir(int dir) {
-			this.dir = dir;}
-		public void set_nivel(int nivel) {
-			this.nivel = nivel;}
-        public int get_dir() {return this.dir;}
-        public int get_nivel() {return this.nivel;}
-
         public Boolean es_dec_proc(){return true;}
     }
 

@@ -264,8 +264,7 @@ public class Gen_cod extends ProcesamientoDef {
     	}
     	else {
 				mp.apila_int(e.getVinculo().get_dir());
-
-			}
+		}
     }
 
     public void procesa(Exp_lit_BoolTrue e){
@@ -292,7 +291,7 @@ public class Gen_cod extends ProcesamientoDef {
     	}
     	else {
     		if(es_desig(a.opnd1())) {
-    			mp.mueve(refI(a.opnd0().tipo()).getTam());
+    			mp.mueve();
     		}
     		else {
     			mp.desapila_ind();
