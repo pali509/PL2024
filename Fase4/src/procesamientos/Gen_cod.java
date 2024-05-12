@@ -53,6 +53,8 @@ public class Gen_cod extends ProcesamientoDef {
 
     public void procesa(Dec_proc dec_proc) {
         dec_proc.bq().procesa(this);
+		mp.emit(mp.desactiva(dec_proc.get_nivel(), dec_proc.getTam()));
+		mp.emit(mp.ir_ind());
         /*
         mp.ponInstruccion(mp.desactiva(dec_proc.nivel(), dec_proc.tam_datos()));
         mp.ponInstruccion(mp.ir_Ind());
