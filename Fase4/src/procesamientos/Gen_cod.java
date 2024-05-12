@@ -24,6 +24,8 @@ public class Gen_cod extends ProcesamientoDef {
         while (!procs.isEmpty()) {
             Dec_proc proc = procs.pop();
 			mp.desapilad(proc.get_nivel());
+			recolecta_procs(proc.bq().lds());
+			proc.bq().lis().procesa(this);
             proc.procesa(this);
 			mp.emit(mp.desactiva(proc.get_nivel(), proc.getTam()));
 			mp.emit(mp.ir_ind());
