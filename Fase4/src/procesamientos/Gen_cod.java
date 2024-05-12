@@ -100,9 +100,9 @@ public class Gen_cod extends ProcesamientoDef {
     public void procesa(Ins_if_else i){
 		i.e().procesa(this);
 		gen_acc_val(i.e());
-		mp.emit(mp.ir_f(i.bloque2().prim()));
+		mp.emit(mp.ir_f(i.prim2()));
 		i.bloque().procesa(this);
-		mp.emit(mp.ir_f(i.sig()));
+		mp.emit(mp.ir_a(i.sig()));
         i.bloque2().procesa(this);
     }
 
