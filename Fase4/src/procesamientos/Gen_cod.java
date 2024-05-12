@@ -83,7 +83,7 @@ public class Gen_cod extends ProcesamientoDef {
 	public void gen_acc_val(Exp e){ //TODO falta la instruccion fetch
 
 		if(es_desig(e))
-			mp.emit(fetch);
+			mp.emit(mp.fetch(e.get_dir()));
 	}
     public void procesa(Ins_asig i){
         i.e().procesa(this);
@@ -129,12 +129,18 @@ public class Gen_cod extends ProcesamientoDef {
 		i.e().procesa(this);
 		Tipo t = refI(i.e().tipo());
 		if(t.es_int()){
-			mp.emit(mp.leer_entrada_int());}
+			mp.emit(mp.leer_entrada_int());
+			mp.emit(mp.store_int(i.e().get_dir(), Integer.parseInt(i.e().valor().toString())));
+		}
 		else if(t.es_real()){
-			mp.emit(mp.leer_entrada_real());}
+			mp.emit(mp.leer_entrada_real());
+			mp.emit(mp.store_real(i.e().get_dir(), Double.parseDouble(i.e().valor().toString())));
+		}
 		else if(t.es_string()){
-			mp.emit(mp.leer_entrada_string());}
-		mp.emit(mp.store(i.e().procesa(this), t));
+			mp.emit(mp.leer_entrada_string());
+			mp.emit(mp.store_string(i.e().get_dir(), i.e().valor().toString()));
+		}
+
     }
 
     public void procesa(Ins_write i){

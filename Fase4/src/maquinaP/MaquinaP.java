@@ -811,10 +811,10 @@ public class MaquinaP {
       public String toString(){return "fetch(" + d + ")";};
    }
 
-   private class IStore implements Instruccion{
+   private class IStoreInt implements Instruccion{
       private int d;
-      private Valor v;
-      public IStore(int d, Valor v){
+      private ValorInt v;
+      public IStoreInt(int d, ValorInt v){
          this.d = d;
          this.v = v;
       }
@@ -822,8 +822,34 @@ public class MaquinaP {
          datos[d] = v;
          pc++;
       }
-      public String toString(){return "store(" + d + ", " + v + ")";};
+      public String toString(){return "store-int(" + d + ", " + v + ")";};
    }
+    private class IStoreReal implements Instruccion{
+        private int d;
+        private ValorReal v;
+        public IStoreReal(int d, ValorReal v){
+            this.d = d;
+            this.v = v;
+        }
+        public void ejecuta(){
+            datos[d] = v;
+            pc++;
+        }
+        public String toString(){return "store-real(" + d + ", " + v + ")";};
+    }
+    private class IStoreString implements Instruccion{
+        private int d;
+        private ValorString v;
+        public IStoreString(int d, ValorString v){
+            this.d = d;
+            this.v = v;
+        }
+        public void ejecuta(){
+            datos[d] = v;
+            pc++;
+        }
+        public String toString(){return "store-string(" + d + ", " + v + ")";};
+    }
 
    //FALTAN COPY, INDX Y ACC PERO NO SE USAN
    private class IActiva implements Instruccion {
@@ -1048,6 +1074,10 @@ public class MaquinaP {
    public Instruccion mueve() {return IMUEVE;}
    public Instruccion alloc(int tam) {return new IAlloc(tam);} 
    public Instruccion dealloc(int tam, int inicio) {return new IDealloc(tam, inicio);}
+    public Instruccion fetch(int d) {return new IFetch(d);}
+    public Instruccion store_int(int d, int valor) {return new IStoreInt(d,  new ValorInt(valor));}
+    public Instruccion store_real(int d, double valor) {return new IStoreReal(d,  new ValorReal(valor));}
+    public Instruccion store_string(int d, String valor) {return new IStoreString(d,  new ValorString(valor));}
    public Instruccion activa(int nivel,int tam, int dirretorno) {return new IActiva(nivel,tam,dirretorno);}
    public Instruccion desactiva(int nivel, int tam) {return new IDesactiva(nivel,tam);}
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
