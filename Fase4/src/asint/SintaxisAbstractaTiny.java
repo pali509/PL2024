@@ -296,7 +296,7 @@ public class SintaxisAbstractaTiny {
         public Boolean es_puntero() {return false;}
         public Boolean t_ok() {return false;}
 
-        public Boolean is_null() {return false;}
+        public Boolean es_null() {return false;}
 
 		public int getTam() {
 			return this.tam;
@@ -327,11 +327,11 @@ public class SintaxisAbstractaTiny {
         public Null_T() {
             super();
         }
-        public Boolean is_null() {return true;}
+        public Boolean es_null() {return true;}
 
         public void procesa(Procesamiento p) {}
         public Boolean equals(Tipo t) {
-            return t.is_null();
+            return t.es_null();
         }
     }
 

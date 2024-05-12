@@ -857,15 +857,54 @@ public class MaquinaP {
        }
    }
 
-    public Instruccion suma_int(){return ISUMA;}
-    public Instruccion suma_real(){return RSUMA;}
-   public Instruccion mul() {return IMUL;}
+   public Instruccion suma_int(){return ISUMA;}
+   public Instruccion suma_real(){return RSUMA;}
+   public Instruccion resta_int(){return IRESTA;}
+   public Instruccion resta_real(){return RRESTA;}
+   public Instruccion mul_int() {return IMUL;}
+   public Instruccion mul_real() {return RMUL;}
+   public Instruccion div_int() {return IDIV;}
+   public Instruccion div_real() {return RDIV;}
+   public Instruccion mod() {return MOD;}
    public Instruccion and() {return IAND;}
-    public Instruccion or() {return IOR;}
+   public Instruccion or() {return IOR;}
+   public Instruccion not() {return INOT;}
+   public Instruccion neg_int() {return INEG;}
+   public Instruccion neg_real() {return RNEG;}
+   public Instruccion mayor_int() {return IMAYORINT;}
+   public Instruccion mayor_real() {return IMAYORREAL;}
+   public Instruccion mayor_bool() {return IMAYORBOOL;}
+   public Instruccion mayor_string() {return IMAYORSTRING;}
+   public Instruccion mayorIgual_int() {return IMAYORIGUALINT;}
+   public Instruccion mayorIgual_real() {return IMAYORIGUALREAL;}
+   public Instruccion mayorIgual_bool() {return IMAYORIGUALBOOL;}
+   public Instruccion mayorIgual_string() {return IMAYORIGUALSTRING;}
+   public Instruccion menor_int() {return IMENORINT;}
+   public Instruccion menor_real() {return IMENORREAL;}
+   public Instruccion menor_bool() {return IMENORBOOL;}
+   public Instruccion menor_string() {return IMENORSTRING;}
+   public Instruccion menorIgual_int() {return IMENORIGUALINT;}
+   public Instruccion menorIgual_real() {return IMENORIGUALREAL;}
+   public Instruccion menorIgual_bool() {return IMENORIGUALBOOL;}
+   public Instruccion menorIgual_string() {return IMENORIGUALSTRING;}
+   public Instruccion igual_int() {return IIGUALINT;}
+   public Instruccion igual_real() {return IIGUALREAL;}
+   public Instruccion igual_bool() {return IIGUALBOOL;}
+   public Instruccion igual_string() {return IIGUALSTRING;}
+   public Instruccion igual_null() {return IIGUALNULL;}
+   public Instruccion igual_puntero() {return IIGUALPUNTERO;}
+   public Instruccion igual_raro() {return ;}
+   public Instruccion desigual_int() {return IDESIGUALINT;}
+   public Instruccion desigual_real() {return IDESIGUALREAL;}
+   public Instruccion desigual_bool() {return IDESIGUALBOOL;}
+   public Instruccion desigual_string() {return IDESIGUALSTRING;}
+   public Instruccion desigual_null() {return IDESIGUALNULL;}
+   public Instruccion desigual_puntero() {return IDESIGUALPUNTERO;}
+   public Instruccion desigual_raro() {return ;}
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
-    public Instruccion apila_real(double val) {return new IApilaReal((val));}
-    public Instruccion apila_string(String val) {return new IApilaString((val));}
+   public Instruccion apila_real(double val) {return new IApilaReal((val));}
+   public Instruccion apila_string(String val) {return new IApilaString((val));}
    public Instruccion apilad(int nivel) {return new IApilad(nivel);}
    public Instruccion apila_ind() {return IAPILAIND;}
    public Instruccion desapila_ind() {return IDESAPILAIND;}

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import asint.Procesamiento;
 import asint.ProcesamientoDef;
-import asint.SintaxisAbstractaTiny;
 import asint.SintaxisAbstractaTiny.*;
 
 // CLASE de parejas de T
@@ -261,7 +259,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             if(son_compatibles(p0.tipo(), p1.tipo())){
                 return true;
             }
-        }else if(t0.es_puntero() && t1.is_null()){
+        }else if(t0.es_puntero() && t1.es_null()){
             return true;}
         st.remove(p);
         return false;
@@ -602,9 +600,9 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             return new Lit_bool();
         }else if(refI(t0).es_puntero() && refI(t1).es_puntero()){
             return new Lit_bool();
-        }else if((refI(t0).is_null() && refI(t1).es_puntero()) || (refI(t0).es_puntero() && refI(t1).is_null())){
+        }else if((refI(t0).es_null() && refI(t1).es_puntero()) || (refI(t0).es_puntero() && refI(t1).es_null())){
             return new Lit_bool();
-        }else if(refI(t0).is_null() && refI(t1).is_null()){
+        }else if(refI(t0).es_null() && refI(t1).es_null()){
             return new Lit_bool();
         }else{
             return new Error_();
