@@ -1094,6 +1094,7 @@ public class MaquinaP {
    public Instruccion mostrar_bool() {return IMOSTRAR_BOOL;}
    public Instruccion mostrar_string() {return IMOSTRAR_STRING;}
    //Aquí iría nl, que no está porque no se usa
+   public Instruccion desecha(){return IDESECHAR;}
 
    public void emit(Instruccion i) {
       codigoP.add(i); 
@@ -1169,6 +1170,7 @@ public class MaquinaP {
         IMOSTRAR_REAL = new IMostrar_real();
         IMOSTRAR_BOOL = new IMostrar_bool();
         IMOSTRAR_STRING = new IMostrar_string();
+        IDESECHAR = new IDesechar();
 
         gestorPilaActivaciones = new GestorPilaActivaciones(tamdatos,(tamdatos+tampila)-1,ndisplays);
         gestorMemoriaDinamica = new GestorMemoriaDinamica(tamdatos+tampila,(tamdatos+tampila+tamheap)-1);
