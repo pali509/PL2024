@@ -1025,9 +1025,7 @@ public class MaquinaP {
    public Instruccion mostrar_string() {return IMOSTRAR_STRING;}
 
 
-    public void int2real(){
-
-    }
+    public Instruccion int2real(){return IINT2REAL;}
    public void emit(Instruccion i) {
       codigoP.add(i); 
    }
