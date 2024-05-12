@@ -682,6 +682,9 @@ public class SintaxisAbstractaTiny {
 			this.nivel = n;
 		}
 
+        public int get_dir() {return this.dir;}
+        public int get_nivel() {return this.nivel;}
+
     }
     public static class PFref extends Pform {
         private Tipo t;
@@ -810,6 +813,9 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
+        public int get_dir() {return this.dir;}
+        public int get_nivel() {return this.nivel;}
+
         public Boolean es_dec_var(){return true;}
 
     }
@@ -833,6 +839,9 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
+        public int get_dir() {return this.dir;}
+        public int get_nivel() {return this.nivel;}
+
     }
     public static class Dec_proc extends Dec {
         private StringLocalizado id;
@@ -863,6 +872,9 @@ public class SintaxisAbstractaTiny {
 			this.dir = dir;}
 		public void set_nivel(int nivel) {
 			this.nivel = nivel;}
+        public int get_dir() {return this.dir;}
+        public int get_nivel() {return this.nivel;}
+
         public Boolean es_dec_proc(){return true;}
     }
 

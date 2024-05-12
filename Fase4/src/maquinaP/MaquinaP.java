@@ -856,6 +856,103 @@ public class MaquinaP {
        }
    }
 
+   private Iint2real IINT2REAL;
+   private class Iint2real implements Instruccion {
+      public void ejecuta() {
+         Valor valor = pilaEvaluacion.pop();
+         double d = valor.valorInt();
+         pilaEvaluacion.push(new ValorReal(d));
+         pc++;
+      }
+      public String toString() {
+         return "int2real";
+      }
+   }
+
+   private ILeer_entrada_int ILEER_ENTRADA_INT;
+   private class ILeer_entrada_int implements Instruccion {
+      public void ejecuta() {
+         Scanner scanner = new Scanner(System.in);
+         String dato = scanner.nextLine();
+         pilaEvaluacion.push(new ValorInt(Integer.parseInt(dato)));
+         pc++;
+      }
+      public String toString() {
+         return "leer_entrada_int";
+      }
+   }
+
+   private ILeer_entrada_real ILEER_ENTRADA_REAL;
+   private class ILeer_entrada_real implements Instruccion {
+      public void ejecuta() {
+         Scanner scanner = new Scanner(System.in);
+         String dato = scanner.nextLine();
+         pilaEvaluacion.push(new ValorReal(Double.parseDouble(dato)));
+         pc++;
+      }
+      public String toString() {
+         return "leer_entrada_real";
+      }
+   }
+
+
+   private ILeer_entrada_string ILEER_ENTRADA_STRING;
+   private class ILeer_entrada_string implements Instruccion {
+      public void ejecuta() {
+         Scanner scanner = new Scanner(System.in);
+         String dato = scanner.nextLine();
+         pilaEvaluacion.push(new ValorString(dato));
+         pc++;
+      }
+      public String toString() {
+         return "leer_entrada_string";
+      }
+   }
+
+   private IMostrar_int IMOSTRAR_INT;
+   private class IMostrar_int implements Instruccion {
+      public void ejecuta() {
+         System.out.println(pilaEvaluacion.pop().valorInt());
+         pc++;
+      }
+      public String toString() {
+         return "mostrar_int";
+      }
+   }
+
+   private IMostrar_real IMOSTRAR_REAL;
+   private class IMostrar_real implements Instruccion {
+      public void ejecuta() {
+         System.out.println(pilaEvaluacion.pop().valorReal());
+         pc++;
+      }
+      public String toString() {
+         return "mostrar_real";
+      }
+   }
+
+   private IMostrar_bool IMOSTRAR_BOOL;
+   private class IMostrar_bool implements Instruccion {
+      public void ejecuta() {
+         System.out.println(pilaEvaluacion.pop().valorBool());
+         pc++;
+      }
+      public String toString() {
+         return "mostrar_bool";
+      }
+   }
+
+   private IMostrar_string IMOSTRAR_STRING;
+   private class IMostrar_string implements Instruccion {
+      public void ejecuta() {
+         System.out.println(pilaEvaluacion.pop().valorString());
+         pc++;
+      }
+      public String toString() {
+         return "mostrar_string";
+      }
+   }
+
    public Instruccion suma_int(){return ISUMA;}
    public Instruccion suma_real(){return RSUMA;}
    public Instruccion resta_int(){return IRESTA;}
@@ -919,18 +1016,13 @@ public class MaquinaP {
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
    public Instruccion dup() {return IDUP;}
    public Instruccion stop() {return ISTOP;}
-    public Instruccion leer_entrada_int(Exp e) {
-        return apila_int(Integer.parseInt(e.valor().toString()));
-    }
-
-    public Instruccion leer_entrada_real(Exp e) {
-        return apila_real(Double.parseDouble(e.valor().toString()));
-    }
-
-    public Instruccion leer_entrada_string(Exp e) {
-        return apila_string(e.valor().toString());
-    }
-
+   public Instruccion leer_entrada_int() {return ILEER_ENTRADA_INT;}
+   public Instruccion leer_entrada_real() {return ILEER_ENTRADA_REAL;}
+   public Instruccion leer_entrada_string() {return ILEER_ENTRADA_STRING;}
+   public Instruccion mostrar_int() {return IMOSTRAR_INT;}
+   public Instruccion mostrar_real() {return IMOSTRAR_REAL;}
+   public Instruccion mostrar_bool() {return IMOSTRAR_BOOL;}
+   public Instruccion mostrar_string() {return IMOSTRAR_STRING;}
 
 
     public void int2real(){
@@ -967,6 +1059,13 @@ public class MaquinaP {
       ISTOP = new IStop();
       gestorPilaActivaciones = new GestorPilaActivaciones(tamdatos,(tamdatos+tampila)-1,ndisplays); 
       gestorMemoriaDinamica = new GestorMemoriaDinamica(tamdatos+tampila,(tamdatos+tampila+tamheap)-1);
+      ILEER_ENTRADA_INT = new ILeer_entrada_int();
+      ILEER_ENTRADA_REAL = new ILeer_entrada_real();
+      ILEER_ENTRADA_STRING = new ILeer_entrada_string();
+      IMOSTRAR_INT = new IMostrar_int();
+      IMOSTRAR_REAL = new IMostrar_real();
+      IMOSTRAR_BOOL = new IMostrar_bool();
+      IMOSTRAR_STRING = new IMostrar_string();
    }
    public void ejecuta() {
       while(pc != codigoP.size()) {

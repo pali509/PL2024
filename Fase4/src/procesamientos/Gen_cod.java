@@ -127,21 +127,32 @@ public class Gen_cod extends ProcesamientoDef {
 		i.e().procesa(this);
 		Tipo t = refI(i.e().tipo());
 		if(t.es_int()){
-			mp.emit(mp.leer_entrada_int(i.e()));}
+			mp.emit(mp.leer_entrada_int());}
 		else if(t.es_real()){
-			mp.emit(mp.leer_entrada_real(i.e()));}
+			mp.emit(mp.leer_entrada_real());}
 		else if(t.es_string()){
-			mp.emit(mp.leer_entrada_string(i.e()));}
+			mp.emit(mp.leer_entrada_string());}
 		mp.emit(mp.store(i.e().procesa(this), t));
     }
 
     public void procesa(Ins_write i){
-		i.e().procesa(this);
 		/*
 		r = gen-cod(Exp)
 		gen-acc-val(Exp)
 		emite mostrar_<v>
 		 */
+		i.e().procesa(this);
+		gen_acc_val(i.e());
+		Tipo t = refI(i.e().tipo());
+		if(t.es_int()){
+			mp.emit(mp.mostrar_int());}
+		else if(t.es_real()){
+			mp.emit(mp.mostrar_real());}
+		else if(t.es_string()){
+			mp.emit(mp.mostrar_string());}
+		else if (t.es_bool()){
+			mp.emit(mp.mostrar_bool());
+		}
     }
 
     public void procesa(Ins_nl i){
@@ -222,18 +233,19 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Exp_Iden e){
-    	/*
-    	if(e.getVinculo().getNivel() != 0) {
-    		mp.apilad(e.getVinculo().getNivel());
-    		mp.apila_int(e.getVinculo().getDir());
+
+    	if(e.getVinculo().get_nivel() != 0) {
+    		mp.apilad(e.getVinculo().get_nivel());
+    		mp.apila_int(e.getVinculo().get_nivel());
     		mp.suma_int();
-    		if(e.getVinculo().es_parf_ref()){
-    			mp.apila_int();
+    		if(e.getVinculo().es_parf_ref()) {
+				mp.apila_int(Integer.parseInt(e.valor().toString()));
+			}
     	}
-    	else{
-    		mp.apila_int(e.getVinculo().getDir());
-    	
-    	*/
+    	else {
+				mp.apila_int(e.getVinculo().get_dir());
+
+			}
     }
 
     public void procesa(Exp_lit_BoolTrue e){
