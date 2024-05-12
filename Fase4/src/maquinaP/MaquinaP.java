@@ -1002,6 +1002,15 @@ public class MaquinaP {
       public String toString(){return "mostrar_nl";};
    }
 
+   private IDesechar IDESECHAR;
+   private class IDesechar implements Instruccion{
+      public void ejecuta(){
+         Valor aux = pilaEvaluacion.pop();
+         pc++;
+      }
+      public String toString(){return "desechar cima";}
+   }
+
    public Instruccion apila_int(int val) {return new IApilaInt(val);}
    public Instruccion apila_bool(boolean val) {return new IApilaBool(val);}
    public Instruccion apila_real(double val) {return new IApilaReal((val));}
