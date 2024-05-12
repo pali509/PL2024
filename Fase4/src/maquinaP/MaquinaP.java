@@ -8,9 +8,6 @@ import java.util.Stack;
 
 import javax.lang.model.type.NullType;
 
-import asint.SintaxisAbstractaTiny.*;
-
-
 
 public class MaquinaP {
    public static class EAccesoIlegitimo extends RuntimeException {} 
@@ -985,13 +982,13 @@ public class MaquinaP {
       }
    }
 
-   private IMostrarNL IMOSTRARNL;
-   private class IMostrarNL implements Instruccion{
+   private IMostrar_NL IMOSTRAR_NL;
+   private class IMostrar_NL implements Instruccion{
       public void ejecuta(){
          System.out.println();
          pc++;
       }
-      public String toString(){return "mostrar nl";};
+      public String toString(){return "mostrar_nl";};
    }
 
    public Instruccion suma_int(){return ISUMA;}
@@ -1051,7 +1048,7 @@ public class MaquinaP {
    public Instruccion ir_ind() {return IIRIND;}
    public Instruccion mueve() {return IMUEVE;}
    public Instruccion alloc(int tam) {return new IAlloc(tam);} 
-   public Instruccion dealloc(int tam) {return new IDealloc(tam);} 
+   public Instruccion dealloc(int tam, int inicio) {return new IDealloc(tam, inicio);}
    public Instruccion activa(int nivel,int tam, int dirretorno) {return new IActiva(nivel,tam,dirretorno);}
    public Instruccion desactiva(int nivel, int tam) {return new IDesactiva(nivel,tam);}
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
@@ -1074,32 +1071,74 @@ public class MaquinaP {
    private int ndisplays;
    private Scanner input;
    public MaquinaP(Reader datos2, int tamdatos, int tampila, int tamheap, int ndisplays) {
-	  this.input = new Scanner(datos2);
-      this.tamdatos = tamdatos;
-      this.tamheap = tamheap;
-      this.ndisplays = ndisplays;
-      this.codigoP = new ArrayList<>();  
-      pilaEvaluacion = new Stack<>();
-      datos = new Valor[tamdatos+tampila+tamheap];
-      this.pc = 0;
-      ISUMA = new ISuma();
-      IAND = new IAnd();
-      IOR = new IOr();
-      IMUL = new IMul();
-      IAPILAIND = new IApilaind();
-      IDESAPILAIND = new IDesapilaind();
-      IIRIND = new IIrind();
-      IDUP = new IDup();
-      ISTOP = new IStop();
-      gestorPilaActivaciones = new GestorPilaActivaciones(tamdatos,(tamdatos+tampila)-1,ndisplays); 
-      gestorMemoriaDinamica = new GestorMemoriaDinamica(tamdatos+tampila,(tamdatos+tampila+tamheap)-1);
-      ILEER_ENTRADA_INT = new ILeer_entrada_int();
-      ILEER_ENTRADA_REAL = new ILeer_entrada_real();
-      ILEER_ENTRADA_STRING = new ILeer_entrada_string();
-      IMOSTRAR_INT = new IMostrar_int();
-      IMOSTRAR_REAL = new IMostrar_real();
-      IMOSTRAR_BOOL = new IMostrar_bool();
-      IMOSTRAR_STRING = new IMostrar_string();
+        this.input = new Scanner(datos2);
+        this.tamdatos = tamdatos;
+        this.tamheap = tamheap;
+        this.ndisplays = ndisplays;
+        this.codigoP = new ArrayList<>();
+        pilaEvaluacion = new Stack<>();
+        datos = new Valor[tamdatos+tampila+tamheap];
+        this.pc = 0;
+        ISUMA = new ISuma();
+        RSUMA = new IRSuma();
+        IRESTA = new IResta();
+        RRESTA = new IRResta();
+        IAND = new IAnd();
+        IOR = new IOr();
+        INOT = new INot();
+        IMUL = new IMul();
+        RMUL = new IRMul();
+        IDIV = new IDiv();
+        RDIV = new IRDiv();
+        MOD = new IMod();
+        INEG = new INeg();
+        RNEG = new IRNeg();
+        IMAYORINT = new IMayorInt();
+        IMAYORREAL = new IMayorReal();
+        IMAYORBOOL = new IMayorBool();
+        IMAYORSTRING = new IMayorString();
+        IMENORINT = new IMenorInt();
+        IMENORREAL = new IMenorReal();
+        IMENORBOOL = new IMenorBool();
+        IMENORSTRING = new IMenorString();
+        IMAYORIGUALINT = new IMayorIgualInt();
+        IMAYORIGUALREAL = new IMayorIgualReal();
+        IMAYORIGUALBOOL = new IMayorIgualBool();
+        IMAYORIGUALSTRING = new IMayorIgualString();
+        IMENORIGUALINT = new IMenorIgualInt();
+        IMENORIGUALREAL = new IMenorIgualReal();
+        IMENORIGUALBOOL = new IMenorIgualBool();
+        IMENORIGUALSTRING = new IMenorIgualString();
+        IIGUALINT = new IIgualInt();
+        IIGUALBOOL = new IIgualBool();
+        IIGUALREAL = new IIgualReal();
+        IIGUALSTRING = new IIgualString();
+        IIGUALPUNTERO = new IIgualPuntero();
+        IIGUALNULL = new IIgualNull();
+        IDESIGUALPN = new IDesigualPN();
+        IDESIGUALINT = new IDesigualInt();
+        IDESIGUALBOOL = new IDesigualBool();
+        IDESIGUALREAL = new IDesigualReal();
+        IDESIGUALSTRING = new IDesigualString();
+        IDESIGUALPUNTERO = new IDesigualPuntero();
+        IDESIGUALNULL = new IDesigualNull();
+        IDESIGUALPN = new IDesigualPN();
+        IAPILAIND = new IApilaind();
+        IDESAPILAIND = new IDesapilaind();
+        IIRIND = new IIrind();
+        IDUP = new IDup();
+        ISTOP = new IStop();
+        gestorPilaActivaciones = new GestorPilaActivaciones(tamdatos,(tamdatos+tampila)-1,ndisplays);
+        gestorMemoriaDinamica = new GestorMemoriaDinamica(tamdatos+tampila,(tamdatos+tampila+tamheap)-1);
+        ILEER_ENTRADA_INT = new ILeer_entrada_int();
+        ILEER_ENTRADA_REAL = new ILeer_entrada_real();
+        ILEER_ENTRADA_STRING = new ILeer_entrada_string();
+        IMOSTRAR_INT = new IMostrar_int();
+        IMOSTRAR_REAL = new IMostrar_real();
+        IMOSTRAR_BOOL = new IMostrar_bool();
+        IMOSTRAR_STRING = new IMostrar_string();
+        IMOSTRAR_NL = new IMostrar_NL();
+        IINT2REAL = new Iint2real();
    }
    public void ejecuta() {
       while(pc != codigoP.size()) {
