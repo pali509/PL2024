@@ -95,6 +95,7 @@ public class MaquinaP {
       void ejecuta();  
    }
 
+   private IApilaInt IAPILAINT;
    private class IApilaInt implements Instruccion {
       private int valor;
       public IApilaInt(int valor) {
@@ -107,6 +108,7 @@ public class MaquinaP {
       public String toString() {return "apila-int("+valor+")";};
    }
 
+   private IApilaBool IAPILABOOL;
    private class IApilaBool implements Instruccion {
       private boolean valor;
       public IApilaBool(boolean valor) {
@@ -119,6 +121,7 @@ public class MaquinaP {
       public String toString() {return "apila-bool("+valor+")";};
    }
 
+   private IApilaReal IAPILAREAL;
    private class IApilaReal implements Instruccion {
       private double valor;
       public IApilaReal(double valor) {
@@ -131,6 +134,7 @@ public class MaquinaP {
       public String toString() {return "apila-real("+valor+")";};
    }
 
+   private IApilaString IAPILASTRING;
    private class IApilaString implements Instruccion {
       private String valor;
       public IApilaString(String valor) {
@@ -143,37 +147,37 @@ public class MaquinaP {
       public String toString() {return "apila-string("+valor+")";};
    }
 
-    private IApilaDir IAPILADIR;
-    private class IApilaDir implements Instruccion {
-        private int dir;
-        public IApilaDir(int dir) {
-            this.dir = dir;
-        }
-        public void ejecuta() {
-            if (dir >= datos.length) throw new EAccesoFueraDeRango();
-            if (datos[dir] == null)  throw new EAccesoAMemoriaNoInicializada(pc,dir);
-            pilaEvaluacion.push(datos[dir]);
-            pc++;
-        }
-        public String toString() {return "apila-dir("+dir+")";};
-    }
+   //OJO NO SE USA
+   private IApilaDir IAPILADIR;
+   private class IApilaDir implements Instruccion {
+      private int dir;
+      public IApilaDir(int dir) {
+         this.dir = dir;
+      }
+      public void ejecuta() {
+         if (dir >= datos.length) throw new EAccesoFueraDeRango();
+         if (datos[dir] == null)  throw new EAccesoAMemoriaNoInicializada(pc,dir);
+         pilaEvaluacion.push(datos[dir]);
+         pc++;
+      }
+      public String toString() {return "apila-dir("+dir+")";};
+   }
 
-    private IDesapilaDir IDESAPILADIR;
-
-    private class IDesapilaDir implements Instruccion {
-        private int dir;
-        public IDesapilaDir(int dir) {
-            this.dir = dir;
-        }
-        public void ejecuta() {
-            Valor valor = pilaEvaluacion.pop();
-            if (dir >= datos.length) throw new EAccesoFueraDeRango();
-            datos[dir] = valor;
-            pc++;
-        }
-        public String toString() {return "desapila-dir("+dir+")";};
-    }
-
+   //OJO NO SE USA
+   private IDesapilaDir IDESAPILADIR;
+   private class IDesapilaDir implements Instruccion {
+      private int dir;
+      public IDesapilaDir(int dir) {
+         this.dir = dir;
+      }
+      public void ejecuta() {
+         Valor valor = pilaEvaluacion.pop();
+         if (dir >= datos.length) throw new EAccesoFueraDeRango();
+         datos[dir] = valor;
+         pc++;
+      }
+      public String toString() {return "desapila-dir("+dir+")";};
+   }
 
    private IApilaind IAPILAIND;
    private class IApilaind implements Instruccion {
@@ -213,7 +217,7 @@ public class MaquinaP {
       }
    }
 
-   //AQUI CREO QUE IGUAL HAY QUE ELIMINAR ESTA, NO PARECE QUE SE USE
+   //OJO NO SE USA
    private class IDesapilad implements Instruccion {
       private int nivel;
       public IDesapilad(int nivel) {
@@ -281,6 +285,7 @@ public class MaquinaP {
       } 
       public String toString() {return "neg int";};
    }
+   
    private IRSuma RSUMA;
    private class IRSuma implements Instruccion {
       public void ejecuta() {
@@ -757,7 +762,17 @@ public class MaquinaP {
       public String toString() {return "ir-f("+dir+")";};
    }
 
-   //PUEDE QUE FALTE IR_IND PERO NO SE USA EN LA MEMORIA
+   // IR_IND NO SE USA EN LA MEMORIA
+
+   private Instruccion IIRIND;
+   private class IIrind implements Instruccion {
+       public void ejecuta() {
+          pc = pilaEvaluacion.pop().valorInt();  
+       }
+       public String toString() {
+          return "ir-ind";                 
+       }
+   }
 
    private class IAlloc implements Instruccion {
       private int tam;
@@ -786,7 +801,34 @@ public class MaquinaP {
       } 
       public String toString() {return "dealloc("+tam+")";};
    }
-   //VOY POR AQUI
+
+   private class IFetch implements Instruccion{
+      private int d;
+      public IFetch(int d){
+         this.d = d;
+      }
+      public void ejecuta(){
+         pilaEvaluacion.push(datos[d]);
+         pc++;
+      }
+      public String toString(){return "fetch(" + d + ")";};
+   }
+
+   private class IStore implements Instruccion{
+      private int d;
+      private Valor v;
+      public IStore(int d, Valor v){
+         this.d = d;
+         this.v = v;
+      }
+      public void ejecuta(){
+         datos[d] = v;
+         pc++;
+      }
+      public String toString(){return "store(" + d + ", " + v + ")";};
+   }
+
+   //FALTAN COPY, INDX Y ACC PERO NO SE USAN
    private class IActiva implements Instruccion {
        private int nivel;
        private int tamdatos;
@@ -843,16 +885,6 @@ public class MaquinaP {
        }
        public String toString() {
           return "stop";                 
-       }
-   }
-   
-   private Instruccion IIRIND;
-   private class IIrind implements Instruccion {
-       public void ejecuta() {
-          pc = pilaEvaluacion.pop().valorInt();  
-       }
-       public String toString() {
-          return "ir-ind";                 
        }
    }
 
@@ -953,6 +985,15 @@ public class MaquinaP {
       }
    }
 
+   private IMostrarNL IMOSTRARNL;
+   private class IMostrarNL implements Instruccion{
+      public void ejecuta(){
+         System.out.println();
+         pc++;
+      }
+      public String toString(){return "mostrar nl";};
+   }
+
    public Instruccion suma_int(){return ISUMA;}
    public Instruccion suma_real(){return RSUMA;}
    public Instruccion resta_int(){return IRESTA;}
@@ -1027,9 +1068,6 @@ public class MaquinaP {
    public void emit(Instruccion i) {
       codigoP.add(i); 
    }
-
-
-
 
     private int tamdatos;
    private int tamheap;
