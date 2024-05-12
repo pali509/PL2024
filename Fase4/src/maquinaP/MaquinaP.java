@@ -757,7 +757,17 @@ public class MaquinaP {
       public String toString() {return "ir-f("+dir+")";};
    }
 
-   //PUEDE QUE FALTE IR_IND PERO NO SE USA EN LA MEMORIA
+   // IR_IND NO SE USA EN LA MEMORIA
+
+   private Instruccion IIRIND;
+   private class IIrind implements Instruccion {
+       public void ejecuta() {
+          pc = pilaEvaluacion.pop().valorInt();  
+       }
+       public String toString() {
+          return "ir-ind";                 
+       }
+   }
 
    private class IAlloc implements Instruccion {
       private int tam;
@@ -786,7 +796,34 @@ public class MaquinaP {
       } 
       public String toString() {return "dealloc("+tam+")";};
    }
-   //VOY POR AQUI
+
+   private class IFetch implements Instruccion{
+      private int d;
+      public IFetch(int d){
+         this.d = d;
+      }
+      public void ejecuta(){
+         pilaEvaluacion.push(datos[d]);
+         pc++;
+      }
+      public String toString(){return "fetch(" + d + ")";};
+   }
+
+   private class IStore implements Instruccion{
+      private int d;
+      private Valor v;
+      public IStore(int d, Valor v){
+         this.d = d;
+         this.v = v;
+      }
+      public void ejecuta(){
+         datos[d] = v;
+         pc++;
+      }
+      public String toString(){return "store(" + d + ", " + v + ")";};
+   }
+
+   //FALTAN COPY, INDX Y ACC PERO NO SE USAN
    private class IActiva implements Instruccion {
        private int nivel;
        private int tamdatos;
@@ -843,16 +880,6 @@ public class MaquinaP {
        }
        public String toString() {
           return "stop";                 
-       }
-   }
-   
-   private Instruccion IIRIND;
-   private class IIrind implements Instruccion {
-       public void ejecuta() {
-          pc = pilaEvaluacion.pop().valorInt();  
-       }
-       public String toString() {
-          return "ir-ind";                 
        }
    }
 
@@ -953,6 +980,15 @@ public class MaquinaP {
       }
    }
 
+   private IMostrarNL IMOSTRARNL;
+   private class IMostrarNL implements Instruccion{
+      public void ejecuta(){
+         System.out.println();
+         pc++;
+      }
+      public String toString(){return "mostrar nl";};
+   }
+
    public Instruccion suma_int(){return ISUMA;}
    public Instruccion suma_real(){return RSUMA;}
    public Instruccion resta_int(){return IRESTA;}
@@ -1029,9 +1065,6 @@ public class MaquinaP {
    public void emit(Instruccion i) {
       codigoP.add(i); 
    }
-
-
-
 
     private int tamdatos;
    private int tamheap;
