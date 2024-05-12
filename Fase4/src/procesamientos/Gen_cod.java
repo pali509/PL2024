@@ -160,7 +160,18 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_new i){
-		i.e().procesa(this);
+		try {
+			i.e().procesa(this);
+			mp.emit(mp.store(i.e().procesa(this)));
+			mp.emit(mp.alloc(refI(i.e().tipo()).getTam()));
+			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam()));
+		} catch (Exception e) {
+			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
+			mensajesError.getErrores();
+		}
+
+
         /*
         emite store(gen-cod(Exp), emite alloc(ref!(Exp.tipo).tipo().tam))
 
@@ -170,7 +181,14 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_delete i){
-		i.e().procesa(this);
+		try {
+			i.e().procesa(this);
+			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam()));
+		} catch (Exception e) {
+			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
+			mensajesError.getErrores();
+		}
         /*
         d = gen-cod(Exp)
 	si d != -1:
