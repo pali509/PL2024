@@ -730,6 +730,7 @@ public class MaquinaP {
       public String toString() {return "mueve("+tam+")";};
    }
 
+   private IIrA IIRA;
    private class IIrA implements Instruccion {
       private int dir;
       public IIrA(int dir) {
@@ -743,6 +744,7 @@ public class MaquinaP {
 
 //PUEDE QUE FALTE IR_V PERO NO SE USA
 
+   private IIrF IIRF;
    private class IIrF implements Instruccion {
       private int dir;
       public IIrF(int dir) {
