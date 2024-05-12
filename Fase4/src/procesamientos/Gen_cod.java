@@ -41,24 +41,11 @@ public class Gen_cod extends ProcesamientoDef {
     public void procesa(Una_dec u){
         u.dec().procesa(this);
     }
-    public void procesa(Dec d){
-        if(d.es_dec_proc()) {
-            Dec_proc dnew = (Dec_proc) d;
-
-            //TODO Es o eso o hacer otro recolecta para hacer mp.emit(apila)
-            procs.push(dnew);
-        }
-    }
-
 
     public void procesa(Dec_proc dec_proc) {
         dec_proc.bq().procesa(this);
 		mp.emit(mp.desactiva(dec_proc.get_nivel(), dec_proc.getTam()));
 		mp.emit(mp.ir_ind());
-        /*
-        mp.ponInstruccion(mp.desactiva(dec_proc.nivel(), dec_proc.tam_datos()));
-        mp.ponInstruccion(mp.ir_Ind());
-         */
     }
 
 
@@ -80,13 +67,13 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
 
-	public void gen_acc_val(Exp e){ //TODO falta la instruccion fetch
-
+	public void gen_acc_val(Exp e){
 		if(es_desig(e))
 			mp.emit(mp.fetch(e.get_dir()));
 	}
     public void procesa(Ins_asig i){
         i.e().procesa(this);
+		mp.emit(mp.desapila());
         //TODO Falta desechar el resultado
     }
 
@@ -183,7 +170,7 @@ public class Gen_cod extends ProcesamientoDef {
 			mp.emit(mp.alloc(refI(i.e().tipo()).getTam()));
 			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
 		} catch (Exception e) {
-			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			MensajesError mensajesError = new MensajesError("Error de ejecución ");
 			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
 			mensajesError.getErrores();
 		}
@@ -202,7 +189,7 @@ public class Gen_cod extends ProcesamientoDef {
 			i.e().procesa(this);
 			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
 		} catch (Exception e) {
-			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			MensajesError mensajesError = new MensajesError("Error de ejecución ");
 			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
 			mensajesError.getErrores();
 		}

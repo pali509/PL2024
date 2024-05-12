@@ -29,11 +29,18 @@ class Par {
     }
 }
 public class Comprobacion_tipos extends ProcesamientoDef {
+    /*
     private HashSet<String> tn = new HashSet<String>();
-    private HashSet<String> tr = new HashSet<String>(); //TODO MIRAR ESTO PARA IDEN que queria decir yo con esto
+    private HashSet<String> tr = new HashSet<String>();
+     */
     // set de parejas de T
+
     private HashSet<Par> st = new HashSet<Par>();
     private MensajesError ms;
+    private MensajesError ms2;//Para pretipado
+
+    public boolean getMenTipado(){return ms.getHayError();}
+    public boolean getMenPreTipado(){return ms2.getHayError();}
     public Tipo ambos_ok(Tipo t1, Tipo t2){
         if(t1.t_ok() && t2.t_ok())
             return new Ok();
@@ -43,10 +50,14 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
     public void procesa(Prog prog) {
         ms = new MensajesError("tipado");
+        ms2 = new MensajesError("pre-tipado");
         prog.bq().procesa(this);
         prog.set_tipo(prog.bq().tipo());
-        if(ms.getHayError()){
+        if(ms.getHayError() ){
             ms.getErrores();
+        }
+        else if(ms2.getHayError() ){
+            ms2.getErrores();
         }
     }
 
@@ -138,7 +149,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Array t) {
         if(t.num() < 0) {
             t.set_tipo(new Error_());
-            ms.addError(t.leeFila(),t.leeCol());
+            ms2.addError(t.leeFila(),t.leeCol());
         }
         else{
             t.tipo().procesa(this);
@@ -163,28 +174,19 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     }
 
     private boolean hayRepetidos(LCamp lcamp, List<Camp> campos) { //TODO COMPROBAR nuevo!
-        if(campos.size()!= 0){
+        if(!campos.isEmpty()){
             for(int i = 0; i < campos.size(); i++){
                 if(lcamp.campo() == campos.get(i))
                     return false;
             }
-            if(lcamp.es_muchos_campos()){
-                campos.add(lcamp.campo());
-                return hayRepetidos(lcamp.lcs(), campos);
-            }
-            else{
-                return true;
-            }
 
         }
+        if(lcamp.es_muchos_campos()){
+            campos.add(lcamp.campo());
+            return hayRepetidos(lcamp.lcs(), campos);
+        }
         else{
-            if(lcamp.es_muchos_campos()){
-                campos.add(lcamp.campo());
-                return hayRepetidos(lcamp.lcs(), campos);
-            }
-            else{
-                return true;
-            }
+            return true;
         }
     }
 
@@ -431,6 +433,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
 
     public void procesa(Ins_call ins) { //TODO yo me mato con el call asi lo digo
         ins.pr().procesa(this);
+
         /*
         let string.vinculo = dec_proc  dec_proc = dec_proc(id,PForm,_)
         PRealOpt.tipo = chequeo_params(PForm, PRealOpt)
@@ -442,30 +445,37 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             ins.set_tipo(new Error_());
             ms.addError(ins.leeFila(),ins.leeCol());
         }
-        chequeo_params(no_PForm, no_PReal): return ok
 
-        chequeo_params(un_PForm, un_PReal):
-            return chequeo_params(E, ParF)
-
-        chequeo_params(muchas_exps(LPReal, Exp), muchos_ParF(LPForm,PForm)):
-        return ambos_ok(chequeo_params(LPReal,LPForm), chequeo_parametro(Exp,PForm))
-
-        chequeo_params(Exp, PForm_no_ref(id, T)):
-        tipado(Exp)
-        si son_compatibles(T, E.tipo):
-        return ok
-        si no:
-        return error
-
-        chequeo_parametro(Exp, PForm_ref(id,T)) =
-        tipado(Exp)
-        si es_desig(Exp) && son_compatibles(T, Exp.tipo)
-        return ok
-        si no:
-        return error
 
          */
 
+    }
+    public Tipo chequeo_params(No_pforms pf, No_preal pr){ return new Ok();}
+
+    public Tipo chequeo_params(Un_pform pf, Un_PReal pr){ return chequeo_params(pf.pform(), pr.e());}
+
+    public Tipo chequeo_params(Muchos_pforms pf, Muchos_preal pr){
+        return ambos_ok(chequeo_params(pf.pforms(), pr.lpr()), chequeo_params(pf.pform(), pr.e()));
+    }
+    public Tipo chequeo_params(PFnoref pf, Exp e){
+       e.procesa(this);
+       pf.procesa(this);
+       if(son_compatibles(pf.t(), e.tipo())){
+            return new Ok();
+        }
+        else{
+            return new Error_();
+        }
+    }
+    public Tipo chequeo_params(PFref pf, Exp e){
+        e.procesa(this);
+        pf.procesa(this);
+        if(son_compatibles(pf.t(), e.tipo()) && es_desig(e)){
+            return new Ok();
+        }
+        else{
+            return new Error_();
+        }
     }
 
     public void procesa(Ins_bloque ins) {
@@ -682,7 +692,7 @@ public class Comprobacion_tipos extends ProcesamientoDef {
         exp.opnd0().procesa(this);
 
         if(refI(exp.opnd0().tipo()).es_struct()){
-            //TODO COMRPOBAR nuevo! (probablemente el toString este mal)
+            //(probablemente el toString este mal)
             exp.set_tipo(tipo_de(refI(exp.opnd0().tipo()).lcamp(), exp.iden().toString()));
         }
         else{
@@ -783,8 +793,4 @@ public class Comprobacion_tipos extends ProcesamientoDef {
             ms.addError(exp.leeFila(),exp.leeCol());
         }
     }
-
-
-
-
 }
