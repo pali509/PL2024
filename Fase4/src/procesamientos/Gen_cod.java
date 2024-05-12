@@ -107,10 +107,9 @@ public class Gen_cod extends ProcesamientoDef {
 		mp.emit(mp.ir_a(i.prim()));
 	}
     public void procesa(Ins_call i){
-		mp.emit(mp.activa(i.getVinculo().get_nivel(), i.getVinculo().tipo().getTam(), i.sig()));
-		gen_paso_pf(i., i.pr());
-		mp.emit(mp.ir_a(i.getVinculo().get_dir()));
-
+		i.pr().procesa(this);
+		Dec_proc dec = (Dec_proc) i.getVinculo();
+		gen_pforms(dec);
 
 		/*
 		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
@@ -766,7 +765,7 @@ public class Gen_cod extends ProcesamientoDef {
 		if(lds.es_una_dec()){
 			Una_dec decs = (Una_dec)lds.decs();
 			recolecta_procs(decs.dec());
-		}else if(lds.es_muchas_decs()){
+		} else if(lds.es_muchas_decs()){
 			Muchas_decs decs = (Muchas_decs)lds.decs();
 			recolecta_procs(decs.ldecs());
 			recolecta_procs(decs.dec());
@@ -783,6 +782,29 @@ public class Gen_cod extends ProcesamientoDef {
 	private void recolecta_procs(LDecs ldec){
 		recolecta_procs(ldec.ldecs());
 		recolecta_procs(ldec.dec());
+	}
+
+	private void gen_pforms(Dec_proc dec){
+		if(dec.pf().es_no_pform()) {
+			No_pforms pf = (No_pforms) dec.pf();
+		}
+		else if(dec.pf().pforms().es_un_pform()) {
+			Un_pform unpf = (Un_pform) dec.pf().pforms();
+			gen_pforms(unpf.pform());
+		}
+		else if(dec.pf().pforms().es_muchos_pform() ) {
+			Muchos_pforms mpf = (Muchos_pforms) dec.pf().pforms();
+			gen_pforms(mpf.pforms());
+			gen_pforms(mpf.pform());
+		}
+	}
+	private void gen_pforms(Pform pf) {
+
+	}
+
+	private void gen_pforms(LPForm lpf) {
+		gen_pforms(lpf.pforms());
+		gen_pforms(lpf.pform());
 	}
 
 }
