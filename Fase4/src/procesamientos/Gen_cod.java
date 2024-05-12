@@ -53,6 +53,8 @@ public class Gen_cod extends ProcesamientoDef {
 
     public void procesa(Dec_proc dec_proc) {
         dec_proc.bq().procesa(this);
+		mp.emit(mp.desactiva(dec_proc.get_nivel(), dec_proc.getTam()));
+		mp.emit(mp.ir_ind());
         /*
         mp.ponInstruccion(mp.desactiva(dec_proc.nivel(), dec_proc.tam_datos()));
         mp.ponInstruccion(mp.ir_Ind());
@@ -160,7 +162,18 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_new i){
-		i.e().procesa(this);
+		try {
+			i.e().procesa(this);
+			mp.emit(mp.store(i.e().procesa(this)));
+			mp.emit(mp.alloc(refI(i.e().tipo()).getTam()));
+			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam()));
+		} catch (Exception e) {
+			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
+			mensajesError.getErrores();
+		}
+
+
         /*
         emite store(gen-cod(Exp), emite alloc(ref!(Exp.tipo).tipo().tam))
 
@@ -170,7 +183,14 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Ins_delete i){
-		i.e().procesa(this);
+		try {
+			i.e().procesa(this);
+			mp.emit(mp.dealloc(refI(i.e().tipo()).getTam()));
+		} catch (Exception e) {
+			MensajesError mensajesError = new MensajesError("Errore de ejecución ");
+			mensajesError.addError(i.e().leeFila(), i.e().leeCol());
+			mensajesError.getErrores();
+		}
         /*
         d = gen-cod(Exp)
 	si d != -1:

@@ -1059,8 +1059,6 @@ public class MaquinaP {
    public Instruccion mostrar_real() {return IMOSTRAR_REAL;}
    public Instruccion mostrar_bool() {return IMOSTRAR_BOOL;}
    public Instruccion mostrar_string() {return IMOSTRAR_STRING;}
-
-
     public Instruccion int2real(){return IINT2REAL;}
    public void emit(Instruccion i) {
       codigoP.add(i); 
