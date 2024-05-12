@@ -283,18 +283,19 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Exp_Iden e){
-
+    	
     	if(e.getVinculo().get_nivel() != 0) {
     		mp.apilad(e.getVinculo().get_nivel());
-    		mp.apila_int(e.getVinculo().get_nivel());
+    		mp.apila_int(e.getVinculo().get_dir());
     		mp.suma_int();
-    		if(e.getVinculo().es_parf_ref()) {
-				mp.apila_int(Integer.parseInt(e.valor().toString()));
-			}
+    		if(e.getVinculo().es_parf_ref()){
+    			mp.apila_ind();
+    		}
     	}
-    	else {
-				mp.apila_int(e.getVinculo().get_dir());
-		}
+    	else{
+    		mp.apila_int(e.getVinculo().get_dir());
+    	}
+    	
     }
 
     public void procesa(Exp_lit_BoolTrue e){
@@ -767,7 +768,7 @@ public class Gen_cod extends ProcesamientoDef {
     }
     
     private boolean es_desig(Exp e) {
-		if(e.es_iden()){
+		if(e.getVinculo() != null && (e.es_dec_var() || e.es_parf_noRef() || e.es_parf_ref())){
 			return true;
 		}
 		else if(e.prioridad() == 6) { //Prioridad 5 para los accesos.
