@@ -12,6 +12,7 @@ public class SintaxisAbstractaTiny {
 	   private int fila;
 	   private int col;
        private int prim;
+       private int prim2;
        private int sig;
         private int dir;
         private int nivel;
@@ -27,10 +28,16 @@ public class SintaxisAbstractaTiny {
         public void setPrim(int etq) {
             this.prim = etq;
         }
+        public void setPrim2(int etq) {
+            this.prim2 = etq;
+        }
         public void setSig(int etq) {
             this.sig = etq;
         }
         public int prim(){
+            return this.prim;
+        }
+        public int prim2(){
             return this.prim;
         }
         public int sig(){

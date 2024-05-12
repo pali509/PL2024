@@ -13,9 +13,10 @@ public class Etiquetado extends ProcesamientoDef {
 
     public void procesa(Bloque b){
         b.setPrim(etq);
-        etq++;
         b.lds().procesa(this);
+        etq++;
         b.lis().procesa(this);
+        b.setSig(etq);
     }
 
     public void procesa(Si_decs s){
@@ -46,10 +47,8 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa(Muchas_ins m){
-        m.setPrim(etq);
         m.ins().procesa(this);
         m.li().procesa(this);
-        m.setSig(etq);
     }
 
     public void procesa(Una_ins u){
@@ -86,6 +85,7 @@ public class Etiquetado extends ProcesamientoDef {
             etq++;
         etq++;
         i.bloque().procesa(this);
+        i.setPrim2(etq);
         etq++;
         i.bloque2().procesa(this);
         i.setSig(etq);
@@ -115,7 +115,6 @@ public class Etiquetado extends ProcesamientoDef {
         if (t.es_int() || t.es_real() || t.es_string()) {
             etq+= 2;
         }
-        i.setSig(etq);
     }
 
     public void procesa (Ins_write i){
@@ -130,21 +129,18 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa (Ins_new i){
-        i.setPrim(etq);
         i.e().procesa(this);
-        i.setSig(etq);
+        etq+=2;
     }
 
     public void procesa (Ins_delete i){
-        i.setPrim(etq);
         i.e().procesa(this);
-        i.setSig(etq);
+        etq+=2;
     }
 
     public void procesa(Ins_bloque i){
-        i.setPrim(etq);
         i.e().procesa(this);
-        i.setSig(etq);
+        etq++;
     }
     public void procesa (Si_preal s){
         s.lpr().procesa(this);
@@ -193,252 +189,261 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa (Asig a){
-        a.setPrim(etq);
         a.opnd0().procesa(this);
         a.opnd1().procesa(this);
         etq++;
-        if(refI(a.opnd1().tipo()).es_int() && refI(a.opnd0().tipo()).es_real()) {
-            if (es_desig(a.opnd1())) {
-                etq++;
-            }
-        } else {
-            if (es_desig(a.opnd1())) {
-                etq++;
-            }
-        }
-        a.setSig(etq);
-    }
-
-    public void procesa (Suma s){
-        s.setPrim(etq);
-        s.opnd0().procesa(this);
-        s.opnd1().procesa(this);
-        etq++;
-        if ((refI(s.opnd0().tipo()).es_int() || refI(s.opnd0().tipo()).es_real()) &&
-                (refI(s.opnd1().tipo()).es_int() || refI(s.opnd1().tipo()).es_real())) {
-            if (es_desig(s.opnd0())) {
-                etq++;
-            }
-            if (es_desig(s.opnd1())) {
-                etq++;
-            }
-        }
-        s.setSig(etq);
-    }
-
-    public void procesa (Resta r){
-        r.setPrim(etq);
-        r.opnd0().procesa(this);
-        r.opnd1().procesa(this);
-        etq++;
-        if ((refI(r.opnd0().tipo()).es_int() || refI(r.opnd0().tipo()).es_real()) &&
-                (refI(r.opnd1().tipo()).es_int() || refI(r.opnd1().tipo()).es_real())) {
-            if (es_desig(r.opnd0())) {
-                etq++;
-            }
-            if (es_desig(r.opnd1())) {
-                etq++;
-            }
-        }
-        r.setSig(etq);
-    }
-
-    public void procesa (Mul m){
-        m.setPrim(etq);
-        m.opnd0().procesa(this);
-        m.opnd1().procesa(this);
-        etq++;
-        if ((refI(m.opnd0().tipo()).es_int() || refI(m.opnd0().tipo()).es_real()) &&
-                (refI(m.opnd1().tipo()).es_int() || refI(m.opnd1().tipo()).es_real())) {
-            if (es_desig(m.opnd0())) {
-                etq++;
-            }
-            if (es_desig(m.opnd1())) {
-                etq++;
-            }
-        }
-        m.setSig(etq);
-    }
-
-    public void procesa (Div d){
-        d.setPrim(etq);
-        d.opnd0().procesa(this);
-        d.opnd1().procesa(this);
-        etq++;
-        if ((refI(d.opnd0().tipo()).es_int() || refI(d.opnd0().tipo()).es_real()) &&
-                (refI(d.opnd1().tipo()).es_int() || refI(d.opnd1().tipo()).es_real())) {
-            if (es_desig(d.opnd0())) {
-                etq++;
-            }
-            if (es_desig(d.opnd1())) {
-                etq++;
-            }
-        }
-        d.setSig(etq);
-    }
-
-    public void procesa (Mod m){
-        m.setPrim(etq);
-        m.opnd0().procesa(this);
-        m.opnd1().procesa(this);
-        etq++;
-        if (refI(m.opnd0().tipo()).es_int() && refI(m.opnd1().tipo()).es_int()) {
-            if (es_desig(m.opnd0())) {
-                etq++;
-            }
-            if (es_desig(m.opnd1())) {
-                etq++;
-            }
-        }
-        m.setSig(etq);
-    }
-
-    public void procesa (And a){
-        a.setPrim(etq);
-        a.opnd0().procesa(this);
-        a.opnd1().procesa(this);
-        etq++;
-        if (refI(a.opnd0().tipo()).es_bool() && refI(a.opnd1().tipo()).es_bool()) {
+        if(refI(a.opnd0().tipo()).es_int() && refI(a.opnd1().tipo()).es_real()) {
             if (es_desig(a.opnd0())) {
                 etq++;
             }
-            if (es_desig(a.opnd1())) {
-                etq++;
-            }
+            etq+=2;
+        } else {
+             etq++;
         }
-        a.setSig(etq);
+    }
+
+    public void procesa (Suma s){
+        s.opnd0().procesa(this);
+        if (es_desig(s.opnd0())) {
+            etq++;
+        }
+        if (refI(s.opnd0().tipo()).es_int() && refI(s.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        s.opnd1().procesa(this);
+        if (es_desig(s.opnd1())) {
+            etq++;
+        }
+        if((refI(s.opnd0().tipo()).es_real() && refI(s.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+
+        etq++;
+    }
+
+    public void procesa (Resta r){
+        r.opnd0().procesa(this);
+        if (es_desig(r.opnd0())) {
+            etq++;
+        }
+        if (refI(r.opnd0().tipo()).es_int() && refI(r.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        r.opnd1().procesa(this);
+        if (es_desig(r.opnd1())) {
+            etq++;
+        }
+        if((refI(r.opnd0().tipo()).es_real() && refI(r.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+
+        etq++;
+    }
+
+    public void procesa (Mul m){
+        m.opnd0().procesa(this);
+        if (es_desig(m.opnd0())) {
+            etq++;
+        }
+        if (refI(m.opnd0().tipo()).es_int() && refI(m.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        m.opnd1().procesa(this);
+        if (es_desig(m.opnd1())) {
+            etq++;
+        }
+        if((refI(m.opnd0().tipo()).es_real() && refI(m.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+
+        etq++;
+    }
+
+    public void procesa (Div d){
+        d.opnd0().procesa(this);
+        if (es_desig(d.opnd0())) {
+            etq++;
+        }
+        if (refI(d.opnd0().tipo()).es_int() && refI(d.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        d.opnd1().procesa(this);
+        if (es_desig(d.opnd1())) {
+            etq++;
+        }
+        if((refI(d.opnd0().tipo()).es_real() && refI(d.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+
+        etq++;
+    }
+
+    public void procesa (Mod m){
+        m.opnd0().procesa(this);
+        if (es_desig(m.opnd0())) {
+            etq++;
+        }
+
+        m.opnd1().procesa(this);
+        if (es_desig(m.opnd1())) {
+            etq++;
+        }
+
+        etq++;
+    }
+
+    public void procesa (And a){
+        a.opnd0().procesa(this);
+        if (es_desig(a.opnd0())) {
+            etq++;
+        }
+
+        a.opnd1().procesa(this);
+        if (es_desig(a.opnd1())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (Or o){
-        o.setPrim(etq);
         o.opnd0().procesa(this);
-        o.opnd1().procesa(this);
-        etq++;
-        if (refI(o.opnd0().tipo()).es_bool() && refI(o.opnd1().tipo()).es_bool()) {
-            if (es_desig(o.opnd0())) {
-                etq++;
-            }
-            if (es_desig(o.opnd1())) {
-                etq++;
-            }
+        if (es_desig(o.opnd0())) {
+            etq++;
         }
-        o.setSig(etq);
+
+
+        o.opnd1().procesa(this);
+        if (es_desig(o.opnd1())) {
+            etq++;
+        }
+
+        etq++;
     }
 
     public void procesa (Mayor ma){
-        ma.setPrim(etq);
         ma.opnd0().procesa(this);
-        ma.opnd1().procesa(this);
-        etq++;
-        if ((refI(ma.opnd0().tipo()).es_int() || refI(ma.opnd0().tipo()).es_real()) &&
-                (refI(ma.opnd1().tipo()).es_int() || refI(ma.opnd1().tipo()).es_real())) {
-            if (es_desig(ma.opnd0())) {
-                etq++;
-            }
-            if (es_desig(ma.opnd1())) {
-                etq++;
-            }
+        if (es_desig(ma.opnd0())) {
+            etq++;
         }
-        ma.setSig(etq);
+        if (refI(ma.opnd0().tipo()).es_int() && refI(ma.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        ma.opnd1().procesa(this);
+        if (es_desig(ma.opnd1())) {
+            etq++;
+        }
+        if((refI(ma.opnd0().tipo()).es_real() && refI(ma.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (Menor me){
-        me.setPrim(etq);
         me.opnd0().procesa(this);
-        me.opnd1().procesa(this);
-        etq++;
-        if ((refI(me.opnd0().tipo()).es_int() || refI(me.opnd0().tipo()).es_real()) &&
-                (refI(me.opnd1().tipo()).es_int() || refI(me.opnd1().tipo()).es_real())) {
-            if (es_desig(me.opnd0())) {
-                etq++;
-            }
-            if (es_desig(me.opnd1())) {
-                etq++;
-            }
+        if (es_desig(me.opnd0())) {
+            etq++;
         }
-        me.setSig(etq);
+        if (refI(me.opnd0().tipo()).es_int() && refI(me.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        me.opnd1().procesa(this);
+        if (es_desig(me.opnd1())) {
+            etq++;
+        }
+        if((refI(me.opnd0().tipo()).es_real() && refI(me.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (MayorIg mai){
-        mai.setPrim(etq);
         mai.opnd0().procesa(this);
-        mai.opnd1().procesa(this);
-        etq++;
-        if ((refI(mai.opnd0().tipo()).es_int() || refI(mai.opnd0().tipo()).es_real()) &&
-                (refI(mai.opnd1().tipo()).es_int() || refI(mai.opnd1().tipo()).es_real())) {
-            if (es_desig(mai.opnd0())) {
-                etq++;
-            }
-            if (es_desig(mai.opnd1())) {
-                etq++;
-            }
+        if (es_desig(mai.opnd0())) {
+            etq++;
         }
-        mai.setSig(etq);
+        if (refI(mai.opnd0().tipo()).es_int() && refI(mai.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        mai.opnd1().procesa(this);
+        if (es_desig(mai.opnd1())) {
+            etq++;
+        }
+        if((refI(mai.opnd0().tipo()).es_real() && refI(mai.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (MenorIg mei){
-        mei.setPrim(etq);
         mei.opnd0().procesa(this);
-        mei.opnd1().procesa(this);
-        etq++;
-        if ((refI(mei.opnd0().tipo()).es_int() || refI(mei.opnd0().tipo()).es_real()) &&
-                (refI(mei.opnd1().tipo()).es_int() || refI(mei.opnd1().tipo()).es_real())) {
-            if (es_desig(mei.opnd0())) {
-                etq++;
-            }
-            if (es_desig(mei.opnd1())) {
-                etq++;
-            }
+        if (es_desig(mei.opnd0())) {
+            etq++;
         }
-        mei.setSig(etq);
+        if (refI(mei.opnd0().tipo()).es_int() && refI(mei.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        mei.opnd1().procesa(this);
+        if (es_desig(mei.opnd1())) {
+            etq++;
+        }
+        if((refI(mei.opnd0().tipo()).es_real() && refI(mei.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (Igual ig){
-        ig.setPrim(etq);
         ig.opnd0().procesa(this);
-        ig.opnd1().procesa(this);
-        etq++;
-        if ((refI(ig.opnd0().tipo()).es_int() || refI(ig.opnd0().tipo()).es_real()) &&
-                (refI(ig.opnd1().tipo()).es_int() || refI(ig.opnd1().tipo()).es_real())) {
-            if (es_desig(ig.opnd0())) {
-                etq++;
-            }
-            if (es_desig(ig.opnd1())) {
-                etq++;
-            }
+        if (es_desig(ig.opnd0())) {
+            etq++;
         }
-        ig.setSig(etq);
+        if (refI(ig.opnd0().tipo()).es_int() && refI(ig.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        ig.opnd1().procesa(this);
+        if (es_desig(ig.opnd1())) {
+            etq++;
+        }
+        if((refI(ig.opnd0().tipo()).es_real() && refI(ig.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (Desigual de){
-        de.setPrim(etq);
         de.opnd0().procesa(this);
-        de.opnd1().procesa(this);
-        etq++;
-        String t0 = de.opnd0().tipo().iden().toString();
-        String t1 = de.opnd1().tipo().iden().toString();
-        if ((refI(de.opnd0().tipo()).es_int() || refI(de.opnd0().tipo()).es_real()) &&
-                (refI(de.opnd1().tipo()).es_int() || refI(de.opnd1().tipo()).es_real())) {
-            if (es_desig(de.opnd0())) {
-                etq++;
-            }
-            if (es_desig(de.opnd1())) {
-                etq++;
-            }
+        if (es_desig(de.opnd0())) {
+            etq++;
         }
-        de.setSig(etq);
+        if (refI(de.opnd0().tipo()).es_int() && refI(de.opnd1().tipo()).es_real()) {
+            etq++;
+        }
+
+        de.opnd1().procesa(this);
+        if (es_desig(de.opnd1())) {
+            etq++;
+        }
+        if((refI(de.opnd0().tipo()).es_real() && refI(de.opnd1().tipo()).es_int())) {
+            etq++;
+        }
+        etq++;
     }
 
     public void procesa (Not no){
-        no.setPrim(etq);
         no.opnd0().procesa(this);
-        etq++;
-        if (refI(no.opnd0().tipo()).es_int() || refI(no.opnd0().tipo()).es_real()) {
-            if (es_desig(no.opnd0())) {
-                etq++;
-            }
+        if (es_desig(no.opnd0())) {
+            etq++;
         }
-        no.setSig(etq);
+        etq++;
     }
 
     public void procesa (Lit_bool l){
@@ -458,7 +463,15 @@ public class Etiquetado extends ProcesamientoDef {
     }
 
     public void procesa (Iden i){
-        //NOOP
+        if(i.getVinculo().get_nivel() != 0){
+            etq += 3;
+            if(i.getVinculo().es_parf_ref()){
+                etq += 1;
+            }
+        }
+        else{
+            etq += 1;
+        }
     }
 
     public void procesa(AccesoCampo s){
@@ -471,6 +484,7 @@ public class Etiquetado extends ProcesamientoDef {
         if(es_desig(a.opnd1())) {
             etq++;
         }
+        etq++;
     }
 
     public void procesa(AccesoPuntero p) {
@@ -495,4 +509,5 @@ public class Etiquetado extends ProcesamientoDef {
         }
         return false;
     }
+
 }
