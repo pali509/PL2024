@@ -30,7 +30,7 @@ public class DomJudge {
 				// directamente la clase ConstructorASTTiny, en lugar de su especializaci�n
 				// ConstructorASTTinyDJ, e invocamos a parse, en lugar de debug_parse.
 				ConstructorASTTiny asint = new ConstructorASTTiny(alex);
-				Prog p = (Prog)asint.parse().value;
+				Prog p = (Prog) asint.parse().value;
 				return p;
 			}
 			catch(ErrorLexico e) {
