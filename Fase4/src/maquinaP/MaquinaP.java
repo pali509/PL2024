@@ -822,6 +822,8 @@ public class MaquinaP {
       private Valor d2;
       public ICopy(int t){
          this.t = t;
+      }
+      public void ejecuta(){
          d1 = pilaEvaluacion.pop();
          d2 = pilaEvaluacion.pop();
          for (int i = 0; i < t; i++){
