@@ -1070,7 +1070,7 @@ public class MaquinaP {
    public Instruccion ir_a(int dir) {return new IIrA(dir);}
    public Instruccion ir_f(int dir) {return new IIrF(dir);}
    public Instruccion ir_ind() {return IIRIND;}
-   public Instruccion mueve() {return IMUEVE;}
+   public Instruccion mueve(int n) {return IMUEVE;}
    public Instruccion alloc(int tam) {return new IAlloc(tam);} 
    public Instruccion dealloc(int tam, int inicio) {return new IDealloc(tam, inicio);}
     public Instruccion fetch(int d) {return new IFetch(d);}
