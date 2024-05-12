@@ -18,11 +18,15 @@ public class Gen_cod extends ProcesamientoDef {
     }
 
     public void procesa(Bloque b) {
-		b.lds().procesa(this);
+		recolecta_procs(b.lds());
         b.lis().procesa(this);
+		mp.emit(mp.stop());
         while (!procs.isEmpty()) {
             Dec_proc proc = procs.pop();
+			mp.desapilad(proc.get_nivel());
             proc.procesa(this);
+			mp.emit(mp.desactiva(proc.get_nivel(), proc.getTam()));
+			mp.emit(mp.ir_ind());
         }
 
 		/*
@@ -39,38 +43,8 @@ public class Gen_cod extends ProcesamientoDef {
 			emit desactiva(sub.nivel,sub.tam)
 			emid ir-ind()
 			end let
-
-
-		sea LDecs de  Bloque(LDecs, LIns)
-		para cada dec_var(Tipo, id) en en LDecs
-		//si existe otra variable id
-			salvaguardamos dir(id)
-			gen-cod(LIns)
-			dealloc(dir(id),Tipo)
-			restaurar dir(id)
-
-		//sino
-		dir(id)
-		alloc()
-		gen-cod(LIns)
-		dealloc(dir(id),)
-
 		 */
-		LDecs de = b.lds().decs();
-		for (Dec d : de.dec()) {
-			if(){
-				// guardar dir
-				b.lis().procesa(this);
-				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
-				// restaurar
-			}
 
-			else {
-				mp.alloc(refI(i.e().tipo()).getTam());
-				i.bloque().lis().procesa(this);
-				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
-			}
-		}
     }
 
     public void procesa(Si_decs s){
@@ -785,5 +759,28 @@ public class Gen_cod extends ProcesamientoDef {
     	Camp campo = lcs.campo();
     	return campo.get_desp();
     }
+
+	private void recolecta_procs(LDecsOpt lds){
+		if(lds.es_una_dec()){
+			Una_dec decs = (Una_dec)lds.decs();
+			recolecta_procs(decs.dec());
+		}else if(lds.es_muchas_decs()){
+			Muchas_decs decs = (Muchas_decs)lds.decs();
+			recolecta_procs(decs.ldecs());
+			recolecta_procs(decs.dec());
+		}
+	}
+
+	private void recolecta_procs(Dec dec){
+		if(dec.es_dec_proc()){
+			Dec_proc p = (Dec_proc)dec;
+			procs.push(p);
+		}
+	}
+
+	private void recolecta_procs(LDecs ldec){
+		recolecta_procs(ldec.ldecs());
+		recolecta_procs(ldec.dec());
+	}
 
 }
