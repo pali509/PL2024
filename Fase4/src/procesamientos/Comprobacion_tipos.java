@@ -29,10 +29,10 @@ class Par {
     }
 }
 public class Comprobacion_tipos extends ProcesamientoDef {
-    /*
+
     private HashSet<String> tn = new HashSet<String>();
     private HashSet<String> tr = new HashSet<String>();
-     */
+
     // set de parejas de T
 
     private HashSet<Par> st = new HashSet<Par>();
@@ -165,7 +165,8 @@ public class Comprobacion_tipos extends ProcesamientoDef {
     public void procesa(Struct t) {
         List<Camp> campos = new ArrayList<Camp>();
         if(hayRepetidos(t.lcamp(), campos)){
-            t.set_tipo(new Ok());
+            t.set_tipo(new Error_());
+            ms2.addError(t.leeFila(), t.leeCol());
         }
         else{
             t.lcamp().procesa(this);
@@ -433,29 +434,46 @@ public class Comprobacion_tipos extends ProcesamientoDef {
 
     public void procesa(Ins_call ins) { //TODO yo me mato con el call asi lo digo
         ins.pr().procesa(this);
+        Dec_proc dec = (Dec_proc) ins.getVinculo();
 
-        /*
-        let string.vinculo = dec_proc  dec_proc = dec_proc(id,PForm,_)
-        PRealOpt.tipo = chequeo_params(PForm, PRealOpt)
-        si PRealOpt.tipo = ok:
-            $.tipo = ok
-        si no:
-            $.tipo = error
-        else {
+        ins.pr().set_tipo(chequeo_params(dec.pf(),ins.pr()));
+
+        if(ins.pr().tipo().equals(new Ok())){
+            ins.set_tipo(new Ok());
+        }
+        else{
             ins.set_tipo(new Error_());
             ms.addError(ins.leeFila(),ins.leeCol());
         }
-
-
-         */
-
     }
     public Tipo chequeo_params(No_pforms pf, No_preal pr){ return new Ok();}
 
-    public Tipo chequeo_params(Un_pform pf, Un_PReal pr){ return chequeo_params(pf.pform(), pr.e());}
+    public Tipo chequeo_params(Un_pform pf, Un_PReal pr){
+        if(pf.es_parf_ref()) {
+            PFref pf2 = (PFref) pf.pform();
+            return chequeo_params(pf2, pr.e());
+        } else if (pf.es_parf_noRef()) {
+            PFnoref pf2 = (PFnoref) pf.pform();
+            return chequeo_params(pf2, pr.e());
+        }
+        else return new Error_();
+    }
 
     public Tipo chequeo_params(Muchos_pforms pf, Muchos_preal pr){
-        return ambos_ok(chequeo_params(pf.pforms(), pr.lpr()), chequeo_params(pf.pform(), pr.e()));
+        if(pf.es_parf_ref()) {
+            PFref pf2 = (PFref) pf.pform();
+            Muchos_pforms pf3 = (Muchos_pforms) pf.pforms();
+            Muchos_preal pr2 = (Muchos_preal) pr.lpr();
+            return ambos_ok(chequeo_params(pf3, pr2), chequeo_params(pf2, pr.e()));
+        } else if (pf.es_parf_noRef()) {
+            PFnoref pf2 = (PFnoref) pf.pform();
+            Muchos_pforms pf3 = (Muchos_pforms) pf.pforms();
+            Muchos_preal pr2 = (Muchos_preal) pr.lpr();
+            return ambos_ok(chequeo_params(pf3, pr2), chequeo_params(pf2, pr.e()));
+        }
+        else return new Error_();
+
+
     }
     public Tipo chequeo_params(PFnoref pf, Exp e){
        e.procesa(this);
