@@ -109,7 +109,7 @@ public class Gen_cod extends ProcesamientoDef {
     public void procesa(Ins_call i){
 		i.pr().procesa(this);
 		Dec_proc dec = (Dec_proc) i.getVinculo();
-		gen_pforms(dec);
+		gen_pforms(dec, i.pr());
 
 		/*
 		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
@@ -799,7 +799,20 @@ public class Gen_cod extends ProcesamientoDef {
 	}
 	private void gen_pforms(Pform pf, LPReal lpr) {
 		lpr.procesa(this);
-
+		mp.emit(mp.alloc(lpr.e().tipo().getTam()));
+		if((refI(lpr.e().tipo()).es_int())){
+			if(es_desig(lpr.e())) {
+				mp.emit(mp.fetch(lpr.e().get_dir()));
+			}
+		}
+		else{
+			if(es_desig(lpr.e())) {
+				mp.emit(mp.copia(lpr.e().tipo().getTam()));
+			}
+			else{
+				mp.emit(mp.store_real(lpr.e().get_dir(), Double.parseDouble(lpr.e().valor().toString())));
+			}
+		}
 	}
 
 	private void gen_pforms(LPForm lpf,  LPReal lpr) {
