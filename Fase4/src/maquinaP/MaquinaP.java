@@ -924,7 +924,6 @@ public class MaquinaP {
       }
    }
 
-
    private ILeer_entrada_string ILEER_ENTRADA_STRING;
    private class ILeer_entrada_string implements Instruccion {
       public void ejecuta() {
@@ -1065,8 +1064,7 @@ public class MaquinaP {
    public void emit(Instruccion i) {
       codigoP.add(i); 
    }
-
-    private int tamdatos;
+   private int tamdatos;
    private int tamheap;
    private int ndisplays;
    private Scanner input;

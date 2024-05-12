@@ -217,6 +217,21 @@ public class Gen_cod extends ProcesamientoDef {
 		dealloc(dir(id),)
 
 		 */
+		LDecs de = i.bloque().lds().decs();
+		for (Dec d : de.dec()) {
+			if(){
+				// guardar dir
+				i.bloque().lis().procesa(this);
+				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
+				// restaurar
+			}
+
+			else {
+				mp.alloc(refI(i.e().tipo()).getTam());
+				i.bloque().lis().procesa(this);
+				mp.emit(mp.dealloc(refI(i.e().tipo()).getTam(), i.e().get_dir()));
+			}
+		}
 	}
     public void procesa(Si_preal s){
         s.lpr().procesa(this);
