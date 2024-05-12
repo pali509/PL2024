@@ -741,7 +741,7 @@ public class MaquinaP {
       public String toString() {return "ir-a("+dir+")";};
    }
 
-//PUEDE QUE FALTE IR_V PERO NO SE USA EN LA MEMORIA
+//PUEDE QUE FALTE IR_V PERO NO SE USA
 
    private class IIrF implements Instruccion {
       private int dir;
@@ -759,8 +759,6 @@ public class MaquinaP {
       public String toString() {return "ir-f("+dir+")";};
    }
 
-   // IR_IND NO SE USA EN LA MEMORIA
-
    private Instruccion IIRIND;
    private class IIrind implements Instruccion {
        public void ejecuta() {
@@ -771,6 +769,7 @@ public class MaquinaP {
        }
    }
 
+   private IAlloc IALLOC;
    private class IAlloc implements Instruccion {
       private int tam;
       public IAlloc(int tam) {
