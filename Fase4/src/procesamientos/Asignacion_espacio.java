@@ -205,7 +205,7 @@ public class Asignacion_espacio extends ProcesamientoDef{
 	}
 	
 	public void asig_tam1(Un_camp campo) {
-		campo.campo().set_desp(0);
+		campo.campo().set_desp(desplazamiento);
 		asig_tam1(campo.campo().tipo());
 	}
 	
@@ -215,7 +215,6 @@ public class Asignacion_espacio extends ProcesamientoDef{
 		asig_tam(c.tipo());
 		c.set_desp(desp_actual);
 		return desp_actual + c.tipo().getTam();
-		//tengo que sumar el valor de max_dir al return??
 
 	}
 	
