@@ -784,6 +784,7 @@ public class MaquinaP {
    }
 
    //ESTA LA HE CAMBIADO PORQUE NO HACIA LO QUE DECIA LA MEMORIA
+   private IDealloc IDEALLOC;
    private class IDealloc implements Instruccion {
       private int tam;
       private int inicio;
@@ -798,6 +799,7 @@ public class MaquinaP {
       public String toString() {return "dealloc("+tam+")";};
    }
 
+   private IFetch IFETCH;
    private class IFetch implements Instruccion{
       private int d;
       public IFetch(int d){
