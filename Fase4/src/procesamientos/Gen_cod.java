@@ -30,23 +30,6 @@ public class Gen_cod extends ProcesamientoDef {
 			mp.emit(mp.desactiva(proc.get_nivel(), proc.getTam()));
 			mp.emit(mp.ir_ind());
         }
-
-		/*
-		recolecta_procs(DecsOpt)
-		gen-cod(InsOpt)
-		emit stop()
-		mientras(!es_vacia(procs))):
-			sub = cima(sub_pendientes)
-			desapila(sub_pendientes)
-			let sub = dec_proc(Iden,Param,LDecs,Is) in
-			emit desapilad(sub.nivel)
-			recolecta_subs(LDecs)
-			gen-cod(Ins)
-			emit desactiva(sub.nivel,sub.tam)
-			emid ir-ind()
-			end let
-		 */
-
     }
 
     public void procesa(Si_decs s){
@@ -125,6 +108,7 @@ public class Gen_cod extends ProcesamientoDef {
 	}
     public void procesa(Ins_call i){
         i.e().procesa(this);
+		mp.emit(mp.activa(i.getVinculo().get_nivel(), i.getVinculo().tipo().getTam(), i.sig()));
 		/*
 		let id = string.vinculo, id.vinculo = dec_proc(_, PFormOpt , _) in
 		emit activa($.vinculo.nivel, $.vinculo.tam, $.dir_sig)
