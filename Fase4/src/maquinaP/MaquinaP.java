@@ -1053,6 +1053,7 @@ public class MaquinaP {
     public Instruccion store_int(int d, int valor) {return new IStore(d,  new ValorInt(valor));}
     public Instruccion store_real(int d, double valor) {return new IStore(d,  new ValorReal(valor));}
     public Instruccion store_string(int d, String valor) {return new IStore(d,  new ValorString(valor));}
+    public Instruccion store_bool(int d, boolean valor) {return new IStore(d,  new ValorBool(valor));}
    public Instruccion activa(int nivel,int tam, int dirretorno) {return new IActiva(nivel,tam,dirretorno);}
    public Instruccion desactiva(int nivel, int tam) {return new IDesactiva(nivel,tam);}
    public Instruccion desapilad(int nivel) {return new IDesapilad(nivel);}
