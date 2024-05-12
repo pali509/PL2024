@@ -814,6 +814,7 @@ public class MaquinaP {
       public String toString(){return "fetch(" + d + ")";};
    }
 
+   private IStore ISTORE;
    private class IStore implements Instruccion{
       private int d;
       private Valor v;
@@ -829,6 +830,8 @@ public class MaquinaP {
    }
 
    //FALTAN COPY, INDX Y ACC PERO NO SE USAN
+
+   private IActiva IACTIVA;
    private class IActiva implements Instruccion {
        private int nivel;
        private int tamdatos;
@@ -850,6 +853,7 @@ public class MaquinaP {
        }
    }
    
+   private IDesactiva IDESACTIVA;
    private class IDesactiva implements Instruccion {
        private int nivel;
        private int tamdatos;
@@ -868,6 +872,7 @@ public class MaquinaP {
        }
    }
 
+   //OJO NO SE USA
    private IDup IDUP;
    private class IDup implements Instruccion {
        public void ejecuta() {
@@ -878,6 +883,8 @@ public class MaquinaP {
           return "dup";                 
        }
    }
+
+
    private Instruccion ISTOP;
    private class IStop implements Instruccion {
        public void ejecuta() {
@@ -984,6 +991,7 @@ public class MaquinaP {
       }
    }
 
+   //OJO NO SE USA
    private IMostrar_NL IMOSTRAR_NL;
    private class IMostrar_NL implements Instruccion{
       public void ejecuta(){
